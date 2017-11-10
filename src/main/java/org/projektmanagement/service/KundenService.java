@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class KundenService {
 
 	
+	
     private	KundenHandler kundenHandler;  
     private ApplicationContext ctx;
     
