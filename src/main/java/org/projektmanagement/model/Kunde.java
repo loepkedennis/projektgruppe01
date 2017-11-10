@@ -1,6 +1,5 @@
 package org.projektmanagement.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,8 +13,11 @@ public class Kunde {
 	@GeneratedValue
 	private int id;
 	
-	@Column
+
 	private String name;
+	
+
+	private String lastname;
 
 	public int getId() {
 		return id;
@@ -32,6 +34,15 @@ public class Kunde {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	
 	
 	
 

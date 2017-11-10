@@ -28,7 +28,6 @@ public class MainApp extends Application {
     	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class, ApplicationContextProvider.class);
     	ctx.scan("org.projektmanagement");
 
-    	
     	launch(args);
     }
 
@@ -36,13 +35,13 @@ public class MainApp extends Application {
 
         log.info("Starting Bauträgeranwendung application");
 
-        String fxmlFile = "/views/hello.fxml";
+        String fxmlFile = "/views/main.fxml";
         log.debug("Loading FXML for main view from: {}", fxmlFile);
         FXMLLoader loader = new FXMLLoader();
         Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
       
         log.debug("Showing JFX scene");
-        Scene scene = new Scene(rootNode, 400, 200);
+        Scene scene = new Scene(rootNode, 800, 400);
         scene.getStylesheets().add("/styles/styles.css");
 
         stage.setTitle("Bauträgeranwendung");
