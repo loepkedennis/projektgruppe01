@@ -7,20 +7,19 @@ import javafx.scene.control.TextField;
 import java.awt.Desktop.Action;
 
 import org.apache.commons.lang.StringUtils;
-import org.projektmanagement.handler.KundenHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HelloController
+public class MainController
 {
-    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
     @FXML private Label messageLabel;
 
     @FXML
-    public void sayHello() {
+    public void kundeEinfuegen() {
 
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
