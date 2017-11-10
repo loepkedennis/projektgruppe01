@@ -1,7 +1,0 @@
-org/projektmanagement/config/ApplicationContextProvider.class
-org/projektmanagement/handler/KundenHandler.class
-org/projektmanagement/MainApp.class
-org/projektmanagement/service/KundenService.class
-org/projektmanagement/controller/MainController.class
-org/projektmanagement/model/Kunde.class
-org/projektmanagement/config/AppConfig.class
