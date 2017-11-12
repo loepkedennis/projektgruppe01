@@ -12,10 +12,8 @@ public class Kunde {
 	@Id
 	@GeneratedValue
 	private int id;
-	
 
 	private String name;
-	
 
 	private String lastname;
 
@@ -42,8 +40,4 @@ public class Kunde {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	
-	
-	
-
 }

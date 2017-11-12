@@ -37,7 +37,6 @@ public class MainController {
 
 	@FXML
 	public void kundeEinfuegen() {
-
 		String firstName = firstNameField.getText();
 		String lastName = lastNameField.getText();
 
@@ -47,7 +46,6 @@ public class MainController {
 
 		firstNameField.clear();
 		lastNameField.clear();
-
 	}
 
 	public void reload() {
@@ -63,9 +61,6 @@ public class MainController {
 
 			listView.itemsProperty().bind(listProperty);
 			listProperty.set(FXCollections.observableArrayList(names));
-
 		}
-
 	}
-
 }

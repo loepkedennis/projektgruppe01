@@ -1,4 +1,4 @@
- package org.projektmanagement.config;
+package org.projektmanagement.config;
 
 import java.util.Properties;
 
@@ -16,60 +16,57 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
-
 @Configuration
 @EnableTransactionManagement
 public class AppConfig {
-	
-	
+
 	@Bean
-	public LocalContainerEntityManagerFactoryBean getEnitityMangerFactory(){
+	public LocalContainerEntityManagerFactoryBean getEnitityMangerFactory() {
 		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setDataSource(getDataSource());
 		emf.setPackagesToScan("org.projektmanagement.model");
-		
+
 		JpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 		emf.setJpaVendorAdapter(adapter);
 		emf.setJpaProperties(getProperties());
-		
+
 		return emf;
 	}
-	
+
 	@Bean
-	public DataSource getDataSource(){
-		
+	public DataSource getDataSource() {
+
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver");
 		dataSource.setUrl("jdbc:h2:./target/testdb");
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
-		
+
 		return dataSource;
 	}
-	
-	private Properties getProperties(){
+
+	private Properties getProperties() {
 		Properties props = new Properties();
 		props.setProperty("hibernate.hbm2ddl.auto", "create");
-		//props.setProperty("hibernate.hbm2ddl.auto", "validate");
+		// props.setProperty("hibernate.hbm2ddl.auto", "validate");
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		//props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+		// props.setProperty("hibernate.dialect",
+		// "org.hibernate.dialect.MySQL5Dialect");
 		props.setProperty("hibernate.show_sql", "true");
-		
+
 		return props;
 	}
-	
+
 	@Bean
-	public PlatformTransactionManager getTransactionManager(EntityManagerFactory emf){
+	public PlatformTransactionManager getTransactionManager(EntityManagerFactory emf) {
 		JpaTransactionManager manager = new JpaTransactionManager();
 		manager.setEntityManagerFactory(emf);
-		
+
 		return manager;
 	}
-	
+
 	@Bean
-	public PersistenceExceptionTranslationPostProcessor getPostProcessor(){
+	public PersistenceExceptionTranslationPostProcessor getPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
-
 }
