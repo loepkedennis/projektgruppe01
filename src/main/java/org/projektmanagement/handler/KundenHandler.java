@@ -36,7 +36,7 @@ public class KundenHandler {
 		em.persist(kunde);
 		return kunde;
 	}
-	
+
 	public void editCustomer(Kunde kunde) {
 		em.persist(em.contains(kunde) ? kunde : em.merge(kunde));
 	}

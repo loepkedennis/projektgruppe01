@@ -18,6 +18,6 @@
       <TextField fx:id="placeField" layoutX="192.0" layoutY="181.0" prefHeight="26.0" prefWidth="171.0" promptText="Ort" />
       <ComboBox fx:id="countryComboBox" layoutX="14.0" layoutY="214.0" prefHeight="26.0" prefWidth="349.0" promptText="Land" />
       <Button fx:id="addCustomerButton" layoutX="271.0" layoutY="247.0" mnemonicParsing="false" onAction="#addCustomer" text="Hinzufügen" />
-      <Button layoutX="176.0" layoutY="247.0" mnemonicParsing="false" text="Abbrechen" />
+      <Button fx:id="cancelButton" layoutX="176.0" layoutY="247.0" mnemonicParsing="false" onAction="#closeWindow" text="Abbrechen" />
    </children>
 </AnchorPane>

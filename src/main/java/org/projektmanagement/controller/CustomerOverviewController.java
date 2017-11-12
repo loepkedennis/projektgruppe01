@@ -31,12 +31,14 @@ import org.projektmanagement.service.KundenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.PropertyValue;
+import org.springframework.context.ApplicationContext;
+
 import javafx.application.Application;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.application.Platform;
 
 public class CustomerOverviewController {
 	private static final Logger log = LoggerFactory.getLogger(CustomerOverviewController.class);
@@ -70,6 +72,8 @@ public class CustomerOverviewController {
 	private TableColumn<Kunde, String> kundePlaceCol;
 	@FXML
 	private TableColumn<Kunde, String> kundeCountryCol;
+	@FXML
+	private MenuItem closeMenuItem;
 
 	@FXML
 	private void initialize() {
@@ -88,65 +92,122 @@ public class CustomerOverviewController {
 		kundeFirstnameCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundeFirstnameCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setFirstname(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Fehler bei: Vorname");
+				Label label = new Label("Der Vorname darf nicht leer sein." + t.getNewValue());
+				label.setWrapText(true);
+				alert.getDialogPane().setContent(label);
+
+				if (t.getNewValue().length() == 0) {
+					alert.showAndWait();
 				} else {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setFirstname(t.getOldValue());
-					refresh();
+					if (editCustomer()) {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setFirstname(t.getNewValue());
+						kundenService.getKundenHandler()
+								.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					} else {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setFirstname(t.getOldValue());
+					}
 				}
+				refresh();
 			}
 		});
-		
+
 		kundeLastnameCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundeLastnameCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setLastname(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Fehler bei: Nachname");
+				Label label = new Label("Der Nachname darf nicht leer sein." + t.getNewValue());
+				label.setWrapText(true);
+				alert.getDialogPane().setContent(label);
+
+				if (t.getNewValue().length() == 0) {
+					alert.showAndWait();
 				} else {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setLastname(t.getOldValue());
-					refresh();
+					if (editCustomer()) {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setLastname(t.getNewValue());
+						kundenService.getKundenHandler()
+								.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					} else {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setLastname(t.getOldValue());
+					}
 				}
+				refresh();
 			}
 		});
-		
+
 		kundeEmailCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundeEmailCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmail(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Fehler bei: E-Mail");
+				Label label = new Label(
+						"Die E-Mail muss ein @-Zeichen enthalten.\n\nIhre Eingabe war: " + t.getNewValue());
+				label.setWrapText(true);
+				alert.getDialogPane().setContent(label);
+
+				if (t.getNewValue().length() != 0 && !t.getNewValue().contains("@")) {
+					alert.showAndWait();
 				} else {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmail(t.getOldValue());
-					refresh();
+					if (editCustomer()) {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setEmail(t.getNewValue());
+						kundenService.getKundenHandler()
+								.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					} else {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setEmail(t.getOldValue());
+					}
 				}
+				refresh();
 			}
 		});
-		
+
 		kundePhoneCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundePhoneCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPhone(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("Fehler bei: Telefonnummer");
+				Label label = new Label(
+						"Die Telefonnummer darf nicht leer sein, nur aus Zahlen bestehen\nund nur zwischen 1 und 24 Ziffern lang sein.\n\nIhre Eingabe war: "
+								+ t.getNewValue());
+				label.setWrapText(true);
+				alert.getDialogPane().setContent(label);
+
+				if (t.getNewValue().length() == 0 || t.getNewValue().length() < 1 && t.getNewValue().length() > 24
+						|| !t.getNewValue().matches("[0-9]+")) {
+					alert.showAndWait();
 				} else {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPhone(t.getOldValue());
-					refresh();
+					if (editCustomer()) {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setPhone(t.getNewValue());
+						kundenService.getKundenHandler()
+								.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					} else {
+						((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+								.setPhone(t.getOldValue());
+					}
 				}
+				refresh();
 			}
 		});
-		
+
 		kundeStreetCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundeStreetCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
+				if (editCustomer()) {
 					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreet(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					kundenService.getKundenHandler()
+							.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 					refresh();
 				} else {
 					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreet(t.getOldValue());
@@ -154,60 +215,64 @@ public class CustomerOverviewController {
 				}
 			}
 		});
-		
+
 		kundeStreetnrCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundeStreetnrCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreetnr(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+				if (editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+							.setStreetnr(t.getNewValue());
+					kundenService.getKundenHandler()
+							.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				} else {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreetnr(t.getOldValue());
-					refresh();
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+							.setStreetnr(t.getOldValue());
 				}
+				refresh();
 			}
 		});
-		
+
 		kundePlzCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundePlzCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
+				if (editCustomer()) {
 					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlz(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+					kundenService.getKundenHandler()
+							.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				} else {
 					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlz(t.getOldValue());
-					refresh();
 				}
+				refresh();
 			}
 		});
-		
+
 		kundePlaceCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundePlaceCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
+				if (editCustomer()) {
 					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlace(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+					kundenService.getKundenHandler()
+							.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				} else {
 					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlace(t.getOldValue());
-					refresh();
 				}
+				refresh();
 			}
 		});
-		
+
 		kundeCountryCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
 		kundeCountryCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
 			public void handle(CellEditEvent<Kunde, String> t) {
-				if(editCustomer()) {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setCountry(t.getNewValue());
-					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					refresh();
+				if (editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+							.setCountry(t.getNewValue());
+					kundenService.getKundenHandler()
+							.editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				} else {
-					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setCountry(t.getOldValue());
-					refresh();
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+							.setCountry(t.getOldValue());
 				}
+				refresh();
 			}
 		});
 	}
@@ -243,7 +308,12 @@ public class CustomerOverviewController {
 			}
 		}
 	}
-	
+
+	@FXML
+	public void closeWindow() {
+		Platform.exit();
+	}
+
 	public boolean editCustomer() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Bestätigung");

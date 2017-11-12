@@ -53,11 +53,12 @@ public class CustomerAddController {
 	private ComboBox countryComboBox;
 	@FXML
 	private Button addCustomerButton;
+	@FXML
+	private Button cancelButton;
 
 	@FXML
 	private void initialize() {
 		ObservableList<String> cities = FXCollections.observableArrayList();
-
 		String[] locales1 = Locale.getISOCountries();
 		for (String countryList : locales1) {
 			Locale obj = new Locale("", countryList);
@@ -71,10 +72,10 @@ public class CustomerAddController {
 
 	@FXML
 	public void addCustomer() {
-		String firstname = firstnameField.getText();
-		String lastname = lastnameField.getText();
-		String email = emailField.getText();
-		String phone = phoneField.getText();
+		String firstname = firstnameField.getText().trim();
+		String lastname = lastnameField.getText().trim();
+		String email = emailField.getText().trim();
+		String phone = phoneField.getText().trim();
 		String street = streetField.getText();
 		String streetnr = streetnrField.getText();
 		String plz = plzField.getText();
@@ -84,7 +85,7 @@ public class CustomerAddController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Error");
 
-		if (phone.length() == 0 && ((phone.length() < 1 && phone.length() > 24) || !phone.matches("[0-9]+"))) {
+		if (phone.length() == 0 || phone.length() < 1 && phone.length() > 24 || !phone.matches("[0-9]+")) {
 			alert.setHeaderText("Fehler bei: Telefonnummer");
 			Label label = new Label(
 					"Die Telefonnummer darf nicht leer sein, nur aus Zahlen bestehen\nund nur zwischen 1 und 24 Ziffern lang sein.\n\nIhre Eingabe war: "
@@ -118,5 +119,11 @@ public class CustomerAddController {
 			Stage stage = (Stage) addCustomerButton.getScene().getWindow();
 			stage.close();
 		}
+	}
+
+	@FXML
+	public void closeWindow() {
+		Stage stage = (Stage) cancelButton.getScene().getWindow();
+		stage.close();
 	}
 }
