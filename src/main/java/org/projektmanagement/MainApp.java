@@ -33,13 +33,13 @@ public class MainApp extends Application {
 
 		log.info("Starting Bauträgeranwendung application");
 
-		String fxmlFile = "/views/main.fxml";
+		String fxmlFile = "/views/customerOverview.fxml";
 		log.debug("Loading FXML for main view from: {}", fxmlFile);
 		FXMLLoader loader = new FXMLLoader();
 		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 
 		log.debug("Showing JFX scene");
-		Scene scene = new Scene(rootNode, 800, 400);
+		Scene scene = new Scene(rootNode);
 		scene.getStylesheets().add("/styles/styles.css");
 
 		stage.setTitle("Bauträgeranwendung");

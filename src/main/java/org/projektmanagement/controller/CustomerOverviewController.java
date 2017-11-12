@@ -25,8 +25,8 @@ import org.springframework.beans.PropertyValue;
 import javafx.application.Application;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class MainController {
-	private static final Logger log = LoggerFactory.getLogger(MainController.class);
+public class CustomerOverviewController {
+	private static final Logger log = LoggerFactory.getLogger(CustomerOverviewController.class);
 
 	@FXML
 	private TextField firstnameField;
@@ -40,29 +40,40 @@ public class MainController {
 	private TableColumn<Kunde, String> kundeFirstnameCol;
 	@FXML
 	private TableColumn<Kunde, String> kundeLastnameCol;
+	@FXML
+	private TableColumn<Kunde, String> kundeEmailCol;
+	@FXML
+	private TableColumn<Kunde, String> kundePhoneCol;
+	@FXML
+	private TableColumn<Kunde, String> kundeStreetCol;
+	@FXML
+	private TableColumn<Kunde, String> kundeStreetnrCol;
+	@FXML
+	private TableColumn<Kunde, String> kundePlzCol;
+	@FXML
+	private TableColumn<Kunde, String> kundePlaceCol;
+	@FXML
+	private TableColumn<Kunde, String> kundeCountryCol;
 
 	ListProperty<Kunde> listProperty = new SimpleListProperty();
 	Set<String> names = new HashSet<String>();
 	private KundenService kundenService = new KundenService();
-
+	
 	@FXML
 	private void initialize() {
 		kundeIdCol.setCellValueFactory(new PropertyValueFactory<Kunde, Integer>("id"));
 		kundeFirstnameCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("firstname"));
 		kundeLastnameCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("lastname"));
+		kundeEmailCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("email"));
+		kundePhoneCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("phone"));
+		kundeStreetCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("street"));
+		kundePlzCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("streetnr"));
+		kundePlaceCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("place"));
+		kundeCountryCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("country"));
 	}
 	
 	@FXML
-	public void kundeEinfuegen() {
-		String firstname = firstnameField.getText();
-		String lastname = lastnameField.getText();
-
-		kundenService.getKundenHandler().createKunde(firstname, lastname);
-		log.info("User \"{} {}\" created");
-
-		firstnameField.clear();
-		lastnameField.clear();
-		reload();
+	public void addKunde() {
 	}
 
 	@FXML
