@@ -4,8 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.awt.Desktop.Action;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +32,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class CustomerOverviewController {
 	private static final Logger log = LoggerFactory.getLogger(CustomerOverviewController.class);
-
+	private ListProperty<Kunde> listProperty = new SimpleListProperty();
+	private Set<String> names = new HashSet<String>();
+	private KundenService kundenService = new KundenService();
+	
 	@FXML
 	private TextField firstnameField;
 	@FXML
@@ -54,10 +62,6 @@ public class CustomerOverviewController {
 	private TableColumn<Kunde, String> kundePlaceCol;
 	@FXML
 	private TableColumn<Kunde, String> kundeCountryCol;
-
-	ListProperty<Kunde> listProperty = new SimpleListProperty();
-	Set<String> names = new HashSet<String>();
-	private KundenService kundenService = new KundenService();
 	
 	@FXML
 	private void initialize() {
@@ -67,17 +71,24 @@ public class CustomerOverviewController {
 		kundeEmailCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("email"));
 		kundePhoneCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("phone"));
 		kundeStreetCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("street"));
-		kundePlzCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("streetnr"));
+		kundeStreetnrCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("streetnr"));
+		kundePlzCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("plz"));
 		kundePlaceCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("place"));
 		kundeCountryCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("country"));
 	}
 	
 	@FXML
-	public void addKunde() {
+	public void addKunde() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/customerAdd.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("Benutzer hinzufügen");
+        stage.setScene(new Scene(rootNode));
+        stage.show();
 	}
 
 	@FXML
-	public void reload() {
+	public void refresh() {
 		List<Kunde> kunden = kundenService.getKundenHandler().getAllKunden();
 
 		if (kunden != null) {

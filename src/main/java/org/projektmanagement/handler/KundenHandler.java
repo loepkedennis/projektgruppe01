@@ -21,10 +21,18 @@ public class KundenHandler {
 	@PersistenceContext
 	private EntityManager em;
 
-	public Kunde createKunde(String firstname, String lastname) {
+	public Kunde createKunde(String firstname, String lastname, String email, String phone, String street,
+			String streetnr, String plz, String place, String country) {
 		Kunde kunde = new Kunde();
 		kunde.setFirstname(firstname);
 		kunde.setLastname(lastname);
+		kunde.setEmail(email);
+		kunde.setPhone(phone);
+		kunde.setStreet(street);
+		kunde.setStreetnr(streetnr);
+		kunde.setPlz(plz);
+		kunde.setPlace(place);
+		kunde.setCountry(country);
 		em.persist(kunde);
 		return kunde;
 	}
