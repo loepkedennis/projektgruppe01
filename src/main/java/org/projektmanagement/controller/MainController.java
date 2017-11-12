@@ -56,7 +56,7 @@ public class MainController {
 		if (kunden != null) {
 
 			for (Kunde k : kunden) {
-				names.add(k.getName() + " " + k.getLastname());
+				names.add(k.getFirstname() + " " + k.getLastname());
 			}
 
 			listView.itemsProperty().bind(listProperty);

@@ -23,7 +23,7 @@ public class KundenHandler {
 
 	public Kunde createKunde(String name, String lastname) {
 		Kunde kunde = new Kunde();
-		kunde.setName(name);
+		kunde.setFirstname(name);
 		kunde.setLastname(lastname);
 		em.persist(kunde);
 		return kunde;
