@@ -36,6 +36,14 @@ public class KundenHandler {
 		em.persist(kunde);
 		return kunde;
 	}
+	
+	public void editCustomer(Kunde kunde) {
+		em.persist(em.contains(kunde) ? kunde : em.merge(kunde));
+	}
+
+	public void deleteCustomer(Kunde kunde) {
+		em.remove(em.contains(kunde) ? kunde : em.merge(kunde));
+	}
 
 	public Kunde getKunde(int id) {
 		return em.find(Kunde.class, id);

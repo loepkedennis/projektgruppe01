@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +16,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
+import java.util.Optional;
 import java.util.Set;
+
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -29,13 +33,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.PropertyValue;
 import javafx.application.Application;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class CustomerOverviewController {
 	private static final Logger log = LoggerFactory.getLogger(CustomerOverviewController.class);
 	private ListProperty<Kunde> listProperty = new SimpleListProperty();
 	private Set<String> names = new HashSet<String>();
 	private KundenService kundenService = new KundenService();
-	
+
 	@FXML
 	private TextField firstnameField;
 	@FXML
@@ -62,7 +70,7 @@ public class CustomerOverviewController {
 	private TableColumn<Kunde, String> kundePlaceCol;
 	@FXML
 	private TableColumn<Kunde, String> kundeCountryCol;
-	
+
 	@FXML
 	private void initialize() {
 		kundeIdCol.setCellValueFactory(new PropertyValueFactory<Kunde, Integer>("id"));
@@ -75,20 +83,188 @@ public class CustomerOverviewController {
 		kundePlzCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("plz"));
 		kundePlaceCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("place"));
 		kundeCountryCol.setCellValueFactory(new PropertyValueFactory<Kunde, String>("country"));
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+		kundeFirstnameCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundeFirstnameCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setFirstname(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setFirstname(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundeLastnameCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundeLastnameCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setLastname(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setLastname(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundeEmailCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundeEmailCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmail(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmail(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundePhoneCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundePhoneCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPhone(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPhone(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundeStreetCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundeStreetCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreet(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreet(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundeStreetnrCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundeStreetnrCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreetnr(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setStreetnr(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundePlzCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundePlzCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlz(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlz(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundePlaceCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundePlaceCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlace(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlace(t.getOldValue());
+					refresh();
+				}
+			}
+		});
+		
+		kundeCountryCol.setCellFactory(TextFieldTableCell.<Kunde>forTableColumn());
+		kundeCountryCol.setOnEditCommit(new EventHandler<CellEditEvent<Kunde, String>>() {
+			public void handle(CellEditEvent<Kunde, String> t) {
+				if(editCustomer()) {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setCountry(t.getNewValue());
+					kundenService.getKundenHandler().editCustomer((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+					refresh();
+				} else {
+					((Kunde) t.getTableView().getItems().get(t.getTablePosition().getRow())).setCountry(t.getOldValue());
+					refresh();
+				}
+			}
+		});
 	}
-	
+
 	@FXML
 	public void addKunde() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/customerAdd.fxml"));
-        Stage stage = new Stage();
-        stage.setTitle("Benutzer hinzufügen");
-        stage.setScene(new Scene(rootNode));
-        stage.show();
+		Stage stage = new Stage();
+		stage.setTitle("Benutzer hinzufügen");
+		stage.setScene(new Scene(rootNode));
+		stage.show();
+	}
+
+	@FXML
+	public void removeCustomer() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Bestätigung");
+		alert.setHeaderText("Kunden löschen");
+		ObservableList<Kunde> selectedCustomers = tableView.getSelectionModel().getSelectedItems();
+		for (Kunde kunde : selectedCustomers) {
+			Label label = new Label("Wollen Sie den Kunden \"" + kunde.getFirstname() + " " + kunde.getLastname()
+					+ "\" wirklich löschen?");
+			label.setWrapText(true);
+			alert.getDialogPane().setContent(label);
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				kundenService.getKundenHandler().deleteCustomer(kunde);
+				refresh();
+			} else {
+				alert.close();
+			}
+		}
+	}
+	
+	public boolean editCustomer() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Bestätigung");
+		alert.setHeaderText("Kunden bearbeiten?");
+
+		Label label = new Label("Wollen Sie den Kunden wirklich bearbeiten?");
+		label.setWrapText(true);
+		alert.getDialogPane().setContent(label);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			return true;
+		} else {
+			alert.close();
+			return false;
+		}
 	}
 
 	@FXML
 	public void refresh() {
+		tableView.getItems().clear();
 		List<Kunde> kunden = kundenService.getKundenHandler().getAllKunden();
 
 		if (kunden != null) {

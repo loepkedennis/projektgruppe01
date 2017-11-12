@@ -13,11 +13,11 @@
       <TextField fx:id="emailField" layoutX="14.0" layoutY="79.0" prefHeight="26.0" prefWidth="349.0" promptText="E-Mail" />
       <TextField fx:id="phoneField" layoutX="14.0" layoutY="112.0" prefHeight="26.0" prefWidth="349.0" promptText="Telefonnummer" />
       <TextField fx:id="streetField" layoutX="14.0" layoutY="148.0" prefHeight="26.0" prefWidth="239.0" promptText="Straße" />
+      <TextField fx:id="streetnrField" layoutX="258.0" layoutY="148.0" prefHeight="26.0" prefWidth="105.0" promptText="Hausnummer" />
       <TextField fx:id="plzField" layoutX="14.0" layoutY="181.0" promptText="Postleitzahl" />
       <TextField fx:id="placeField" layoutX="192.0" layoutY="181.0" prefHeight="26.0" prefWidth="171.0" promptText="Ort" />
-      <TextField fx:id="streetnrField" layoutX="258.0" layoutY="148.0" prefHeight="26.0" prefWidth="105.0" promptText="Hausnummer" />
+      <ComboBox fx:id="countryComboBox" layoutX="14.0" layoutY="214.0" prefHeight="26.0" prefWidth="349.0" promptText="Land" />
       <Button fx:id="addCustomerButton" layoutX="271.0" layoutY="247.0" mnemonicParsing="false" onAction="#addCustomer" text="Hinzufügen" />
       <Button layoutX="176.0" layoutY="247.0" mnemonicParsing="false" text="Abbrechen" />
-      <ComboBox fx:id="countryComboBox" layoutX="14.0" layoutY="214.0" prefHeight="26.0" prefWidth="349.0" promptText="Land" />
    </children>
 </AnchorPane>

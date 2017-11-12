@@ -28,7 +28,7 @@
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Benutzer entfernen">
+                  <MenuItem mnemonicParsing="false" onAction="#removeCustomer" text="Benutzer entfernen">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -37,7 +37,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TableView fx:id="tableView" layoutY="29.0" prefHeight="312.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+      <TableView fx:id="tableView" editable="true" layoutY="29.0" prefHeight="312.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
          <columns>
             <TableColumn fx:id="kundeIdCol" prefWidth="100.0" text="ID" />
             <TableColumn fx:id="kundeFirstnameCol" prefWidth="200.0" text="Vorname" />
