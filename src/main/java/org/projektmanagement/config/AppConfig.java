@@ -35,7 +35,6 @@ public class AppConfig {
 
 	@Bean
 	public DataSource getDataSource() {
-
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver");
 		dataSource.setUrl("jdbc:h2:./target/testdb");

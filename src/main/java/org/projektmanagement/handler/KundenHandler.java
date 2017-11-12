@@ -21,9 +21,9 @@ public class KundenHandler {
 	@PersistenceContext
 	private EntityManager em;
 
-	public Kunde createKunde(String name, String lastname) {
+	public Kunde createKunde(String firstname, String lastname) {
 		Kunde kunde = new Kunde();
-		kunde.setFirstname(name);
+		kunde.setFirstname(firstname);
 		kunde.setLastname(lastname);
 		em.persist(kunde);
 		return kunde;
