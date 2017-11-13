@@ -18,34 +18,32 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class MainApp extends Application {
 
-
-	
-	
 	private AnnotationConfigApplicationContext ctx;
-    private static final Logger log = LoggerFactory.getLogger(MainApp.class);
+	private static final Logger log = LoggerFactory.getLogger(MainApp.class);
 
-    public static void main(String[] args) throws Exception {
-    	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class, ApplicationContextProvider.class);
-    	ctx.scan("org.projektmanagement");
+	public static void main(String[] args) throws Exception {
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class,
+				ApplicationContextProvider.class);
+		ctx.scan("org.projektmanagement");
 
-    	launch(args);
-    }
+		launch(args);
+	}
 
-    public void start(Stage stage) throws Exception {
+	public void start(Stage stage) throws Exception {
 
-        log.info("Starting Bauträgeranwendung application");
+		log.info("Starting Bauträgeranwendung application");
 
-        String fxmlFile = "/views/main.fxml";
-        log.debug("Loading FXML for main view from: {}", fxmlFile);
-        FXMLLoader loader = new FXMLLoader();
-        Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-      
-        log.debug("Showing JFX scene");
-        Scene scene = new Scene(rootNode, 800, 400);
-        scene.getStylesheets().add("/styles/styles.css");
+		String fxmlFile = "/views/customerOverview.fxml";
+		log.debug("Loading FXML for main view from: {}", fxmlFile);
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 
-        stage.setTitle("Bauträgeranwendung");
-        stage.setScene(scene);
-        stage.show();
-    }
+		log.debug("Showing JFX scene");
+		Scene scene = new Scene(rootNode);
+		scene.getStylesheets().add("/styles/styles.css");
+
+		stage.setTitle("Bauträgeranwendung");
+		stage.setScene(scene);
+		stage.show();
+	}
 }
