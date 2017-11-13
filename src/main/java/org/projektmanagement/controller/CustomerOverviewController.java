@@ -348,4 +348,15 @@ public class CustomerOverviewController {
 
 		log.info("Customer table updated");
 	}
+	
+	@FXML
+	public void innerDoors() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/InnentuerenView.fxml"));
+		Stage stage = new Stage();
+		stage.setTitle("Innentüren");
+		stage.setScene(new Scene(rootNode));
+		stage.show();
+	}
+	
 }
