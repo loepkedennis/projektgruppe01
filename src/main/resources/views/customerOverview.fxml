@@ -12,9 +12,9 @@
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Datei">
+          <Menu fx:id="fileMenu" mnemonicParsing="false" text="Datei">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#refresh" text="Aktualisieren">
+                  <MenuItem fx:id="refreshMenuItem" mnemonicParsing="false" onAction="#refresh" text="Aktualisieren">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="F5" control="ANY" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -22,13 +22,13 @@
               <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeWindow" text="Beenden" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Bearbeiten">
+          <Menu fx:id="editMenu" mnemonicParsing="false" text="Bearbeiten">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#addKunde" text="Benutzer hinzufügen">
+              <MenuItem fx:id="addCustomerMenuItem" mnemonicParsing="false" onAction="#addKunde" text="Kunden hinzufügen">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#removeCustomer" text="Benutzer entfernen">
+                  <MenuItem fx:id="removeCustomerMenuItem" mnemonicParsing="false" onAction="#removeCustomer" text="Kunden entfernen">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>

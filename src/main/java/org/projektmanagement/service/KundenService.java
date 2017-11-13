@@ -15,6 +15,7 @@ public class KundenService {
 		// TODO Auto-generated constructor stub
 		ctx = new ApplicationContextProvider().getApplicationContext();
 		kundenHandler = ctx.getBean(KundenHandler.class);
+		// kundenHandler = new KundenHandler();
 	}
 
 	public KundenHandler getKundenHandler() {

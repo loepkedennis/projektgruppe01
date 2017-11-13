@@ -74,6 +74,8 @@ public class CustomerOverviewController {
 	private TableColumn<Kunde, String> kundeCountryCol;
 	@FXML
 	private MenuItem closeMenuItem;
+	@FXML
+	private MenuItem refreshMenuItem;
 
 	@FXML
 	private void initialize() {
