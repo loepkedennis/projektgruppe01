@@ -126,5 +126,6 @@ public class CustomerAddController {
 	public void closeWindow() {
 		Stage stage = (Stage) cancelButton.getScene().getWindow();
 		stage.close();
+		log.info("Window \"Kunden hinzufügen\" closed");
 	}
 }

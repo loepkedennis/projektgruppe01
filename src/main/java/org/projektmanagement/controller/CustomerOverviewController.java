@@ -284,7 +284,7 @@ public class CustomerOverviewController {
 		FXMLLoader loader = new FXMLLoader();
 		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/customerAdd.fxml"));
 		Stage stage = new Stage();
-		stage.setTitle("Benutzer hinzufügen");
+		stage.setTitle("Kunden hinzufügen");
 		stage.setScene(new Scene(rootNode));
 		stage.show();
 	}
@@ -304,6 +304,7 @@ public class CustomerOverviewController {
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
 				kundenService.getKundenHandler().deleteCustomer(kunde);
+				log.info("Customer \"{} {}\" deleted", kunde.getFirstname(), kunde.getLastname());
 				refresh();
 			} else {
 				alert.close();
@@ -313,6 +314,7 @@ public class CustomerOverviewController {
 
 	@FXML
 	public void closeWindow() {
+		log.info("Application closed");
 		Platform.exit();
 	}
 
@@ -327,6 +329,7 @@ public class CustomerOverviewController {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
+			log.info("Changes have been adopted");
 			return true;
 		} else {
 			alert.close();
