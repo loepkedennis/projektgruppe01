@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -24,7 +25,7 @@ import javafx.stage.Stage;
 public class FensterUndAussentuerenController implements Initializable {
 
 	private static final Logger log = LoggerFactory.getLogger(FensterUndAussentuerenController.class);
-
+	
 	@FXML
 	Label SchiEGzTerLabel;
 	@FXML
@@ -45,7 +46,27 @@ public class FensterUndAussentuerenController implements Initializable {
 	Label EleRolOGLabel;
 	@FXML
 	Label EleRolDGLabel;
-
+	@FXML
+	CheckBox SchiEGzTerCheckBox;
+	@FXML
+	CheckBox SchiDGzDacCheckBox;
+	@FXML
+	CheckBox ErhEinadHauCheckBox;
+	@FXML
+	CheckBox VorfeleAntRolEGCheckBox;
+	@FXML
+	CheckBox VorfeleAntRolOGCheckBox;
+	@FXML
+	CheckBox VorfeleAntRolDGCheckBox;
+	@FXML
+	CheckBox EleRolEGCheckBox;
+	@FXML
+	CheckBox EleRolOGCheckBox;
+	@FXML
+	CheckBox EleRolDGCheckBox;
+	@FXML
+	Label geskostenLabel;
+	
 	private Stage stage;
 
 
@@ -84,22 +105,57 @@ public class FensterUndAussentuerenController implements Initializable {
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO get the prices from the db
-		this.SchiEGzTerLabel.setText("590"+" €");
-		this.SchiDGzDacLabel.setText("590"+" €");
-		this.ErhEinadHauLabel.setText("690"+" €");
-		this.VorfeleAntRolEGLabel.setText("190"+" €");
-		this.VorfeleAntRolOGLabel.setText("190"+" €");
-		this.VorfeleAntRolDGLabel.setText("190"+" €");
-		this.EleRolEGLabel.setText("990"+" €");
-		this.EleRolOGLabel.setText("990"+" €");
-		this.EleRolDGLabel.setText("990"+" €");
+		this.SchiEGzTerLabel.setText("590"+" € ");
+		this.SchiDGzDacLabel.setText("590"+" € ");
+		this.ErhEinadHauLabel.setText("690"+" € ");
+		this.VorfeleAntRolEGLabel.setText("190"+" € ");
+		this.VorfeleAntRolOGLabel.setText("190"+" € ");
+		this.VorfeleAntRolDGLabel.setText("190"+" € ");
+		this.EleRolEGLabel.setText("990"+" € ");
+		this.EleRolOGLabel.setText("990"+" € ");
+		this.EleRolDGLabel.setText("990"+" € ");	
 	}
 
+	/*
 	public void leseGrundrissSonderwuensche() {
 	}
 
 	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw) {
 		return true;
+	}*/
+	@FXML
+	public void speichern() {
+		
+	}
+	
+	@FXML
+	public void preisBerechnen() {
+		int gesamtKosten = 0;
+		
+		if(this.SchiEGzTerCheckBox.isSelected())
+			gesamtKosten = gesamtKosten+590;
+		if(this.SchiDGzDacCheckBox.isSelected())
+			gesamtKosten = gesamtKosten+590;
+		if(this.ErhEinadHauCheckBox.isSelected())
+			gesamtKosten = gesamtKosten+690;		
+		if(this.VorfeleAntRolEGCheckBox.isSelected())	
+			gesamtKosten = gesamtKosten+190;	
+		if(this.VorfeleAntRolOGCheckBox.isSelected())	
+			gesamtKosten = gesamtKosten+190;
+		if(this.VorfeleAntRolDGCheckBox.isSelected())	
+			gesamtKosten = gesamtKosten+190;
+		if(this.EleRolEGCheckBox.isSelected())	
+			gesamtKosten = gesamtKosten+990;
+		if(this.EleRolOGCheckBox.isSelected())
+			gesamtKosten = gesamtKosten+990;
+		if(this.EleRolDGCheckBox.isSelected())
+			gesamtKosten = gesamtKosten+990;		
+		geskostenLabel.setText(gesamtKosten+" € ");
+	}
+	
+	@FXML
+	public void csvExport() {
+		
 	}
 	
 	/**
