@@ -113,7 +113,19 @@ public class FensterUndAussentuerenController implements Initializable {
 		this.VorfeleAntRolDGLabel.setText("190"+" € ");
 		this.EleRolEGLabel.setText("990"+" € ");
 		this.EleRolOGLabel.setText("990"+" € ");
-		this.EleRolDGLabel.setText("990"+" € ");	
+		this.EleRolDGLabel.setText("990"+" € ");
+		
+		this.SchiEGzTerCheckBox.setSelected(false);
+		this.SchiDGzDacCheckBox.setSelected(false);
+		this.ErhEinadHauCheckBox.setSelected(false);		
+		this.VorfeleAntRolEGCheckBox.setSelected(false);		
+		this.VorfeleAntRolOGCheckBox.setSelected(false);		
+		this.VorfeleAntRolDGCheckBox.setSelected(false);		
+		this.EleRolEGCheckBox.setSelected(false);		
+		this.EleRolOGCheckBox.setSelected(false);	
+		this.EleRolDGCheckBox.setSelected(false);			
+			
+		preisBerechnen();
 	}
 
 	/*
@@ -125,7 +137,7 @@ public class FensterUndAussentuerenController implements Initializable {
 	}*/
 	@FXML
 	public void speichern() {
-		
+		// TODO save the informations in the DB
 	}
 	
 	@FXML
