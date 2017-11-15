@@ -168,6 +168,43 @@ public class FensterUndAussentuerenController implements Initializable {
 	@FXML
 	public void csvExport() {
 		
+		CSVExporter csvExport = new CSVExporter();
+		try
+		{
+			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
+			CSVExporter.writeLine(filePfad, getCSVAuswahl());
+			
+			filePfad.flush();
+			filePfad.close();	
+		}catch(Exception e)
+		{
+			
+		}
+	}
+	public List<String> getCSVAuswahl()
+	{
+		List<String> listStrAuswahl = new ArrayList<String>();
+		if(this.SchiEGzTerCheckBox.isSelected())
+			listStrAuswahl.add("Schiebetüren im EG zur Dachterasse");
+		if(this.SchiDGzDacCheckBox.isSelected())
+			listStrAuswahl.add("Schiebetüren im DG zur Dachterasse");
+		if(this.ErhEinadHauCheckBox.isSelected())
+			listStrAuswahl.add("Erhöhter Einbruchschutz an der Haustür");
+		if(this.VorfeleAntRolEGCheckBox.isSelected())	
+			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden EG");
+		if(this.VorfeleAntRolOGCheckBox.isSelected())	
+			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden OG");
+		if(this.VorfeleAntRolDGCheckBox.isSelected())	
+			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden DG");
+		if(this.EleRolEGCheckBox.isSelected())	
+			listStrAuswahl.add("Elektrische Rolläden EG");
+		if(this.EleRolOGCheckBox.isSelected())
+			listStrAuswahl.add("Elektrische Rolläden OG");
+		if(this.EleRolDGCheckBox.isSelected())
+			listStrAuswahl.add("Elektrische Rolläden DG");
+
+		
+		return listStrAuswahl;
 	}
 	
 	/**
