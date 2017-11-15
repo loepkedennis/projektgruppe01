@@ -1,6 +1,6 @@
 package org.projektmanagement.test;
 
-import static org.junit.Assert.*;
+import org.junit.Assert.*;
 
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
