@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,6 +25,7 @@ public class InnentuerenControl{
 	@FXML private Label preisKlarglas;
 	@FXML private Label preisMilchglas;
 	@FXML private Label preisHolztuer;
+	@FXML private TextField gesPreis;
 	
 	/**
 	 * Initialisiert Layout aus FXML-Datei und öffnet entsprechendes Fenster.
@@ -35,6 +37,10 @@ public class InnentuerenControl{
 			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("InnentuerenView.fxml"));
 			Scene scene = new Scene(root,560,400);
 			stage.setScene(scene);
+			
+			
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,6 +57,14 @@ public class InnentuerenControl{
 	@FXML protected void onClickPreisBerechnen(ActionEvent event)
 	{
 		//Logik zur Preisberechnung...
+		int preis = 0;
+		preis = spinnerAnzahlKlarglas.getValue() * 460;
+		preis = preis + spinnerAnzahlMilchglas.getValue() * 560;
+		if(checkBoxHolztuer.isSelected()) {
+			preis = preis + 660;
+		}
+		gesPreis.setText(preis+" €");
+		
 	}
 	/**
 	 * Listener Methode für den Button "Speichern". Wird aufgerufen, wenn Button "Speichern" angeklickt wird.

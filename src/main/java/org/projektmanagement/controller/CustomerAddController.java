@@ -56,6 +56,8 @@ public class CustomerAddController {
 	private Button addCustomerButton;
 	@FXML
 	private Button cancelButton;
+	
+	
 
 	@FXML
 	private void initialize() {
