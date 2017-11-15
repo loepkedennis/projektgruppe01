@@ -359,4 +359,9 @@ public class CustomerOverviewController {
 		stage.show();
 	}
 	
+	@FXML
+	public void windowouterdoor() {
+		new FensterUndAussentuerenController(this.kundenService);
+	}
+	
 }

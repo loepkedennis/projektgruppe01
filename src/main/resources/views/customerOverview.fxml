@@ -34,6 +34,7 @@
                      </accelerator>
                   </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#innerDoors" text="Innentüren" />
+                  <MenuItem mnemonicParsing="false" onAction="#windowouterdoor" text="Fenster &amp; Außentüren" />
             </items>
           </Menu>
         </menus>
