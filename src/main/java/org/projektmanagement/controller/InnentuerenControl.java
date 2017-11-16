@@ -1,7 +1,12 @@
 package org.projektmanagement.controller;
 
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.projektmanagement.utils.CSVExporter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,6 +78,8 @@ public class InnentuerenControl{
 	@FXML protected void onClickSonderwuenscheSpeichern(ActionEvent event)
 	{
 		//Logik zur Speicherung...
+		
+
 	}
 	
 	
@@ -82,7 +89,53 @@ public class InnentuerenControl{
 	 */
 	@FXML protected void onClickCsvExport(ActionEvent event)
 	{
-		//Logik zum Csv-Export
+		CSVExporter csvExport = new CSVExporter();
+		try
+		{
+			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
+			CSVExporter.writeLine(filePfad, getCSVAuswahl());
+			
+			filePfad.flush();
+			filePfad.close();	
+		}catch(Exception e)
+		{
+			
+		}
+	}
+	
+	
+	//Erstellung der Liste die als CSV exportiert werden soll
+	public List<String> getCSVAuswahl()
+	{
+		List<String> listStrAuswahl = new ArrayList<String>();
+		
+		if(this.checkBoxHolztuer.isSelected())
+			listStrAuswahl.add("Innentuer zur Garage als Holztuer (660 Euro)");
+		
+		if(spinnerAnzahlKlarglas.getValue()!=0) {
+			listStrAuswahl.add("Ausfuehrung eines Glasausschnitts (Klarglas, 460 Euro), Anzahl:"+spinnerAnzahlKlarglas.getValue());
+		}
+		
+		if(spinnerAnzahlMilchglas.getValue()!=0) {
+			listStrAuswahl.add("Ausfuehrung eines Glasausschnitts (Milchglas, 560 Euro), Anzahl:"+spinnerAnzahlMilchglas.getValue());
+		}
+
+		return listStrAuswahl;
+	}
+	
+	
+	/**
+	 * @return the stage
+	 */
+	public Stage getStage() {
+		return stage;
+	}
+
+	/**
+	 * @param stage the stage to set
+	 */
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 	
 	
