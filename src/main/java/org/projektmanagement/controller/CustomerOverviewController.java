@@ -363,5 +363,14 @@ public class CustomerOverviewController {
 	public void windowouterdoor() {
 		new FensterUndAussentuerenController(this.kundenService);
 	}
+	@FXML
+	public void heizungen() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/HeizungView.fxml"));
+		Stage stage = new Stage();
+		stage.setTitle("Heizungen");
+		stage.setScene(new Scene(rootNode));
+		stage.show();
+	}
 	
 }
