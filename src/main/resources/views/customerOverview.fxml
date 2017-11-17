@@ -35,6 +35,7 @@
                   </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#innerDoors" text="Innentüren" />
                   <MenuItem mnemonicParsing="false" onAction="#windowouterdoor" text="Fenster &amp; Außentüren" />
+                  <MenuItem fx:id="heizungsMenuItem" mnemonicParsing="false" onAction="#heizungen" text="Heizungen" />
             </items>
           </Menu>
         </menus>
