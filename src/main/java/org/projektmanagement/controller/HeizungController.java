@@ -1,5 +1,11 @@
 package org.projektmanagement.controller;
 
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.projektmanagement.utils.CSVExporter;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -76,6 +82,47 @@ public class HeizungController {
 		lblZusatzHandtuchHeizung.setVisible(false);
 		lblPreisZusatzHandtuchHeizung.setVisible(false);
 		txtZusatzHandtuchHeizung.setVisible(false);
+	}
+	@FXML
+	private void CSVExport()
+	{
+		List <String> ueberschrift = new ArrayList<String>();
+		ueberschrift.add("Anzahl Zusatz Heizung");
+		ueberschrift.add("Anzahl Glatte Heizung");
+		ueberschrift.add("Anzahl Handtuchheizung");
+		ueberschrift.add("Fussbodenheizung");
+		ueberschrift.add("Gesamtpreis");
+		List <String> werte = new ArrayList<String>();
+		werte.add(txtZusatzHeizung.getText());
+		werte.add(txtGlatteHeizung.getText());
+		werte.add(txtZusatzHandtuchHeizung.getText());
+		if (checkBoxFussbodenheizung.isSelected())
+		{
+			werte.add("ja");
+		}
+		else
+		{
+			werte.add("nein");
+		}
+		werte.add("" + gesamtbetrag);
+		CSVExporter csvExport = new CSVExporter();
+		try
+		{
+			FileWriter filePfad = new FileWriter(csvExport.setStrPfad((Stage) btnCSVExport.getScene().getWindow()));
+			CSVExporter.writeLine(filePfad, ueberschrift);
+			CSVExporter.writeLine(filePfad, werte);
+			
+			filePfad.flush();
+			filePfad.close();	
+		}catch(Exception e)
+		{
+			
+		}
+	}
+	@FXML
+	private void Speichern()
+	{
+		// Sachen die gemacht werden müssen zum Speichern
 	}
 	@FXML
 	private void preisUpdate()

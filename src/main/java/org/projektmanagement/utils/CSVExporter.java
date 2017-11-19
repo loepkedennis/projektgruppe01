@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class CSVExporter 
@@ -68,7 +69,9 @@ public class CSVExporter
     { //Setzt Speicherpfad für die CSV-Datei fest
     	FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Speicherordner wählen");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("CSV Dateien (*.csv)", "*.csv"));
 		File file = fileChooser.showSaveDialog(stage);
+		
 		
 		if(file != null)
 		{
