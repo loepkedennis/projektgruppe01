@@ -1,10 +1,8 @@
 package org.projektmanagement.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -23,6 +21,10 @@ public class HeizungController {
 	private Label lblGesamtbetrag;
 	@FXML
 	private Label lblERRZusatzHeizung;
+	@FXML
+	private Label lblZusatzHandtuchHeizung;
+	@FXML
+	private Label lblPreisZusatzHandtuchHeizung;
 	@FXML
 	private Label lblERRZusatzHandtuchHeizung;
 	@FXML
@@ -62,9 +64,18 @@ public class HeizungController {
 		lblERRZusatzHandtuchHeizung.setVisible(false);
 		lblERRGlatteHeizung.setVisible(false);
 		
+		lblERRZusatzHeizung.setText("Nur 1 - 5 Heizungen erlaubt");
+		lblERRZusatzHandtuchHeizung.setText("Nur 1 - 2 Heizungen erlaubt");
+		lblERRGlatteHeizung.setText("Nur 1 - 8 Heizungen erlaubt");
+		
 		// Buttons Disablen
 		btnSpeichern.setDisable(true);
 		btnCSVExport.setDisable(true);
+		
+		// Handtuchheizung unsichtbar machen
+		lblZusatzHandtuchHeizung.setVisible(false);
+		lblPreisZusatzHandtuchHeizung.setVisible(false);
+		txtZusatzHandtuchHeizung.setVisible(false);
 	}
 	@FXML
 	private void preisUpdate()
@@ -87,6 +98,7 @@ public class HeizungController {
 		{
 			anzahlZusatzHeizungen = Integer.parseInt(txtZusatzHeizung.getText());
 			txtGlatteHeizung.setPromptText("1 - " + (AnzahlHeizungen + anzahlZusatzHeizungen));
+			lblERRGlatteHeizung.setText("Nur 1 - " + (AnzahlHeizungen + anzahlZusatzHeizungen) + " Heizungen erlaubt");
 		}
 		// Wenn etwas eingegeben wurde aber die Anzahl nicht stimmt Controls sperren und Fehler ausgeben
 		else if (txtZusatzHeizung.getText().length() != 0)
@@ -99,17 +111,18 @@ public class HeizungController {
 		else
 		{
 			txtGlatteHeizung.setPromptText("1 - " + (AnzahlHeizungen + anzahlZusatzHeizungen));
+			lblERRGlatteHeizung.setText("Nur 1 - " + (AnzahlHeizungen + anzahlZusatzHeizungen) + " Heizungen erlaubt");
 		}
 		
 		String regMatch = "";
 		// Wenn die Anzahl der Zusatzheizungen geändert wird ändere die Anzahl der zu überprüfenden maximalen Anzhal der Glatten Heizungen
 		if (AnzahlHeizungen + anzahlZusatzHeizungen < 10)
 		{
-			regMatch = "[1-"+ AnzahlHeizungen + anzahlZusatzHeizungen + "]";
+			regMatch = "[1-"+ (AnzahlHeizungen + anzahlZusatzHeizungen) + "]";
 		}
 		else
 		{
-			regMatch = "[1-9][0-"+ AnzahlHeizungen + anzahlZusatzHeizungen % 10 + "]?";
+			regMatch = "[1-9][0-"+ (AnzahlHeizungen + anzahlZusatzHeizungen % 10) + "]?";
 		}
 		
 		// Überprüfe ob die Eingegebene Anzahl der eingegebenen Glatten Heizung stimmt
@@ -203,14 +216,18 @@ public class HeizungController {
 	{
 		if (checkBoxBadDachgeschoss.isSelected())
 		{
-			txtZusatzHandtuchHeizung.setDisable(false);
+			lblZusatzHandtuchHeizung.setVisible(true);
+			lblPreisZusatzHandtuchHeizung.setVisible(true);
+			txtZusatzHandtuchHeizung.setVisible(true);
 			AnzahlHeizungen +=1;
 		}
 		else
 		{
+			lblZusatzHandtuchHeizung.setVisible(false);
+			lblPreisZusatzHandtuchHeizung.setVisible(false);
+			txtZusatzHandtuchHeizung.setVisible(false);
 			AnzahlHeizungen -=1;
-			txtZusatzHandtuchHeizung.setDisable(true);
-			txtZusatzHandtuchHeizung.setText("");
+			
 		}
 		preisUpdate();
 	}
