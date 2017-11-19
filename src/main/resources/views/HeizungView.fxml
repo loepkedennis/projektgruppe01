@@ -36,18 +36,18 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Glatte Heizungen" GridPane.rowIndex="6" />
-            <Label fx:id="lblHeizungKeller1" text="Anzahl der Handtuchheizung" GridPane.rowIndex="4" />
+            <Label fx:id="lblGlatteHeizung" text="Glatte Heizungen" GridPane.rowIndex="4" />
+            <Label fx:id="lblZusatzHandtuchHeizung" text="Anzahl der Handtuchheizung" GridPane.rowIndex="6" />
             <Label text="Preis:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label text="660 € je Stück" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="lblPreisZusatzHeizung" text="660 € je Stück" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label text="660 € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Label text="160 € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Label fx:id="lblPreisZusatzHandtuchHeizung" text="660 € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Label fx:id="lblPreisGlatteHeizung" text="160 € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <Label fx:id="lblGesamtbetrag" text="Gesamtbetrag: % €" GridPane.rowIndex="10">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <Label text="Fußbodenheizung" GridPane.rowIndex="8" />
+            <Label fx:id="lblFussbodenheizung" text="Fußbodenheizung" GridPane.rowIndex="8" />
             <CheckBox fx:id="checkBoxFussbodenheizung" mnemonicParsing="false" onAction="#preisUpdate" text="\% €" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Button fx:id="btnSpeichern" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Speichern" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="10">
                <GridPane.margin>
@@ -55,13 +55,13 @@
                </GridPane.margin>
             </Button>
             <TextField fx:id="txtZusatzHeizung" onKeyReleased="#preisUpdate" promptText="1 - 5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtZusatzHandtuchHeizung" disable="true" onKeyReleased="#preisUpdate" promptText="1 - 2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtGlatteHeizung" onKeyReleased="#preisUpdate" promptText="1 - 8" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label text="Zusätzliche Heizungen:" GridPane.rowIndex="2" />
+            <TextField fx:id="txtZusatzHandtuchHeizung" disable="true" onKeyReleased="#preisUpdate" promptText="1 - 2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="txtGlatteHeizung" onKeyReleased="#preisUpdate" promptText="1 - 8" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="lblZusatzHeiung" text="Zusätzliche Heizungen:" GridPane.rowIndex="2" />
             <Button fx:id="btnAbbrechen" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="106.0" text="Abbrechen" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <Label fx:id="lblERRZusatzHeizung" text="Ungültige Anzahl" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="lblERRZusatzHandtuchHeizung" text="Ungültige Anzahl" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label fx:id="lblERRGlatteHeizung" text="Ungültige Anzahl" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="lblERRZusatzHandtuchHeizung" text="Ungültige Anzahl" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="lblERRGlatteHeizung" text="Ungültige Anzahl" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button fx:id="btnCSVExport" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="CSV Export" textAlignment="CENTER" GridPane.rowIndex="9">
                <opaqueInsets>
                   <Insets />
