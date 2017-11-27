@@ -1,9 +1,13 @@
 package org.projektmanagement.controller;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -230,8 +234,40 @@ public class GrundrissController implements Initializable{
 	
 	@FXML protected void OnClickCSVExport(ActionEvent event)
 	{
-		//CSV Export...
-		
+		CheckedPrüfung();
+		CSVExporter csvExport = new CSVExporter();
+		try
+		{
+			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
+			CSVExporter.writeLine(filePfad, getCSVAuswahl());
+			
+			filePfad.flush();
+			filePfad.close();	
+		}catch(Exception e)
+		{
+			
+		}
+	}
+	public List<String> getCSVAuswahl()
+	{
+		List<String> listStrAuswahl = new ArrayList<String>();
+		if(this.rbOpt0.isSelected())
+			listStrAuswahl.add(rbOpt0.getText().replace(":",""));
+		if(this.rbOpt1.isSelected())
+			listStrAuswahl.add(rbOpt1.getText().replace(":",""));
+		if(this.rbOpt2.isSelected())
+			listStrAuswahl.add(rbOpt2.getText().replace(":",""));
+		if(this.rbOpt3.isSelected())
+			listStrAuswahl.add(rbOpt3.getText().replace(":",""));
+		if(this.rbOpt4.isSelected())
+			listStrAuswahl.add(rbOpt4.getText().replace(":",""));
+		if(this.rbOpt5.isSelected())
+			listStrAuswahl.add(rbOpt5.getText().replace(":",""));
+		return listStrAuswahl;
+	}
+
+	public Stage getStage() {
+		return stage;
 	}
 	@FXML protected void OnClickSave(ActionEvent event)
 	{
