@@ -1,0 +1,243 @@
+package org.projektmanagement.controller;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+public class GrundrissController implements Initializable{
+	private Stage stage;
+	private static final Logger log = LoggerFactory.getLogger(GrundrissController.class);
+
+	private double dOpt0, dOpt1, dOpt2, dOpt3, dOpt4, dOpt5, dErg;
+	@FXML private Label lblOpt0;
+	@FXML private Label lblOpt1;
+	@FXML private Label lblOpt2;
+	@FXML private Label lblOpt3;
+	@FXML private Label lblOpt4;
+	@FXML private Label lblOpt5;
+	@FXML private Label lblGesErg;
+	@FXML private RadioButton rbOpt0;
+	@FXML private RadioButton rbOpt1;
+	@FXML private RadioButton rbOpt2;
+	@FXML private RadioButton rbOpt3;
+	@FXML private RadioButton rbOpt4;
+	@FXML private RadioButton rbOpt5;
+	@FXML private CheckBox cbDachgeschoss;
+	
+	public void oeffneGrundrissView() {
+		stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		try {
+			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("Grundriss.fxml"));
+			Scene scene = new Scene(root,560,400);
+			stage.setScene(scene);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		stage.showAndWait();
+	}
+	
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// Werte aus der DB beziehen fehlt noch
+		rbOpt0.setText("Wand zur Abtrennung der Küche von dem Essbereich:");
+		rbOpt1.setText("Tür in der Wand zwischen Küche und Essbereich:");
+		rbOpt2.setText("Großes Zimmer im OG statt zwei kleinen Zimmern:");
+		cbDachgeschoss.setText("Dachgeschoss vorhanden:");
+		rbOpt3.setText("Abgetrennter Treppenraum im DG:");
+		rbOpt4.setText("Vorrichtung eines Bades im DG:");
+		rbOpt5.setText("Ausführung eines Bades im DG:");
+		
+		dOpt0 = 300;
+		dOpt1 = 300;
+		dOpt2 = 0;
+		dOpt3 = 890;
+		dOpt4 = 990;
+		dOpt5 = 8990;
+		
+		lblOpt0.setText(dOpt0+" €");
+		lblOpt1.setText(dOpt1+" €");
+		lblOpt2.setText(dOpt2+" €");
+		lblOpt3.setText(dOpt3+" €");
+		lblOpt4.setText(dOpt4+" €");
+		lblOpt5.setText(((int)dOpt5/1000)+","+dOpt5%1000+" €");
+		
+		CheckedPrüfung();//Prüft ob aktuelle Auswahl akzeptiert wird
+		initListener();//Initialisiert die Listener
+		berechnePreis();//Berechnet den Preis
+	}
+	
+	private void CheckedPrüfung() {
+		if(rbOpt0.isSelected() == false) {
+			rbOpt1.setDisable(true);
+			lblOpt1.setDisable(true);
+			rbOpt1.setSelected(false);
+			
+		}else {
+			rbOpt1.setDisable(false);
+			lblOpt1.setDisable(false);
+		}
+		
+		if(cbDachgeschoss.isSelected() == false) {
+			rbOpt3.setDisable(true);
+			lblOpt3.setDisable(true);
+			rbOpt3.setSelected(false);
+			
+			rbOpt4.setDisable(true);
+			lblOpt4.setDisable(true);
+			rbOpt4.setSelected(false);
+			
+			rbOpt5.setDisable(true);
+			lblOpt5.setDisable(true);
+			rbOpt5.setSelected(false);
+		}else{
+			rbOpt3.setDisable(false);
+			lblOpt3.setDisable(false);
+			rbOpt4.setDisable(false);
+			lblOpt4.setDisable(false);
+			rbOpt5.setDisable(false);
+			lblOpt5.setDisable(false);
+		}
+		
+		if(rbOpt4.isSelected() == false) {
+			rbOpt5.setDisable(true);
+			lblOpt5.setDisable(true);
+			rbOpt5.setSelected(false);
+			
+		}else {
+			rbOpt5.setDisable(false);
+			lblOpt5.setDisable(false);
+		}
+	}
+	
+	private void initListener() {
+		rbOpt0.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				if(isNowSelected == true) {
+					rbOpt1.setDisable(false);
+					lblOpt1.setDisable(false);
+				}else {
+					rbOpt1.setDisable(true);
+					lblOpt1.setDisable(true);
+					rbOpt1.setSelected(false);
+				}
+				berechnePreis();
+			}
+		});
+		rbOpt1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				berechnePreis();
+			}
+		});
+		rbOpt2.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				berechnePreis();
+			}
+		});
+		cbDachgeschoss.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				if(isNowSelected == true) {
+					rbOpt3.setDisable(false);
+					lblOpt3.setDisable(false);
+					rbOpt4.setDisable(false);
+					lblOpt4.setDisable(false);
+
+				}else {
+					rbOpt3.setDisable(true);
+					lblOpt3.setDisable(true);
+					rbOpt3.setSelected(false);
+					
+					rbOpt4.setDisable(true);
+					lblOpt4.setDisable(true);
+					rbOpt4.setSelected(false);
+					
+					rbOpt5.setDisable(true);
+					lblOpt5.setDisable(true);
+					rbOpt5.setSelected(false);
+				}
+				berechnePreis();
+			}
+		});
+		rbOpt3.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				berechnePreis();
+			}
+		});
+		rbOpt4.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				if(isNowSelected == true) {
+					rbOpt5.setDisable(false);
+					lblOpt5.setDisable(false);
+				}else {
+					rbOpt5.setDisable(true);
+					lblOpt5.setDisable(true);
+					rbOpt5.setSelected(false);
+				}
+				berechnePreis();
+			}
+		});
+		rbOpt5.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean WasSelected, Boolean isNowSelected) {
+				berechnePreis();
+			}
+		});
+	}
+	
+	private void berechnePreis() {
+		dErg = 0;
+		if(rbOpt0.isSelected() == true) {
+			dErg = dErg+dOpt0;
+			if(rbOpt1.isSelected() == true) {
+				dErg = dErg+dOpt1;
+			}
+		}
+		if(cbDachgeschoss.isSelected() == true) {
+			if(rbOpt3.isSelected() == true) {
+				dErg = dErg+dOpt3;
+			}
+			if(rbOpt4.isSelected() == true) {
+				dErg = dErg+dOpt4;
+				if(rbOpt5.isSelected() == true) {
+					dErg = dErg+dOpt5;
+				}
+			}
+		}
+		//Logik zur Preisberechnung
+		if (dErg > 999) {
+			
+			lblGesErg.setText(((int)dErg/1000)+","+dErg%1000+" €");
+		}else {
+			lblGesErg.setText(dErg+" €");
+		}
+	}
+	
+	@FXML protected void OnClickCSVExport(ActionEvent event)
+	{
+		//CSV Export...
+		
+	}
+	@FXML protected void OnClickSave(ActionEvent event)
+	{
+		//DB Speichern...
+		
+	}
+
+
+}

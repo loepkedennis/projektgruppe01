@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="560.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projektmanagement.controller.GrundrissController">
+   <children>
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Label prefHeight="35.0" prefWidth="230.0" text="Grundriss-Varianten" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </top>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="93.0" prefWidth="560.0" spacing="30.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="bttnCSV" minWidth="150.0" mnemonicParsing="false" onAction="#OnClickCSVExport" text="CSV Export">
+                     <opaqueInsets>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </opaqueInsets>
+                  </Button>
+                  <Button fx:id="bttnSave" minWidth="150.0" mnemonicParsing="false" onAction="#OnClickSave" text="Speichern">
+                     <opaqueInsets>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </opaqueInsets>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
+            </HBox>
+         </bottom>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane layoutY="-1.0" prefHeight="273.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="455.0" minWidth="10.0" prefWidth="432.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="128.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <RadioButton fx:id="rbOpt0" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Wand zur Abtrennung der Küche von dem Essbereich:" />
+                        <RadioButton fx:id="rbOpt1" mnemonicParsing="false" prefHeight="17.0" prefWidth="447.0" text="Tür in der Wand zwischen Küche und Essbereich:" GridPane.rowIndex="1" />
+                        <RadioButton fx:id="rbOpt2" mnemonicParsing="false" prefHeight="17.0" prefWidth="450.0" text="Großes Zimmer im OG statt zwei kleinen Zimmern:" GridPane.rowIndex="2" />
+                        <CheckBox fx:id="cbDachgeschoss" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="443.0" text="Dachgeschoss vorhanden" GridPane.rowIndex="3" />
+                        <RadioButton fx:id="rbOpt3" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Abgetrennter Treppenraum im DG:" GridPane.rowIndex="4" />
+                        <RadioButton fx:id="rbOpt4" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Vorrichtung eines Bades im DG:" GridPane.rowIndex="5" />
+                        <RadioButton fx:id="rbOpt5" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Ausführung eines Bades im DG:" GridPane.rowIndex="6" />
+                        <Label fx:id="lblOpt0" alignment="TOP_CENTER" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="292.0" text="300.- €" textAlignment="RIGHT" GridPane.columnIndex="1" />
+                        <Label fx:id="lblOpt1" alignment="CENTER" prefHeight="17.0" prefWidth="282.0" text="300.- €" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblOpt2" alignment="CENTER" prefHeight="17.0" prefWidth="297.0" text="0.- €" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblOpt3" alignment="CENTER" prefHeight="17.0" prefWidth="289.0" text="890.- €" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label fx:id="lblOpt4" alignment="CENTER" prefHeight="17.0" prefWidth="289.0" text="990.- €" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="lblOpt5" alignment="CENTER" prefHeight="17.0" prefWidth="289.0" text="8.990.- €" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="lblGesErg" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="128.0" text="0 €" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblGesKost" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="17.0" prefWidth="457.0" text="Gesamtkosten :" textAlignment="RIGHT" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

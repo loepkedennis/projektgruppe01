@@ -372,5 +372,22 @@ public class CustomerOverviewController {
 		stage.setScene(new Scene(rootNode));
 		stage.show();
 	}
-	
+	@FXML
+	public void grundriss() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/Grundriss.fxml"));
+		Stage stage = new Stage();
+		stage.setTitle("Grundriss");
+		stage.setScene(new Scene(rootNode));
+		stage.show();
+	}
+	@FXML
+	public void parkett() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/ParkettView.fxml"));
+		Stage stage = new Stage();
+		stage.setTitle("Parkett");
+		stage.setScene(new Scene(rootNode));
+		stage.show();
+	}
 }
