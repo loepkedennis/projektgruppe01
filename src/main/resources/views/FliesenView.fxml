@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="260.0" layoutY="14.0" text="Fliesen ">
+      <Label layoutX="170.0" layoutY="14.0" text="Sonderwünsche Fliesen ">
          <font>
             <Font size="21.0" />
          </font>
@@ -33,30 +33,30 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="16.0" prefWidth="252.0" text="Keine Fliesen im Küchenbereich EG" />
-            <Label prefHeight="16.0" prefWidth="206.0" text="Keine Fliesen im Bad des OG" GridPane.rowIndex="1" />
-            <Label prefHeight="16.0" prefWidth="270.0" text="Mehrpreis großform. Fliesen Küche EG" GridPane.rowIndex="2" />
-            <Label prefHeight="16.0" prefWidth="274.0" text="Mehrpreis großform. Fliesen Bad OG" GridPane.rowIndex="3" />
-            <Label prefHeight="16.0" prefWidth="274.0" text="Fliesen Bad OG" GridPane.rowIndex="4" />
-            <Label prefHeight="16.0" prefWidth="269.0" text="Mehrpreis großform. Fliesen Bad DG" GridPane.rowIndex="5" />
-            <Label prefHeight="16.0" prefWidth="252.0" text="- 590,- Euro" GridPane.columnIndex="1" />
-            <Label prefHeight="16.0" prefWidth="252.0" text="- 1.870,- Euro" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label prefHeight="16.0" prefWidth="252.0" text="+ 170,- Euro" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label prefHeight="16.0" prefWidth="252.0" text="+ 190,- Euro" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label prefHeight="16.0" prefWidth="252.0" text="+ 2.190,- Euro" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label prefHeight="16.0" prefWidth="252.0" text="+ 190,- Euro" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Label fx:id="lblNoKuecheEG" prefHeight="16.0" prefWidth="252.0" text="Keine Fliesen im Küchenbereich EG" />
+            <Label fx:id="lblNoBadOG" prefHeight="16.0" prefWidth="206.0" text="Keine Fliesen im Bad des OG" GridPane.rowIndex="1" />
+            <Label fx:id="lblMpKuecheEG" prefHeight="16.0" prefWidth="270.0" text="Mehrpreis großform. Fliesen Küche EG" GridPane.rowIndex="2" />
+            <Label fx:id="lblMpBadOg" prefHeight="16.0" prefWidth="274.0" text="Mehrpreis großform. Fliesen Bad OG" GridPane.rowIndex="3" />
+            <Label fx:id="lblBadOg" prefHeight="16.0" prefWidth="274.0" text="Fliesen Bad OG" GridPane.rowIndex="4" />
+            <Label fx:id="lblMpBadDg" prefHeight="16.0" prefWidth="269.0" text="Mehrpreis großform. Fliesen Bad DG" GridPane.rowIndex="5" />
+            <CheckBox fx:id="checkBoxNoKuecheEG" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <CheckBox fx:id="checkBoxNoBadOG" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkBoxMpKuecheEG" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <CheckBox fx:id="checkBoxMpBadOG" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkBoxBadOG" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkBoxMpBadDG" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <TextField fx:id="txtFieldNoKEG" GridPane.columnIndex="1" />
+            <TextField fx:id="txtFieldNoBOG" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtFieldMpKEG" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtFieldMpBOG" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtFieldBOG" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtFieldMpBDG" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <Button layoutX="57.0" layoutY="338.0" mnemonicParsing="false" text="Preis berechnen" />
-      <Button layoutX="195.0" layoutY="338.0" mnemonicParsing="false" text="CSV Export" />
-      <Button layoutX="300.0" layoutY="338.0" mnemonicParsing="false" text="In Datenbank speichern" />
-      <TextField layoutX="365.0" layoutY="239.0" />
-      <Text layoutX="267.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gesamtpreis:" />
+      <Button layoutX="57.0" layoutY="338.0" mnemonicParsing="false" onAction="#onClickPreisBerechnen" text="Preis berechnen" />
+      <Button layoutX="195.0" layoutY="338.0" mnemonicParsing="false" onAction="#onClickCsvExport" text="CSV Export" />
+      <Button layoutX="300.0" layoutY="338.0" mnemonicParsing="false" onAction="#onClickDbSave" text="In Datenbank speichern" />
+      <TextField fx:id="txtFieldGesamtPreis" layoutX="352.0" layoutY="239.0" />
+      <Text fx:id="lblGesamtPreis" layoutX="254.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gesamtpreis:" />
    </children>
 </AnchorPane>
