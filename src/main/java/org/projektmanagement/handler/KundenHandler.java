@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.projektmanagement.model.Haus;
 import org.projektmanagement.model.Kunde;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class KundenHandler {
 
 	public Kunde createKunde(String firstname, String lastname, String email, String phone, String street,
 			String streetnr, String plz, String place, String country) {
+
+		
 		Kunde kunde = new Kunde();
 		kunde.setFirstname(firstname);
 		kunde.setLastname(lastname);
@@ -33,8 +36,27 @@ public class KundenHandler {
 		kunde.setPlz(plz);
 		kunde.setPlace(place);
 		kunde.setCountry(country);
+		
+		
 		em.persist(kunde);
+		
+		
 		return kunde;
+	}
+	
+	public Kunde addHouse(Kunde kunde) {
+		Haus haus = new Haus();
+		
+		Kunde dataKunde = getKunde(kunde.getId());
+		dataKunde.getHouses().add(haus);
+		haus.setBesitzer(dataKunde);
+		
+		em.persist(haus);
+		em.persist(dataKunde);
+		log.info("### Ein Haus wurde dem Kunden hinzugefügt!");
+		return dataKunde;
+		
+		
 	}
 
 	public void editCustomer(Kunde kunde) {

@@ -20,8 +20,10 @@ import javafx.beans.property.SimpleListProperty;
 
 import org.apache.commons.lang.StringUtils;
 import org.omg.CORBA.INITIALIZE;
+import org.projektmanagement.model.Haus;
 import org.projektmanagement.model.Kunde;
 import org.projektmanagement.service.KundenService;
+import org.projektmanagement.service.SonderwunschService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.PropertyValue;
@@ -34,6 +36,8 @@ public class CustomerAddController {
 	private static final Logger log = LoggerFactory.getLogger(CustomerAddController.class);
 	private KundenService kundenService = new KundenService();
 
+	private SonderwunschService sonderwunschService = new SonderwunschService();
+	
 	@FXML
 	private TextField firstnameField;
 	@FXML
@@ -118,7 +122,20 @@ public class CustomerAddController {
 			kundenService.getKundenHandler().createKunde(firstname, lastname, email, phone, street, streetnr, plz,
 					place, country);
 			log.info("User \"{} {}\" created", firstname, lastname);
-
+			
+			
+			
+			/* Dieser Bereich dient als Beispiel und sollte später gelöscht werden */
+			log.info("##### Testdaten eingefügt!");
+			
+			
+			Kunde k = kundenService.getKundenHandler().getKunde(1);
+			kundenService.getKundenHandler().addHouse(k);
+			Haus haus = kundenService.getKundenHandler().getKunde(1).getHouses().get(0);
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch("Sonderwunsch Name", 10.00, "Kategorie Name", haus);
+			
+			// Ende Beispiel
+			
 			Stage stage = (Stage) addCustomerButton.getScene().getWindow();
 			stage.close();
 		}

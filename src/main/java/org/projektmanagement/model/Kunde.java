@@ -1,146 +1,26 @@
 package org.projektmanagement.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/* Kundenentität mit korrekten Attributen - Sergej
- import java.sql.SQLException;
- import java.util.LinkedList;
-
-public class Kunde {
-	// TODO: Attribute in Klasse & DB exakt gleich bennen, alle PKs "id" benennen?
-	private int kundennr;
-	private String telefonnr;
-	private String name;
-	private String vorname;
-	private String email;
-	// Pflichtenheft: Sie können davon ausgehen, 
-	// dass ein Kunde genau ein Haus kauft und umgekehrt.
-	private Haus haus;
-	private LinkedList<Sonderwunsch> sonderwunsch;
-	
-	public Kunde(){
-		
-	}
-
-	public Kunde(String name, String vname, String email, String tnr){
-		this.telefonnr = tnr;
-		this.name = name;
-		this.vorname = vname;
-		this.email = email;
-		
-		try {
-			DB_Connection db = new DB_Connection();
-			this.kundennr = db.createKunde(this);
-			db.disconnectDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public int getKundennr() {
-		return kundennr;
-	}
-	
-	// Don't touch! Wird von der DB Klasse aufgerufen nachdem die
-	// automatisch erzeugte ID bekannt ist
-	public void setKundennr(int kundennr) {
-		this.kundennr = kundennr;
-	}
-		
-	public String getTelefonnr() {
-		return telefonnr;
-	}
-
-	public void setTelefonnr(String telefonnr) {
-		System.out.println("telnr hier!");
-		this.telefonnr = telefonnr;
-		
-		try {
-			DB_Connection db = new DB_Connection();
-			db.updateEntity(kundennr, "kunde", "telefonnr", telefonnr);
-			db.disconnectDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-		
-		try {
-			DB_Connection db = new DB_Connection();
-			db.updateEntity(kundennr, "kunde", "name", name);
-			db.disconnectDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getVorname() {
-		return vorname;
-	}
-
-	public void setVorname(String vorname) {
-		this.vorname = vorname;
-		
-		try {
-			DB_Connection db = new DB_Connection();
-			db.updateEntity(kundennr, "kunde", "vorname", vorname);
-			db.disconnectDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-		
-		try {
-			DB_Connection db = new DB_Connection();
-			db.updateEntity(kundennr, "kunde", "email", email);
-			db.disconnectDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Haus getHaus() {
-		return haus;
-	}
-
-	public void setHaus(Haus haus) {
-		this.haus = haus;
-		
-		try {
-			DB_Connection db = new DB_Connection();
-			db.updateEntity(kundennr, "kunde", "haus", haus.getHausnr());
-			db.disconnectDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-}
-
- */
 
 @Entity
 @Table(name = "Kunde")
 public class Kunde {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "kunde_id")
 	private int id;
 
@@ -171,12 +51,24 @@ public class Kunde {
 	@Column(name = "country")
 	private String country;
 
+	@Column(name = "houses")
+	@OneToMany(mappedBy="besitzer", fetch=FetchType.EAGER)
+	private List<Haus> houses = new ArrayList<Haus>();
+	
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public List<Haus> getHouses() {
+		return houses;
+	}
+
+	public void setHouses(List<Haus> houses) {
+		this.houses = houses;
 	}
 
 	public String getFirstname() {
