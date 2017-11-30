@@ -28,6 +28,8 @@ public class HeizungController {
 	@FXML
 	private Label lblERRZusatzHeizung;
 	@FXML
+	private Label lblPreisZusatzHeizung;
+	@FXML
 	private Label lblZusatzHandtuchHeizung;
 	@FXML
 	private Label lblPreisZusatzHandtuchHeizung;
@@ -35,6 +37,8 @@ public class HeizungController {
 	private Label lblERRZusatzHandtuchHeizung;
 	@FXML
 	private Label lblERRGlatteHeizung;
+	@FXML
+	private Label lblPreisGlatteHeizung;
 	// TextField
 	@FXML
 	private TextField txtZusatzHeizung;
@@ -51,13 +55,24 @@ public class HeizungController {
 	private Button btnCSVExport;	
 	
 	int AnzahlHeizungen = 8;
-	int fussbodenheizung = 8990;
-	int gesamtbetrag = 0;
+	double fussbodenheizung = 8990;
+	double gesamtbetrag = 0;
+	double preisZusatzHeizung = 0;
+	double preisGlatteHeizung = 0;
+	double preisHandtuchHeizung = 0;
 	
 	@FXML
 	private void initialize()
 	{
-		String tmp = "";
+		//Zusazheizung Preis setzen: 660 € je Stück
+		preisZusatzHeizung = 660;
+		lblPreisZusatzHeizung.setText(lblPreisZusatzHeizung.getText().replaceAll("%", ""+preisZusatzHeizung));
+		//Glatte Heizung Preis setzen 160 € je Stück
+		preisGlatteHeizung = 160;
+		lblPreisGlatteHeizung.setText(lblPreisGlatteHeizung.getText().replaceAll("%", ""+preisGlatteHeizung));
+		//Handtuchheizunh Preis setzen 660 € je Stück
+		preisHandtuchHeizung = 660;
+		lblPreisZusatzHandtuchHeizung.setText(lblPreisZusatzHandtuchHeizung.getText().replaceAll("%", ""+preisHandtuchHeizung));
 		// Fussbodenheizung Preis setzen
 		checkBoxFussbodenheizung.setText(checkBoxFussbodenheizung.getText().replaceAll("%", ""+fussbodenheizung));
 		// Gesamtbetrag setzen
@@ -138,7 +153,7 @@ public class HeizungController {
 		int anzahlZusatzHeizungen = 0;
 		int anzahlGlatteHeizungen = 0;
 		int anzahlHandtuchHeizungen = 0;
-		int preisFussbodenHeizung = 0;
+		double preisFussbodenHeizung = 0;
 		
 		// Überprüfung ob die Anzahl der Eingegebenen Anzahl Zusatzheizung stimmt 1 - 5 und die Anzahl der Glatten Heizung aktualisieren
 		if (txtZusatzHeizung.getText().matches("[1-5]"))
@@ -169,7 +184,7 @@ public class HeizungController {
 		}
 		else
 		{
-			regMatch = "[1-9][0-"+ (AnzahlHeizungen + anzahlZusatzHeizungen % 10) + "]?";
+			regMatch = "[1-" + (int)((AnzahlHeizungen + anzahlZusatzHeizungen) / 10) +"][0-"+ (AnzahlHeizungen + anzahlZusatzHeizungen % 10) + "]?";
 		}
 		
 		// Überprüfe ob die Eingegebene Anzahl der eingegebenen Glatten Heizung stimmt
@@ -209,10 +224,10 @@ public class HeizungController {
 			preisFussbodenHeizung = fussbodenheizung;
 		}
 		// Zusammenrechnen
-		gesamtbetrag = anzahlZusatzHeizungen*660 + anzahlGlatteHeizungen*160 + anzahlHandtuchHeizungen*660 + preisFussbodenHeizung;
+		gesamtbetrag = anzahlZusatzHeizungen*preisZusatzHeizung + anzahlGlatteHeizungen*preisGlatteHeizung + anzahlHandtuchHeizungen*preisHandtuchHeizung + preisFussbodenHeizung;
 		
 		// Gesamtbetrag aktualisieren
-		lblGesamtbetrag.setText(lblGesamtbetrag.getText().replaceAll("[0-9]{1,6}", ""+gesamtbetrag));
+		lblGesamtbetrag.setText(lblGesamtbetrag.getText().replaceAll("[0-9].{1,6}[0-9]{1,6}", ""+gesamtbetrag));
 	}
 	@FXML
 	private void close()
@@ -243,7 +258,7 @@ public class HeizungController {
 			fussbodenheizung = 9990;
 			String tmp = "";
 			tmp = checkBoxFussbodenheizung.getText();
-			tmp = tmp.replaceAll("[0-9]{1,6}", ""+fussbodenheizung);
+			tmp = tmp.replaceAll("[0-9].{1,6}[0-9]{1,6}", ""+fussbodenheizung);
 			checkBoxFussbodenheizung.setText(tmp);
 			AnzahlHeizungen +=1;
 		}
@@ -252,7 +267,7 @@ public class HeizungController {
 			fussbodenheizung = 8990;
 			String tmp = "";
 			tmp = checkBoxFussbodenheizung.getText();
-			tmp = tmp.replaceAll("[0-9]{1,6}", ""+fussbodenheizung);
+			tmp = tmp.replaceAll("[0-9].{1,6}[0-9]{1,6}", ""+fussbodenheizung);
 			checkBoxFussbodenheizung.setText(tmp);
 			AnzahlHeizungen -=1;
 		}

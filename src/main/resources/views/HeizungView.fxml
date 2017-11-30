@@ -39,10 +39,10 @@
             <Label fx:id="lblGlatteHeizung" text="Glatte Heizungen" GridPane.rowIndex="4" />
             <Label fx:id="lblZusatzHandtuchHeizung" text="Anzahl der Handtuchheizung" GridPane.rowIndex="6" />
             <Label text="Preis:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="lblPreisZusatzHeizung" text="660 € je Stück" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="lblPreisZusatzHeizung" text="\% € je Stück" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label fx:id="lblPreisZusatzHandtuchHeizung" text="660 € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <Label fx:id="lblPreisGlatteHeizung" text="160 € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="lblPreisZusatzHandtuchHeizung" text="\% € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Label fx:id="lblPreisGlatteHeizung" text="\% € je Stück" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <Label fx:id="lblGesamtbetrag" text="Gesamtbetrag: % €" GridPane.rowIndex="10">
                <font>
                   <Font name="System Bold" size="12.0" />
