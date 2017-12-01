@@ -361,7 +361,14 @@ public class CustomerOverviewController {
 	
 	@FXML
 	public void windowouterdoor() {
-		new FensterUndAussentuerenController(this.kundenService);
+		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information");
+			alert.setHeaderText("Wählen Sie bitte einen Kunden aus!");
+			alert.showAndWait();			
+		}
+		else
+			new FensterUndAussentuerenController(this.tableView.getSelectionModel().getSelectedItem());
 	}
 	@FXML
 	public void heizungen() throws IOException {
