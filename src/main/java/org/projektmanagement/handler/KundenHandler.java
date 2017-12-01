@@ -37,9 +37,9 @@ public class KundenHandler {
 		kunde.setPlace(place);
 		kunde.setCountry(country);
 		
-		
 		em.persist(kunde);
 		
+		addHouse(kunde);
 		
 		return kunde;
 	}
@@ -55,8 +55,6 @@ public class KundenHandler {
 		em.persist(dataKunde);
 		log.info("### Ein Haus wurde dem Kunden hinzugefügt!");
 		return dataKunde;
-		
-		
 	}
 
 	public void editCustomer(Kunde kunde) {

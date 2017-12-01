@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.projektmanagement.model.Haus;
+import org.projektmanagement.model.Kunde;
+import org.projektmanagement.model.Sonderwunsch;
+import org.projektmanagement.service.KundenService;
+import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +34,11 @@ public class GrundrissController implements Initializable{
 	private Stage stage;
 	private static final Logger log = LoggerFactory.getLogger(GrundrissController.class);
 
+	private KundenService kundenService = new KundenService();
+	private SonderwunschService sonderwunschService = new SonderwunschService();
+	
+	private Kunde kunde;
+	
 	private double dOpt0, dOpt1, dOpt2, dOpt3, dOpt4, dOpt5, dErg;
 	@FXML private Label lblOpt0;
 	@FXML private Label lblOpt1;
@@ -271,9 +281,35 @@ public class GrundrissController implements Initializable{
 	}
 	@FXML protected void OnClickSave(ActionEvent event)
 	{
-		//DB Speichern...
+		Haus haus = kunde.getHouses().get(0);
 		
+		if(this.rbOpt0.isSelected()) {
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch(rbOpt0.getText().replace(":",""), dOpt0, "Grundriss", haus);
+			log.info("Special request {} added", rbOpt0.getText().replace(":",""));
+		}
+		if(this.rbOpt1.isSelected()) {
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch(rbOpt1.getText().replace(":",""), dOpt1, "Grundriss", haus);
+			log.info("Special request {} added", rbOpt1.getText().replace(":",""));
+		}
+		if(this.rbOpt2.isSelected()) {
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch(rbOpt2.getText().replace(":",""), dOpt2, "Grundriss", haus);
+			log.info("Special request {} added", rbOpt2.getText().replace(":",""));
+		}
+		if(this.rbOpt3.isSelected()) {
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch(rbOpt3.getText().replace(":",""), dOpt3, "Grundriss", haus);
+			log.info("Special request {} added", rbOpt3.getText().replace(":",""));
+		}
+		if(this.rbOpt4.isSelected()) {
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch(rbOpt4.getText().replace(":",""), dOpt4, "Grundriss", haus);
+			log.info("Special request {} added", rbOpt4.getText().replace(":",""));
+		}
+		if(this.rbOpt5.isSelected()) {
+			sonderwunschService.getSonderwunschHandler().createSonderwunsch(rbOpt5.getText().replace(":",""), dOpt5, "Grundriss", haus);
+			log.info("Special request {} added", rbOpt5.getText().replace(":",""));
+		}
 	}
 
-
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
+	}
 }

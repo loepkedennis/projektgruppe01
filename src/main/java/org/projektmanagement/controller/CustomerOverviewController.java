@@ -381,12 +381,28 @@ public class CustomerOverviewController {
 	}
 	@FXML
 	public void grundriss() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/Grundriss.fxml"));
-		Stage stage = new Stage();
-		stage.setTitle("Grundriss");
-		stage.setScene(new Scene(rootNode));
-		stage.show();
+		Kunde kunde = tableView.getSelectionModel().getSelectedItem();
+
+		if(kunde != null) {
+			FXMLLoader loader = new FXMLLoader();
+			Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/Grundriss.fxml"));
+					
+			GrundrissController grundrissController = loader.<GrundrissController>getController();
+			grundrissController.setKunde(kunde);
+			
+			Stage stage = new Stage();
+			stage.setTitle("Grundriss");
+			stage.setScene(new Scene(rootNode));
+			stage.show();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Kunde nicht gefunden");
+			Label label = new Label("Es wurde kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
+			label.setWrapText(true);
+			alert.getDialogPane().setContent(label);
+			alert.showAndWait();
+		}
 	}
 	@FXML
 	public void parkett() throws IOException {
