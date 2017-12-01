@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.projektmanagement.model.Kunde;
 import org.projektmanagement.service.KundenService;
+import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +77,8 @@ public class FensterUndAussentuerenController implements Initializable {
 
 
 	private KundenService kundenService;
+	private SonderwunschService sonderwunschService;
+	private Kunde kunde;
 
 	/**
 	  * 
@@ -90,11 +94,13 @@ public class FensterUndAussentuerenController implements Initializable {
 	 * @param kundeService
 	 *            KundenService für die Datenbank.
 	 */
-	public FensterUndAussentuerenController(KundenService kundeService) {
+	public FensterUndAussentuerenController(Kunde kunde) {
 		super();
 		log.info("Starting Maske für \"Sonderwuensche fuer Fenster und Aussentueren\"");
 		stage = new Stage();
-		this.kundenService = kundeService;
+		this.kunde = kunde;
+		this.kundenService  = new KundenService();
+		this.sonderwunschService = new SonderwunschService();
 		stage.initModality(Modality.APPLICATION_MODAL);
 		try {
 			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("/views/FensterAussentuerView.fxml"));
