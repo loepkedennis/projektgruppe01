@@ -63,12 +63,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <RadioButton fx:id="rbOpt0" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv im Essbereich des EG:" />
-                        <RadioButton fx:id="rbOpt1" mnemonicParsing="false" prefHeight="17.0" prefWidth="447.0" text="Landhausdielen massiv im Küchenbereich des EG:" GridPane.rowIndex="1" />
-                        <RadioButton fx:id="rbOpt2" mnemonicParsing="false" prefHeight="17.0" prefWidth="450.0" text="Stäbchenparkett im Essbereich des EG:" GridPane.rowIndex="2" />
-                        <RadioButton fx:id="rbOpt3" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett im Küchenbereich des EG:" GridPane.rowIndex="3" />
-                        <RadioButton fx:id="rbOpt4" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv im OG:" GridPane.rowIndex="4" />
-                        <RadioButton fx:id="rbOpt5" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett im OG:" GridPane.rowIndex="5" />
+                        <RadioButton fx:id="rbOpt0" contentDisplay="CENTER" onAction="#OnSelect" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv im Essbereich des EG:" />
+                        <RadioButton fx:id="rbOpt1" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="447.0" text="Landhausdielen massiv im Küchenbereich des EG:" GridPane.rowIndex="1" />
+                        <RadioButton fx:id="rbOpt2" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="450.0" text="Stäbchenparkett im Essbereich des EG:" GridPane.rowIndex="2" />
+                        <RadioButton fx:id="rbOpt3" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett im Küchenbereich des EG:" GridPane.rowIndex="3" />
+                        <RadioButton fx:id="rbOpt4" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv im OG:" GridPane.rowIndex="4" />
+                        <RadioButton fx:id="rbOpt5" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett im OG:" GridPane.rowIndex="5" />
                         <Label fx:id="lblOpt0" alignment="TOP_CENTER" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="292.0" text="2.890.- €" textAlignment="RIGHT" GridPane.columnIndex="1" />
                         <Label fx:id="lblOpt1" alignment="CENTER" prefHeight="17.0" prefWidth="282.0" text="2.090.- €" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="lblOpt2" alignment="CENTER" prefHeight="17.0" prefWidth="297.0" text="2.090.- €" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -85,10 +85,10 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <RadioButton fx:id="rbOpt6" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv komplett im DG:" GridPane.rowIndex="6" />
-                        <RadioButton fx:id="rbOpt7" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv ohne Badbereich im DG:" GridPane.rowIndex="7" />
-                        <RadioButton fx:id="rbOpt8" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett im DG komplett im DG:" GridPane.rowIndex="8" />
-                        <RadioButton fx:id="rbOpt9" mnemonicParsing="false" prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett ohne Badbereich im DG:" GridPane.rowIndex="9" />
+                        <RadioButton fx:id="rbOpt6" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv komplett im DG:" GridPane.rowIndex="6" />
+                        <RadioButton fx:id="rbOpt7" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Landhausdielen massiv ohne Badbereich im DG:" GridPane.rowIndex="7" />
+                        <RadioButton fx:id="rbOpt8" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett im DG komplett im DG:" GridPane.rowIndex="8" />
+                        <RadioButton fx:id="rbOpt9" mnemonicParsing="false" onAction="#OnSelect"  prefHeight="17.0" prefWidth="459.0" text="Stäbchenparkett ohne Badbereich im DG:" GridPane.rowIndex="9" />
                         <Label fx:id="lblOpt6" alignment="CENTER" prefHeight="17.0" prefWidth="289.0" text="2.490.- €" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label fx:id="lblOpt7" alignment="CENTER" prefHeight="17.0" prefWidth="289.0" text="2.090.- €" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label fx:id="lblOpt8" alignment="CENTER" prefHeight="17.0" prefWidth="289.0" text="1.690.- €" GridPane.columnIndex="1" GridPane.rowIndex="8" />

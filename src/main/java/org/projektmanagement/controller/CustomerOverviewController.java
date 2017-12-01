@@ -390,4 +390,13 @@ public class CustomerOverviewController {
 		stage.setScene(new Scene(rootNode));
 		stage.show();
 	}
+	@FXML
+	public void fliesen() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/FliesenView.fxml"));
+		Stage stage = new Stage();
+		stage.setTitle("Fliesen");
+		stage.setScene(new Scene(rootNode));
+		stage.show();
+	}
 }

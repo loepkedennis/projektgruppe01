@@ -38,6 +38,7 @@
                   <MenuItem fx:id="heizungsMenuItem" mnemonicParsing="false" onAction="#heizungen" text="Heizungen" />
                   <MenuItem fx:id="grundrissMenuItem" mnemonicParsing="false" onAction="#grundriss" text="Grundriss" />
                   <MenuItem fx:id="parkettMenuItem" mnemonicParsing="false" onAction="#parkett" text="Parkett" />
+                  <MenuItem fx:id="FliesenMenuItem" mnemonicParsing="false" onAction="#fliesen" text="Fliesen" />
             </items>
           </Menu>
         </menus>
