@@ -3,7 +3,9 @@ package org.projektmanagement.controller;
 import java.io.FileWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.projektmanagement.model.Kunde;
@@ -14,13 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -31,7 +29,7 @@ import javafx.stage.Stage;
 public class FensterUndAussentuerenController implements Initializable {
 
 	private static final Logger log = LoggerFactory.getLogger(FensterUndAussentuerenController.class);
-	
+
 	@FXML
 	Label SchiEGzTerLabel;
 	@FXML
@@ -72,151 +70,162 @@ public class FensterUndAussentuerenController implements Initializable {
 	CheckBox EleRolDGCheckBox;
 	@FXML
 	Label geskostenLabel;
-	
+
 	private Stage stage;
 
-
-	private KundenService kundenService;
-	private SonderwunschService sonderwunschService;
+	private KundenService kundenService = new KundenService();
+	private SonderwunschService sonderwunschService = new SonderwunschService();
 	private Kunde kunde;
 
+	private class Holder {
+		public Holder(double v) {
+			value = v;
+		}
+
+		public double value;
+	}
+
+	private Holder schiEGzTerPreis, schiDGzDacPreis, erhEinadHauPreis, vorfeleAntRolEGPreis, vorfeleAntRolOGPreis,
+			vorfeleAntRolDGPreis, eleRolEGPreis, eleRolOGPreis, eleRolDGPreis;
+
 	/**
-	  * 
-	  */
+	 * Keys: Labels Values: CheckBoxes
+	 */
+	private Map<Label, CheckBox> labelMap;
+	/**
+	 * Key: CheckBox Value: Price
+	 */
+	private Map<CheckBox, Holder> checkBoxMap;
+
+	/**
+	 * Erzeugt ein ControlObjekt fuer die Sonderwuensche fuer Fenster und
+	 * Aussentueren.
+	 * 
+	 */
 	public FensterUndAussentuerenController() {
 		super();
 	}
 
-	/**
-	 * Erzeugt ein ControlObjekt inklusive View-Objekt(FXML) zur Maske fuer die
-	 * Sonderwuensche fuer Fenster und Aussentueren.
-	 * 
-	 * @param kundeService
-	 *            KundenService für die Datenbank.
-	 */
-	public FensterUndAussentuerenController(Kunde kunde) {
-		super();
-		log.info("Starting Maske für \"Sonderwuensche fuer Fenster und Aussentueren\"");
-		stage = new Stage();
-		this.kunde = kunde;
-		this.kundenService  = new KundenService();
-		this.sonderwunschService = new SonderwunschService();
-		stage.initModality(Modality.APPLICATION_MODAL);
-		try {
-			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("/views/FensterAussentuerView.fxml"));
-			Scene scene = new Scene(root, 560, 400);
-			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
-			stage.setScene(scene);
-			stage.showAndWait();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		log.debug("initialize FensterUndAussentuerenController");
 		// TODO get the prices from the db
-		this.SchiEGzTerLabel.setText("590"+" € ");
-		this.SchiDGzDacLabel.setText("590"+" € ");
-		this.ErhEinadHauLabel.setText("690"+" € ");
-		this.VorfeleAntRolEGLabel.setText("190"+" € ");
-		this.VorfeleAntRolOGLabel.setText("190"+" € ");
-		this.VorfeleAntRolDGLabel.setText("190"+" € ");
-		this.EleRolEGLabel.setText("990"+" € ");
-		this.EleRolOGLabel.setText("990"+" € ");
-		this.EleRolDGLabel.setText("990"+" € ");
+
+		/*
+		 * for(Label l : labelMap.keySet()) for(Sonderwunsch s
+		 * :sonderwunschService.getSonderwunschHandler().getAllSonderwunsch())
+		 * if(s.getName() == l.getText()) checkBoxMap.get(labelMap.get(l)).value =
+		 * s.getPreis();
+		 */
+		schiEGzTerPreis = new Holder(590);
+		schiDGzDacPreis = new Holder(590);
+		erhEinadHauPreis = new Holder(690);
+		vorfeleAntRolEGPreis = new Holder(190);
+		vorfeleAntRolOGPreis = new Holder(190);
+		vorfeleAntRolDGPreis = new Holder(190);
+		eleRolEGPreis = new Holder(990);
+		eleRolOGPreis = new Holder(990);
+		eleRolDGPreis = new Holder(990);
 		
-		this.SchiEGzTerCheckBox.setSelected(false);
-		this.SchiDGzDacCheckBox.setSelected(false);
-		this.ErhEinadHauCheckBox.setSelected(false);		
-		this.VorfeleAntRolEGCheckBox.setSelected(false);		
-		this.VorfeleAntRolOGCheckBox.setSelected(false);		
-		this.VorfeleAntRolDGCheckBox.setSelected(false);		
-		this.EleRolEGCheckBox.setSelected(false);		
-		this.EleRolOGCheckBox.setSelected(false);	
-		this.EleRolDGCheckBox.setSelected(false);			
-			
+
+		this.labelMap = new HashMap<Label, CheckBox>();
+
+		this.labelMap.put(SchiEGzTerLabel, SchiEGzTerCheckBox);
+		this.labelMap.put(SchiDGzDacLabel, SchiDGzDacCheckBox);
+		this.labelMap.put(ErhEinadHauLabel, ErhEinadHauCheckBox);
+		this.labelMap.put(VorfeleAntRolEGLabel, VorfeleAntRolEGCheckBox);
+		this.labelMap.put(VorfeleAntRolOGLabel, VorfeleAntRolOGCheckBox);
+		this.labelMap.put(VorfeleAntRolDGLabel, VorfeleAntRolDGCheckBox);
+		this.labelMap.put(EleRolEGLabel, EleRolEGCheckBox);
+		this.labelMap.put(EleRolOGLabel, EleRolOGCheckBox);
+		this.labelMap.put(EleRolDGLabel, EleRolDGCheckBox);
+
+		this.checkBoxMap = new HashMap<CheckBox, Holder>();
+
+		this.checkBoxMap.put(SchiEGzTerCheckBox, schiEGzTerPreis);
+		this.checkBoxMap.put(SchiDGzDacCheckBox, schiDGzDacPreis);
+		this.checkBoxMap.put(ErhEinadHauCheckBox, erhEinadHauPreis);
+		this.checkBoxMap.put(VorfeleAntRolEGCheckBox, vorfeleAntRolEGPreis);
+		this.checkBoxMap.put(VorfeleAntRolOGCheckBox, vorfeleAntRolOGPreis);
+		this.checkBoxMap.put(VorfeleAntRolDGCheckBox, vorfeleAntRolDGPreis);
+		this.checkBoxMap.put(EleRolEGCheckBox, eleRolEGPreis);
+		this.checkBoxMap.put(EleRolOGCheckBox, eleRolOGPreis);
+		this.checkBoxMap.put(EleRolDGCheckBox, eleRolDGPreis);
+
+		for (Label l : labelMap.keySet()) {
+			l.setText(checkBoxMap.get(labelMap.get(l)).value + "€");
+		}
+
+		/*
+		 * TODO Get the selected sonderwuensche from the DB!!!
+		 * 
+		 * for (Sonderwunsch s: this.kunde.getHouses().get(0).getSonderwuensche()) {
+		 * for(Label l : labelMap.keySet()) { if(s.getName().equals(l.getText())){
+		 * labelMap.get(l).setSelected(true); } } preisBerechnen();
+		 */
+		for (CheckBox c : checkBoxMap.keySet())
+			c.setSelected(false);
 		preisBerechnen();
 	}
 
-	/*
-	public void leseGrundrissSonderwuensche() {
-	}
-
-	public boolean pruefeKonstellationSonderwuensche(int[] ausgewaehlteSw) {
-		return true;
-	}*/
 	@FXML
 	public void speichern() {
 		// TODO save the informations in the DB
+		/*
+		 * for(Label label : labelMap.keySet()) { if(labelMap.get(label).isSelected())
+		 * this.kunde.getHouses().get(0).getSonderwuensche().add(sonderwunschService.
+		 * getSonderwunschHandler().getSonderwunsch(...)) }
+		 */
 	}
-	
+
 	@FXML
 	public void preisBerechnen() {
 		int gesamtKosten = 0;
-		
-		if(this.SchiEGzTerCheckBox.isSelected())
-			gesamtKosten = gesamtKosten+590;
-		if(this.SchiDGzDacCheckBox.isSelected())
-			gesamtKosten = gesamtKosten+590;
-		if(this.ErhEinadHauCheckBox.isSelected())
-			gesamtKosten = gesamtKosten+690;		
-		if(this.VorfeleAntRolEGCheckBox.isSelected())	
-			gesamtKosten = gesamtKosten+190;	
-		if(this.VorfeleAntRolOGCheckBox.isSelected())	
-			gesamtKosten = gesamtKosten+190;
-		if(this.VorfeleAntRolDGCheckBox.isSelected())	
-			gesamtKosten = gesamtKosten+190;
-		if(this.EleRolEGCheckBox.isSelected())	
-			gesamtKosten = gesamtKosten+990;
-		if(this.EleRolOGCheckBox.isSelected())
-			gesamtKosten = gesamtKosten+990;
-		if(this.EleRolDGCheckBox.isSelected())
-			gesamtKosten = gesamtKosten+990;		
-		geskostenLabel.setText(gesamtKosten+" € ");
+		for (CheckBox cBox : checkBoxMap.keySet())
+			if (cBox.isSelected())
+				gesamtKosten += checkBoxMap.get(cBox).value;
+
+		geskostenLabel.setText(gesamtKosten + " € ");
 	}
-	
+
 	@FXML
 	public void csvExport() {
-		
+
 		CSVExporter csvExport = new CSVExporter();
-		try
-		{
+		try {
 			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
 			CSVExporter.writeLine(filePfad, getCSVAuswahl());
-			
+
 			filePfad.flush();
-			filePfad.close();	
-		}catch(Exception e)
-		{
-			
+			filePfad.close();
+		} catch (Exception e) {
+
 		}
 	}
-	public List<String> getCSVAuswahl()
-	{
+
+	public List<String> getCSVAuswahl() {
 		List<String> listStrAuswahl = new ArrayList<String>();
-		if(this.SchiEGzTerCheckBox.isSelected())
+		if (this.SchiEGzTerCheckBox.isSelected())
 			listStrAuswahl.add("Schiebetüren im EG zur Dachterasse");
-		if(this.SchiDGzDacCheckBox.isSelected())
+		if (this.SchiDGzDacCheckBox.isSelected())
 			listStrAuswahl.add("Schiebetüren im DG zur Dachterasse");
-		if(this.ErhEinadHauCheckBox.isSelected())
+		if (this.ErhEinadHauCheckBox.isSelected())
 			listStrAuswahl.add("Erhöhter Einbruchschutz an der Haustür");
-		if(this.VorfeleAntRolEGCheckBox.isSelected())	
+		if (this.VorfeleAntRolEGCheckBox.isSelected())
 			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden EG");
-		if(this.VorfeleAntRolOGCheckBox.isSelected())	
+		if (this.VorfeleAntRolOGCheckBox.isSelected())
 			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden OG");
-		if(this.VorfeleAntRolDGCheckBox.isSelected())	
+		if (this.VorfeleAntRolDGCheckBox.isSelected())
 			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden DG");
-		if(this.EleRolEGCheckBox.isSelected())	
+		if (this.EleRolEGCheckBox.isSelected())
 			listStrAuswahl.add("Elektrische Rolläden EG");
-		if(this.EleRolOGCheckBox.isSelected())
+		if (this.EleRolOGCheckBox.isSelected())
 			listStrAuswahl.add("Elektrische Rolläden OG");
-		if(this.EleRolDGCheckBox.isSelected())
+		if (this.EleRolDGCheckBox.isSelected())
 			listStrAuswahl.add("Elektrische Rolläden DG");
 
-		
 		return listStrAuswahl;
 	}
-	
+
 	/**
 	 * @return the stage
 	 */
@@ -225,10 +234,15 @@ public class FensterUndAussentuerenController implements Initializable {
 	}
 
 	/**
-	 * @param stage the stage to set
+	 * @param stage
+	 *            the stage to set
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	public void setKunde(Kunde selectedItem) {
+		this.kunde = selectedItem;
 	}
 
 }

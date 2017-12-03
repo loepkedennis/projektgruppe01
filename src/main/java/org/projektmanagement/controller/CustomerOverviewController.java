@@ -1,44 +1,40 @@
 package org.projektmanagement.controller;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.awt.Desktop.Action;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
-
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-
-import org.apache.commons.lang.StringUtils;
-import org.omg.CORBA.INITIALIZE;
 import org.projektmanagement.model.Kunde;
 import org.projektmanagement.service.KundenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.PropertyValue;
-import org.springframework.context.ApplicationContext;
 
-import javafx.application.Application;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class CustomerOverviewController {
 	private static final Logger log = LoggerFactory.getLogger(CustomerOverviewController.class);
@@ -360,7 +356,8 @@ public class CustomerOverviewController {
 	}
 	
 	@FXML
-	public void windowouterdoor() {
+	public void windowouterdoor() throws IOException {
+		log.info("Starting Maske für \"Sonderwuensche fuer Fenster und Aussentueren\"");		
 		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Information");
@@ -368,7 +365,20 @@ public class CustomerOverviewController {
 			alert.showAndWait();			
 		}
 		else
-			new FensterUndAussentuerenController(this.tableView.getSelectionModel().getSelectedItem());
+		{					
+			FXMLLoader loader = new FXMLLoader();
+			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/FensterAussentuerView.fxml"));			
+			FensterUndAussentuerenController fct = loader.<FensterUndAussentuerenController>getController();
+			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			Scene scene = new Scene(root, 560, 400);
+			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
+			
+			Stage stage = new Stage();
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setScene(scene);
+			stage.showAndWait();			
+		}
+			
 	}
 	@FXML
 	public void heizungen() throws IOException {
@@ -385,7 +395,7 @@ public class CustomerOverviewController {
 
 		if(kunde != null) {
 			FXMLLoader loader = new FXMLLoader();
-			Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/Grundriss.fxml"));
+			Parent rootNode = (Parent) loader.load(getClass().getResource("/views/Grundriss.fxml").openStream());
 					
 			GrundrissController grundrissController = loader.<GrundrissController>getController();
 			grundrissController.setKunde(kunde);
