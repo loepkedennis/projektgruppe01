@@ -3,6 +3,7 @@ package org.projektmanagement.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,7 +53,7 @@ public class Kunde {
 	private String country;
 
 	@Column(name = "houses")
-	@OneToMany(mappedBy="besitzer", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="besitzer", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Haus> houses = new ArrayList<Haus>();
 	
 	public int getId() {

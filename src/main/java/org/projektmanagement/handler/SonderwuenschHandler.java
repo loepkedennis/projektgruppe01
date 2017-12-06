@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 import org.hibernate.Hibernate;
 import org.projektmanagement.model.Haus;
 import org.projektmanagement.model.HausSonderwunsch;
+import org.projektmanagement.model.Haustyp;
 import org.projektmanagement.model.Kategorie;
 import org.projektmanagement.model.Kunde;
 import org.projektmanagement.model.Sonderwunsch;
@@ -34,7 +35,20 @@ public class SonderwuenschHandler {
 	 * Sonderwuensche eingefügt.
 	 */
 	public void initSonderwunsch() {
+		// Haustypen
+		TypedQuery<Haustyp> qr = em.createQuery("from Haustyp", Haustyp.class);
+		List<Haustyp> lst = qr.getResultList();
 
+		if (lst.isEmpty()) {
+
+			Haustyp ht = new Haustyp();
+			ht.setName("Dachgeschoss");
+			em.persist(ht);
+			ht = new Haustyp();
+			ht.setName("kein Dachgeschoss");
+			em.persist(ht);
+
+		}
 		// Sonderwünsche zu Grundriss-Varianten
 
 		Kategorie kategorie = new Kategorie();
@@ -494,15 +508,15 @@ public class SonderwuenschHandler {
 	 */
 	public void removeSonderwunsch(Haus haus, Sonderwunsch sonderwunsch) {
 		List<HausSonderwunsch> sonderwL = new ArrayList<HausSonderwunsch>();
-		
-		for(HausSonderwunsch s: haus.getHausSonderwunsch())
+
+		for (HausSonderwunsch s : haus.getHausSonderwunsch())
 			if (s.getSonderwunsch().getId() == sonderwunsch.getId()) {
 				sonderwL.add(s);
 			}
-		for(HausSonderwunsch hs:sonderwL) {
+		for (HausSonderwunsch hs : sonderwL) {
 			em.remove(em.contains(hs) ? hs : em.merge(hs));
 		}
-		haus.getHausSonderwunsch().removeAll(sonderwL);	
+		haus.getHausSonderwunsch().removeAll(sonderwL);
 	}
 
 	public void editSonderwunsch(Sonderwunsch sonderwunsch) {
@@ -519,93 +533,93 @@ public class SonderwuenschHandler {
 	 * <p>
 	 * Kategorie:Grundriss
 	 * <ul>
-	 * <li>2 Wand zur Abtrennung der Küche von dem Essbereich
-	 * <li>3 Tür in der Wand zwischen Küche und Essbereich
-	 * <li>4 Großes Zimmer im OG statt zwei kleinen Zimmern
-	 * <li>5 Abgetrennter Treppenraum im DG
-	 * <li>6 Vorrichtung eines Bades im DG
-	 * <li>7 Ausführung eines Bades im DG
+	 * <li>1 Wand zur Abtrennung der Küche von dem Essbereich
+	 * <li>2 Tür in der Wand zwischen Küche und Essbereich
+	 * <li>3 Großes Zimmer im OG statt zwei kleinen Zimmern
+	 * <li>4 Abgetrennter Treppenraum im DG
+	 * <li>5 Vorrichtung eines Bades im DG
+	 * <li>6 Ausführung eines Bades im DG
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:FensterUndAussentueren
 	 * <ul>
-	 * <li>9 Schiebetüren im EG zur Terrasse
-	 * <li>10 Schiebetüren im DG zur Dachterrasse
-	 * <li>11 Erhöhter Einbruchschutz an der Haustür
-	 * <li>12 Vorbereitung für elektrische Antriebe Rolläden EG
-	 * <li>13 Vorbereitung für elektrische Antriebe Rolläden OG
-	 * <li>14 Vorbereitung für elektrische Antriebe Rolläden DG
-	 * <li>15 Elektrische Rolläden EG
-	 * <li>16 Elektrische Rolläden OG
-	 * <li>17 Elektrische Rolläden DG
+	 * <li>7  Schiebetüren im EG zur Terrasse
+	 * <li>8  Schiebetüren im DG zur Dachterrasse
+	 * <li>9  Erhöhter Einbruchschutz an der Haustür
+	 * <li>10 Vorbereitung für elektrische Antriebe Rolläden EG
+	 * <li>11 Vorbereitung für elektrische Antriebe Rolläden OG
+	 * <li>12 Vorbereitung für elektrische Antriebe Rolläden DG
+	 * <li>13 Elektrische Rolläden EG
+	 * <li>14 Elektrische Rolläden OG
+	 * <li>15 Elektrische Rolläden DG
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:Innentüren
 	 * <ul>
-	 * <li>19 Mehrpreis für die Ausführung eines Glasausschnitts (Klarglas) in einer
+	 * <li>16 Mehrpreis für die Ausführung eines Glasausschnitts (Klarglas) in einer
 	 * Innentür
-	 * <li>20 Mehrpreis für die Ausführung eines Glasausschnitts (Milchglas) in
+	 * <li>17 Mehrpreis für die Ausführung eines Glasausschnitts (Milchglas) in
 	 * einer Innentür
-	 * <li>21 Innentür zur Garage als Holztür
+	 * <li>18 Innentür zur Garage als Holztür
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:Heizungen
 	 * <ul>
-	 * <li>23 Mehrpreis für einen zusätzlichen Standard-Heizkörper
-	 * <li>24 Mehrpreis für einen Heizkörper mit glatter Oberfläche
-	 * <li>25 Handtuchheizkörper
-	 * <li>26 Fußbodenheizung ohne DG
-	 * <li>27 Fußbodenheizung mit DG
+	 * <li>19 Mehrpreis für einen zusätzlichen Standard-Heizkörper
+	 * <li>20 Mehrpreis für einen Heizkörper mit glatter Oberfläche
+	 * <li>21 Handtuchheizkörper
+	 * <li>22 Fußbodenheizung ohne DG
+	 * <li>23 Fußbodenheizung mit DG
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:Sanitärinstalltation
 	 * <ul>
-	 * <li>29 Mehrpreis für ein größeres Waschbecken im OG
-	 * <li>30 Mehrpreis für ein größeres Waschbecken im DG
-	 * <li>31 Mehrpreis für eine bodentiefe Dusche im OG
-	 * <li>32 Mehrpreis für eine bodentiefe Dusche im DG
+	 * <li>24 Mehrpreis für ein größeres Waschbecken im OG
+	 * <li>25 Mehrpreis für ein größeres Waschbecken im DG
+	 * <li>26 Mehrpreis für eine bodentiefe Dusche im OG
+	 * <li>27 Mehrpreis für eine bodentiefe Dusche im DG
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:Fliesen
 	 * <ul>
-	 * <li>34 Keine Fliesen im Küchenbereich des EG
-	 * <li>35 Keine Fliesen im Bad des OG
-	 * <li>36 Mehrpreis bei großformatige Fliesen im Küchenbereich des EG
-	 * <li>37 Mehrpreis bei großformatige Fliesen im Bad des OG
-	 * <li>38 Fliesen im Bad des DG
-	 * <li>39 Mehrpreis bei großformatige Fliesen im Bad des DG
+	 * <li>28 Keine Fliesen im Küchenbereich des EG
+	 * <li>29 Keine Fliesen im Bad des OG
+	 * <li>30 Mehrpreis bei großformatige Fliesen im Küchenbereich des EG
+	 * <li>31 Mehrpreis bei großformatige Fliesen im Bad des OG
+	 * <li>32 Fliesen im Bad des DG
+	 * <li>33 Mehrpreis bei großformatige Fliesen im Bad des DG
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:Parkett
 	 * <ul>
-	 * <li>41 Landhausdielen massiv im Essbereich des EG
-	 * <li>42 Landhausdielen massiv im Küchenbereich des EG
-	 * <li>43 Stäbchenparkett im Essbereich des EG
-	 * <li>44 Stäbchenparkett im Küchenbereich des EG
-	 * <li>45 Landhausdielen massiv im OG
-	 * <li>46 Stäbchenparkett im OG
-	 * <li>47 Landhausdielen massiv komplett im DG
-	 * <li>48 Landhausdielen massiv ohne Badbereich im DG
-	 * <li>49 Stäbchenparkett im DG komplett im DG
-	 * <li>50 Stäbchenparkett ohne Badbereich im DG
+	 * <li>34 Landhausdielen massiv im Essbereich des EG
+	 * <li>35 Landhausdielen massiv im Küchenbereich des EG
+	 * <li>36 Stäbchenparkett im Essbereich des EG
+	 * <li>37 Stäbchenparkett im Küchenbereich des EG
+	 * <li>38 Landhausdielen massiv im OG
+	 * <li>39 Stäbchenparkett im OG
+	 * <li>40 Landhausdielen massiv komplett im DG
+	 * <li>41 Landhausdielen massiv ohne Badbereich im DG
+	 * <li>42 Stäbchenparkett im DG komplett im DG
+	 * <li>43 Stäbchenparkett ohne Badbereich im DG
 	 * </ul>
 	 * <p>
 	 * <p>
 	 * Kategorie:Außenanlagen
 	 * <ul>
-	 * <li>52 Abstellraum auf der Terrasse des EG
-	 * <li>53 Vorbereitung für elektrische Antriebe Markise EG
-	 * <li>54 Vorbereitung für elektrische Antriebe Markise DG
-	 * <li>55 Elektrische Markise EG
-	 * <li>56 Elektrische Markise DG
-	 * <li>57 Elektrischen Antrieb für das Garagentor
-	 * <li>58 Sektionaltor anstatt Schwingtor für die Garage
+	 * <li>44 Abstellraum auf der Terrasse des EG
+	 * <li>45 Vorbereitung für elektrische Antriebe Markise EG
+	 * <li>46 Vorbereitung für elektrische Antriebe Markise DG
+	 * <li>47 Elektrische Markise EG
+	 * <li>48 Elektrische Markise DG
+	 * <li>49 Elektrischen Antrieb für das Garagentor
+	 * <li>50 Sektionaltor anstatt Schwingtor für die Garage
 	 * </ul>
 	 * <p>
 	 * 

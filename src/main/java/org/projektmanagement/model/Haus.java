@@ -30,7 +30,7 @@ public class Haus {
 	@JoinColumn(name = "haustyp_id")
 	private Haustyp housetyp;
 
-	@OneToMany(mappedBy = "haus", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "haus", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<HausSonderwunsch> hausSonderwunsch = new ArrayList<HausSonderwunsch>();
     public List<HausSonderwunsch> getHausSonderwunsch() {
         return hausSonderwunsch;

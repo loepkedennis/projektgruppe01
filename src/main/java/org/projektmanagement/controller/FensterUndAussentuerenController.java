@@ -189,6 +189,12 @@ public class FensterUndAussentuerenController {
 			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden DG"))
 				EleRolDGCheckBox.setSelected(true);
 		}
+		
+		if(kunde.getHouses().get(0).getHousetyp().getId()==2) {
+			VorfeleAntRolDGCheckBox.setDisable(true);
+			EleRolDGCheckBox.setDisable(true);
+		}
+		
 		preisBerechnen();
 	}
 
