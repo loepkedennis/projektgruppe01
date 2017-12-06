@@ -1,20 +1,17 @@
 package org.projektmanagement;
 
+import org.projektmanagement.config.AppConfig;
+import org.projektmanagement.config.ApplicationContextProvider;
+import org.projektmanagement.service.SonderwunschService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import org.projektmanagement.config.AppConfig;
-import org.projektmanagement.config.ApplicationContextProvider;
-import org.projektmanagement.handler.KundenHandler;
-import org.projektmanagement.model.Kunde;
-import org.projektmanagement.service.KundenService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MainApp extends Application {
 
@@ -25,7 +22,7 @@ public class MainApp extends Application {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class,
 				ApplicationContextProvider.class);
 		ctx.scan("org.projektmanagement");
-
+		new SonderwunschService().getSonderwunschHandler().initSonderwunsch();
 		launch(args);
 	}
 

@@ -1,22 +1,20 @@
 package org.projektmanagement.controller;
 
 import java.io.FileWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
+import org.projektmanagement.model.HausSonderwunsch;
 import org.projektmanagement.model.Kunde;
-import org.projektmanagement.service.KundenService;
+import org.projektmanagement.model.Sonderwunsch;
 import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -26,7 +24,7 @@ import javafx.stage.Stage;
  * @author Stanislaus Bosch
  *
  */
-public class FensterUndAussentuerenController implements Initializable {
+public class FensterUndAussentuerenController {
 
 	private static final Logger log = LoggerFactory.getLogger(FensterUndAussentuerenController.class);
 
@@ -73,16 +71,11 @@ public class FensterUndAussentuerenController implements Initializable {
 
 	private Stage stage;
 
-	private KundenService kundenService = new KundenService();
 	private SonderwunschService sonderwunschService = new SonderwunschService();
 	private Kunde kunde;
 
 	private class Holder {
-		public Holder(double v) {
-			value = v;
-		}
-
-		public double value;
+		public double value = 0;
 	}
 
 	private Holder schiEGzTerPreis, schiDGzDacPreis, erhEinadHauPreis, vorfeleAntRolEGPreis, vorfeleAntRolOGPreis,
@@ -104,28 +97,26 @@ public class FensterUndAussentuerenController implements Initializable {
 	 */
 	public FensterUndAussentuerenController() {
 		super();
+
 	}
 
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	@FXML
+	public void initialize() {
 		log.debug("initialize FensterUndAussentuerenController");
-		// TODO get the prices from the db
 
-		/*
-		 * for(Label l : labelMap.keySet()) for(Sonderwunsch s
-		 * :sonderwunschService.getSonderwunschHandler().getAllSonderwunsch())
-		 * if(s.getName() == l.getText()) checkBoxMap.get(labelMap.get(l)).value =
-		 * s.getPreis();
-		 */
-		schiEGzTerPreis = new Holder(590);
-		schiDGzDacPreis = new Holder(590);
-		erhEinadHauPreis = new Holder(690);
-		vorfeleAntRolEGPreis = new Holder(190);
-		vorfeleAntRolOGPreis = new Holder(190);
-		vorfeleAntRolDGPreis = new Holder(190);
-		eleRolEGPreis = new Holder(990);
-		eleRolOGPreis = new Holder(990);
-		eleRolDGPreis = new Holder(990);
+	}
+
+	public void init() {
 		
+		schiEGzTerPreis = new Holder();
+		schiDGzDacPreis = new Holder();
+		erhEinadHauPreis = new Holder();
+		vorfeleAntRolEGPreis = new Holder();
+		vorfeleAntRolOGPreis = new Holder();
+		vorfeleAntRolDGPreis = new Holder();
+		eleRolEGPreis = new Holder();
+		eleRolOGPreis = new Holder();
+		eleRolDGPreis = new Holder();
 
 		this.labelMap = new HashMap<Label, CheckBox>();
 
@@ -151,30 +142,108 @@ public class FensterUndAussentuerenController implements Initializable {
 		this.checkBoxMap.put(EleRolOGCheckBox, eleRolOGPreis);
 		this.checkBoxMap.put(EleRolDGCheckBox, eleRolDGPreis);
 
+		// hole die Preise aus der Datenbank
+
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getAllSonderwunsch()) {
+			if (s.getName().equals("Schiebetüren im EG zur Terrasse"))
+				schiEGzTerPreis.value = s.getPreis();
+			if (s.getName().equals("Schiebetüren im DG zur Dachterrasse"))
+				schiDGzDacPreis.value = s.getPreis();
+			if (s.getName().equals("Erhöhter Einbruchschutz an der Haustür"))
+				erhEinadHauPreis.value = s.getPreis();
+			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
+				vorfeleAntRolEGPreis.value = s.getPreis();
+			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
+				vorfeleAntRolOGPreis.value = s.getPreis();
+			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
+				vorfeleAntRolDGPreis.value = s.getPreis();
+			if (s.getName().equals("Elektrische Rolläden EG"))
+				eleRolEGPreis.value = s.getPreis();
+			if (s.getName().equals("Elektrische Rolläden OG"))
+				eleRolOGPreis.value = s.getPreis();
+			if (s.getName().equals("Elektrische Rolläden DG"))
+				eleRolDGPreis.value = s.getPreis();
+		}
 		for (Label l : labelMap.keySet()) {
 			l.setText(checkBoxMap.get(labelMap.get(l)).value + "€");
 		}
 
-		/*
-		 * TODO Get the selected sonderwuensche from the DB!!!
-		 * 
-		 * for (Sonderwunsch s: this.kunde.getHouses().get(0).getSonderwuensche()) {
-		 * for(Label l : labelMap.keySet()) { if(s.getName().equals(l.getText())){
-		 * labelMap.get(l).setSelected(true); } } preisBerechnen();
-		 */
-		for (CheckBox c : checkBoxMap.keySet())
-			c.setSelected(false);
+		for (HausSonderwunsch hs : this.sonderwunschService.getSonderwunschHandler()
+				.getSonderwunscheHouse(this.kunde)) {
+			if (hs.getSonderwunsch().getName().equals("Schiebetüren im EG zur Terrasse"))
+				SchiEGzTerCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Schiebetüren im DG zur Dachterrasse"))
+				SchiDGzDacCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Erhöhter Einbruchschutz an der Haustür"))
+				ErhEinadHauCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
+				VorfeleAntRolEGCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
+				VorfeleAntRolOGCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
+				VorfeleAntRolDGCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden EG"))
+				EleRolEGCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden OG"))
+				EleRolOGCheckBox.setSelected(true);
+			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden DG"))
+				EleRolDGCheckBox.setSelected(true);
+		}
 		preisBerechnen();
 	}
 
 	@FXML
 	public void speichern() {
-		// TODO save the informations in the DB
-		/*
-		 * for(Label label : labelMap.keySet()) { if(labelMap.get(label).isSelected())
-		 * this.kunde.getHouses().get(0).getSonderwuensche().add(sonderwunschService.
-		 * getSonderwunschHandler().getSonderwunsch(...)) }
-		 */
+
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getAllSonderwunsch()) {
+
+			if (s.getName().equals("Schiebetüren im EG zur Terrasse"))
+				if (SchiEGzTerCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Schiebetüren im DG zur Dachterrasse"))
+				if (SchiDGzDacCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Erhöhter Einbruchschutz an der Haustür"))
+				if (ErhEinadHauCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
+				if (VorfeleAntRolEGCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
+				if (VorfeleAntRolOGCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
+				if (VorfeleAntRolDGCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Elektrische Rolläden EG"))
+				if (EleRolEGCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Elektrische Rolläden OG"))
+				if (EleRolOGCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+			if (s.getName().equals("Elektrische Rolläden DG"))
+				if (EleRolDGCheckBox.isSelected())
+					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
+				else
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
+		}
+
 	}
 
 	@FXML

@@ -47,7 +47,8 @@ public class AppConfig {
 	private Properties getProperties() {
 		Properties props = new Properties();
 		props.setProperty("hibernate.hbm2ddl.auto", "create");
-		// props.setProperty("hibernate.hbm2ddl.auto", "validate");
+		//props.setProperty("hibernate.hbm2ddl.auto", "validate");
+		//props.setProperty("hibernate.hbm2ddl.auto", "update");
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		// props.setProperty("hibernate.dialect",
 		// "org.hibernate.dialect.MySQL5Dialect");

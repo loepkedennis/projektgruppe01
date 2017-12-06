@@ -1,8 +1,6 @@
 package org.projektmanagement.model;
 
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,22 +15,34 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Sonderwunsch {
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "sonderwunsch_id")
 	private long id;
-	
+
 	private String name;
-	
+
 	private double preis;
-	
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name = "haus_id")
-	private Haus sonderwuensch;
-		
-	@OneToMany(mappedBy="sonderwunsch",fetch=FetchType.EAGER)
-	private List<Kategorie> kategroien = new ArrayList<Kategorie>();
+
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "kategorie_id")
+	private Kategorie kategroie;
+
+	@OneToMany(mappedBy = "sonderwunsch", fetch = FetchType.EAGER)
+	private List<HausSonderwunsch> hausSonderwunsch = new ArrayList<HausSonderwunsch>();
+
+	public List<HausSonderwunsch> getHausSonderwunsch() {
+		return hausSonderwunsch;
+	}
+
+	public void setHausSonderwunsch(List<HausSonderwunsch> groups) {
+		this.hausSonderwunsch = groups;
+	}
+
+	public void addHausSonderwunsch(HausSonderwunsch userGroup) {
+		this.hausSonderwunsch.add(userGroup);
+	}
 
 	public long getId() {
 		return id;
@@ -58,25 +68,12 @@ public class Sonderwunsch {
 		this.preis = preis;
 	}
 
-	public List<Kategorie> getKategroien(){
-		return kategroien;
+	public Kategorie getKategroien() {
+		return kategroie;
 	}
 
-	public void setKategroien(List<Kategorie> kategroien) {
-		this.kategroien = kategroien;
+	public void setKategroien(Kategorie kategroien) {
+		this.kategroie = kategroien;
 	}
 
-	public Haus getSonderwuensch() {
-		return sonderwuensch;
-	}
-
-	public void setSonderwuensch(Haus sonderwuensch) {
-		this.sonderwuensch = sonderwuensch;
-	}
-	
-	
-
-
-	
-	
 }

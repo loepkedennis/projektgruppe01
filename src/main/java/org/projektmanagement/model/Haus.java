@@ -1,6 +1,5 @@
 package org.projektmanagement.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
 public class Haus {
-
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +26,42 @@ public class Haus {
 	@JoinColumn(name = "kunde_id")
 	private Kunde besitzer;
 
-	@ManyToOne(cascade= {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
 	@JoinColumn(name = "haustyp_id")
 	private Haustyp housetyp;
-	
-	@OneToMany(mappedBy="sonderwuensch", fetch=FetchType.EAGER)
-	private List<Sonderwunsch>  sonderwuensche = new ArrayList<Sonderwunsch>();
-	
 
+	@OneToMany(mappedBy = "haus", fetch=FetchType.EAGER)
+	private List<HausSonderwunsch> hausSonderwunsch = new ArrayList<HausSonderwunsch>();
+    public List<HausSonderwunsch> getHausSonderwunsch() {
+        return hausSonderwunsch;
+    }
+ 
+    public void setHausSonderwunsch(List<HausSonderwunsch> groups) {
+        this.hausSonderwunsch = groups;
+    }
+     
+    public void addHausSonderwunsch(HausSonderwunsch userGroup) {
+        this.hausSonderwunsch.add(userGroup);
+    }
+	
+	
+	/*
+	@ManyToMany(cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	//(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})  
+	@JoinTable(name = "Haus_Sonderwunsch",
+		joinColumns=@JoinColumn(name="haus_id"),
+		inverseJoinColumns=@JoinColumn(name="sonderwunsch_id"))
+	private List<Sonderwunsch> sonderwuensche = new ArrayList<Sonderwunsch>();
+	
+	//public void addSonderwuensche(Sonderwunsch sonderwuensch) {
+	//    if (!getSonderwuensche().contains(sonderwuensch)) {
+	//    	getSonderwuensche().add(sonderwuensch);
+	//    }
+	//    if (!sonderwuensch.getHaus().contains(this)) {
+	//    	sonderwuensch.getHaus().add(this);
+	//    }
+	 // }
+	
 	public List<Sonderwunsch> getSonderwuensche() {
 		return sonderwuensche;
 	}
@@ -45,7 +69,7 @@ public class Haus {
 	public void setSonderwuensche(List<Sonderwunsch> sonderwuensche) {
 		this.sonderwuensche = sonderwuensche;
 	}
-
+	*/
 	public Haustyp getHousetyp() {
 		return housetyp;
 	}
@@ -69,7 +93,5 @@ public class Haus {
 	public void setBesitzer(Kunde besitzer) {
 		this.besitzer = besitzer;
 	}
-	
-	
-	
+
 }

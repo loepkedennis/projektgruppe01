@@ -126,13 +126,9 @@ public class CustomerAddController {
 			
 			
 			/* Dieser Bereich dient als Beispiel und sollte später gelöscht werden */
-			log.info("##### Testdaten eingefügt!");
+			//log.info("##### Testdaten eingefügt!");
 			
-			
-			Kunde k = kundenService.getKundenHandler().getKunde(1);
-			kundenService.getKundenHandler().addHouse(k);
-			Haus haus = kundenService.getKundenHandler().getKunde(1).getHouses().get(0);
-			sonderwunschService.getSonderwunschHandler().createSonderwunsch("Sonderwunsch Name", 10.00, "Kategorie Name", haus);
+			//kundenService.getKundenHandler().addHouse(k);
 			
 			// Ende Beispiel
 			

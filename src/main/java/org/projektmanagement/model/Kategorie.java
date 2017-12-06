@@ -1,28 +1,28 @@
 package org.projektmanagement.model;
 
-import javax.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Kategorie {
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "kategorie_id")
 	private long id;
-	
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name = "sonderwunsch_id")
-	private Sonderwunsch sonderwunsch;
-	
+
+	@OneToMany(mappedBy = "kategroie", fetch = FetchType.EAGER)
+	private List<Sonderwunsch> sonderwuensche = new ArrayList<Sonderwunsch>();
+
 	private String name;
 
-	
 	public long getId() {
 		return id;
 	}
@@ -31,12 +31,12 @@ public class Kategorie {
 		this.id = id;
 	}
 
-	public Sonderwunsch getSonderwunsch() {
-		return sonderwunsch;
+	public List<Sonderwunsch> getSonderwunsch() {
+		return sonderwuensche;
 	}
 
-	public void setSonderwunsch(Sonderwunsch sonderwunsch) {
-		this.sonderwunsch = sonderwunsch;
+	public void setSonderwunsch(List<Sonderwunsch> sonderwunsch) {
+		this.sonderwuensche = sonderwunsch;
 	}
 
 	public String getName() {
@@ -46,7 +46,5 @@ public class Kategorie {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
+
 }
