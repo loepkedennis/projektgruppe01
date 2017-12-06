@@ -1,15 +1,12 @@
 package org.projektmanagement.handler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.hibernate.Hibernate;
 import org.projektmanagement.model.Haus;
 import org.projektmanagement.model.HausSonderwunsch;
 import org.projektmanagement.model.Haustyp;
@@ -438,7 +435,16 @@ public class SonderwuenschHandler {
 	 * @return Die Sonderwuensche, die der Kunde bestellt hat
 	 */
 	public List<HausSonderwunsch> getSonderwunscheHouse(Kunde k) {
-		return k.getHouses().get(0).getHausSonderwunsch();
+
+		TypedQuery<HausSonderwunsch> query = em.createQuery(
+				"from HausSonderwunsch where fk_haus=" + k.getHouses().get(0).getId(), HausSonderwunsch.class);
+
+		List<HausSonderwunsch> list = query.getResultList();
+		if (list == null || list.isEmpty()) {
+			return new ArrayList<HausSonderwunsch>();
+		}
+		return list;
+
 	}
 
 	/**
@@ -452,15 +458,8 @@ public class SonderwuenschHandler {
 	 */
 	public void addSonderwunsch(Sonderwunsch sonderwunsch, Haus haus) {
 		HausSonderwunsch hs = new HausSonderwunsch(haus, sonderwunsch, 1);
-
-		// hs.setHaus(haus);
-		// hs.setSonderwunsch(sonderwunsch);
-		// hs.setMenge(1);
-
-		// haus.getHausSonderwunsch().add(hs);
-		// sonderwunsch.getHausSonderwunsch().add(hs);
-
 		em.persist(em.contains(hs) ? hs : em.merge(hs));
+
 	}
 
 	/**
@@ -478,13 +477,6 @@ public class SonderwuenschHandler {
 	public void addSonderwunsch(Sonderwunsch sonderwunsch, Haus haus, int menge) {
 		HausSonderwunsch hs = new HausSonderwunsch(haus, sonderwunsch, menge);
 
-		// hs.setHaus(haus);
-		// hs.setSonderwunsch(sonderwunsch);
-		// hs.setMenge(menge);
-
-		// haus.getHausSonderwunsch().add(hs);
-		// sonderwunsch.getHausSonderwunsch().add(hs);
-
 		em.persist(em.contains(hs) ? hs : em.merge(hs));
 	}
 
@@ -497,7 +489,6 @@ public class SonderwuenschHandler {
 	public void removeALLSonderwunsch(Haus haus) {
 		for (HausSonderwunsch hs : haus.getHausSonderwunsch())
 			em.remove(em.contains(hs) ? hs : em.merge(hs));
-		haus.getHausSonderwunsch().clear();
 	}
 
 	/**
@@ -507,16 +498,11 @@ public class SonderwuenschHandler {
 	 *            Das Haus, in dem der sonderwunsch entfernt werden soll
 	 */
 	public void removeSonderwunsch(Haus haus, Sonderwunsch sonderwunsch) {
-		List<HausSonderwunsch> sonderwL = new ArrayList<HausSonderwunsch>();
 
-		for (HausSonderwunsch s : haus.getHausSonderwunsch())
-			if (s.getSonderwunsch().getId() == sonderwunsch.getId()) {
-				sonderwL.add(s);
-			}
-
-		for (HausSonderwunsch hs : sonderwL)
+		HausSonderwunsch hs = em.find(HausSonderwunsch.class,
+				new HausSonderwunsch.HausSonderwunschId(haus.getId(), sonderwunsch.getId()));
+		if (hs != null)
 			em.remove(em.contains(hs) ? hs : em.merge(hs));
-
 	}
 
 	public void editSonderwunsch(Sonderwunsch sonderwunsch) {
@@ -624,7 +610,7 @@ public class SonderwuenschHandler {
 	 * <p>
 	 * 
 	 * @param id
-	 * @return
+	 * @return Sonderwunsch
 	 */
 	public Sonderwunsch getSonderwunsch(long id) {
 		return em.find(Sonderwunsch.class, id);
@@ -633,7 +619,7 @@ public class SonderwuenschHandler {
 	/**
 	 * Liefert alle Sonderwuensche, die in der Datenbank gespeichert sind.
 	 * 
-	 * @return
+	 * @return List<Sonderwunsch>
 	 */
 	public List<Sonderwunsch> getAllSonderwunsch() {
 		TypedQuery<Sonderwunsch> query = em.createQuery("from Sonderwunsch", Sonderwunsch.class);
@@ -641,6 +627,38 @@ public class SonderwuenschHandler {
 		List<Sonderwunsch> list = query.getResultList();
 		if (list == null || list.isEmpty()) {
 			return null;
+		}
+		return list;
+	}
+
+	/**
+	 * <h1>Liefert alle Sonderwünsche der Kategorie mit der id @param</h1>
+	 * 
+	 * @param id
+	 *            Kategorie ID
+	 * @return Liste von Sonderwünschen
+	 * 
+	 *         <p>
+	 *         <h2>Kategorien mit den IDs</h1>
+	 *         <ul>
+	 *         <li>ID 1: Grundriss
+	 *         <li>ID 2: FensterUndAussentueren
+	 *         <li>ID 3: Innentüren
+	 *         <li>ID 4: Heizungen
+	 *         <li>ID 5: Sanitärinstalltation
+	 *         <li>ID 6: Fliesen
+	 *         <li>ID 7: Parkett
+	 *         <li>ID 8: Außenanlagen
+	 *         </ul>
+	 *         <p>
+	 */
+	public List<Sonderwunsch> getSonderwunschByKategorieID(long id) {
+		TypedQuery<Sonderwunsch> query = em.createQuery("from Sonderwunsch where kategorie_id=" + id,
+				Sonderwunsch.class);
+
+		List<Sonderwunsch> list = query.getResultList();
+		if (list == null || list.isEmpty()) {
+			return new ArrayList<Sonderwunsch>();
 		}
 		return list;
 	}

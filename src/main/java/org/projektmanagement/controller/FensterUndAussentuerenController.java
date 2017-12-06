@@ -107,7 +107,7 @@ public class FensterUndAussentuerenController {
 	}
 
 	public void init() {
-		
+
 		schiEGzTerPreis = new Holder();
 		schiDGzDacPreis = new Holder();
 		erhEinadHauPreis = new Holder();
@@ -144,7 +144,7 @@ public class FensterUndAussentuerenController {
 
 		// hole die Preise aus der Datenbank
 
-		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getAllSonderwunsch()) {
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(2)) {
 			if (s.getName().equals("Schiebetüren im EG zur Terrasse"))
 				schiEGzTerPreis.value = s.getPreis();
 			if (s.getName().equals("Schiebetüren im DG zur Dachterrasse"))
@@ -168,33 +168,73 @@ public class FensterUndAussentuerenController {
 			l.setText(checkBoxMap.get(labelMap.get(l)).value + "€");
 		}
 
-		for (HausSonderwunsch hs : this.sonderwunschService.getSonderwunschHandler()
-				.getSonderwunscheHouse(this.kunde)) {
-			if (hs.getSonderwunsch().getName().equals("Schiebetüren im EG zur Terrasse"))
+		/*
+		 * for (HausSonderwunsch hs : this.sonderwunschService.getSonderwunschHandler()
+		 * .getSonderwunscheHouse(this.kunde)) { if
+		 * (hs.getSonderwunsch().getName().equals("Schiebetüren im EG zur Terrasse"))
+		 * SchiEGzTerCheckBox.setSelected(true); if
+		 * (hs.getSonderwunsch().getName().equals("Schiebetüren im DG zur Dachterrasse"
+		 * )) SchiDGzDacCheckBox.setSelected(true); if (hs.getSonderwunsch().getName().
+		 * equals("Erhöhter Einbruchschutz an der Haustür"))
+		 * ErhEinadHauCheckBox.setSelected(true); if (hs.getSonderwunsch().getName().
+		 * equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
+		 * VorfeleAntRolEGCheckBox.setSelected(true); if
+		 * (hs.getSonderwunsch().getName().
+		 * equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
+		 * VorfeleAntRolOGCheckBox.setSelected(true); if
+		 * (hs.getSonderwunsch().getName().
+		 * equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
+		 * VorfeleAntRolDGCheckBox.setSelected(true); if
+		 * (hs.getSonderwunsch().getName().equals("Elektrische Rolläden EG"))
+		 * EleRolEGCheckBox.setSelected(true); if
+		 * (hs.getSonderwunsch().getName().equals("Elektrische Rolläden OG"))
+		 * EleRolOGCheckBox.setSelected(true); if
+		 * (hs.getSonderwunsch().getName().equals("Elektrische Rolläden DG"))
+		 * EleRolDGCheckBox.setSelected(true); }
+		 */
+
+		for (CheckBox cB : checkBoxMap.keySet())
+			cB.setSelected(false);
+
+		for (HausSonderwunsch hs : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) {
+			switch (Integer.valueOf((int) hs.getSonderwunsch().getId())) {
+			case 7:
 				SchiEGzTerCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Schiebetüren im DG zur Dachterrasse"))
+				break;
+			case 8:
 				SchiDGzDacCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Erhöhter Einbruchschutz an der Haustür"))
+				break;
+			case 9:
 				ErhEinadHauCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
+				break;
+			case 10:
 				VorfeleAntRolEGCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
+				break;
+			case 11:
 				VorfeleAntRolOGCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
+				break;
+			case 12:
 				VorfeleAntRolDGCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden EG"))
+				break;
+			case 13:
 				EleRolEGCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden OG"))
+				break;
+			case 14:
 				EleRolOGCheckBox.setSelected(true);
-			if (hs.getSonderwunsch().getName().equals("Elektrische Rolläden DG"))
+				break;
+			case 15:
 				EleRolDGCheckBox.setSelected(true);
+				break;
+
+			default:
+				break;
+			}
 		}
-		
-		if(kunde.getHouses().get(0).getHousetyp().getId()==2) {
+		if (kunde.getHouses().get(0).getHousetyp().getId() == 2) {
 			VorfeleAntRolDGCheckBox.setDisable(true);
 			EleRolDGCheckBox.setDisable(true);
 		}
-		
+
 		preisBerechnen();
 	}
 
@@ -249,6 +289,7 @@ public class FensterUndAussentuerenController {
 				else
 					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
 		}
+		preisBerechnen();
 
 	}
 
