@@ -513,10 +513,10 @@ public class SonderwuenschHandler {
 			if (s.getSonderwunsch().getId() == sonderwunsch.getId()) {
 				sonderwL.add(s);
 			}
-		for (HausSonderwunsch hs : sonderwL) {
+
+		for (HausSonderwunsch hs : sonderwL)
 			em.remove(em.contains(hs) ? hs : em.merge(hs));
-		}
-		haus.getHausSonderwunsch().removeAll(sonderwL);
+
 	}
 
 	public void editSonderwunsch(Sonderwunsch sonderwunsch) {
@@ -544,9 +544,9 @@ public class SonderwuenschHandler {
 	 * <p>
 	 * Kategorie:FensterUndAussentueren
 	 * <ul>
-	 * <li>7  Schiebetüren im EG zur Terrasse
-	 * <li>8  Schiebetüren im DG zur Dachterrasse
-	 * <li>9  Erhöhter Einbruchschutz an der Haustür
+	 * <li>7 Schiebetüren im EG zur Terrasse
+	 * <li>8 Schiebetüren im DG zur Dachterrasse
+	 * <li>9 Erhöhter Einbruchschutz an der Haustür
 	 * <li>10 Vorbereitung für elektrische Antriebe Rolläden EG
 	 * <li>11 Vorbereitung für elektrische Antriebe Rolläden OG
 	 * <li>12 Vorbereitung für elektrische Antriebe Rolläden DG

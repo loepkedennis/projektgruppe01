@@ -30,7 +30,7 @@ public class Haus {
 	@JoinColumn(name = "haustyp_id")
 	private Haustyp housetyp;
 
-	@OneToMany(mappedBy = "haus", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "haus", fetch=FetchType.EAGER,cascade = { CascadeType.REMOVE})
 	private List<HausSonderwunsch> hausSonderwunsch = new ArrayList<HausSonderwunsch>();
     public List<HausSonderwunsch> getHausSonderwunsch() {
         return hausSonderwunsch;
@@ -42,34 +42,8 @@ public class Haus {
      
     public void addHausSonderwunsch(HausSonderwunsch userGroup) {
         this.hausSonderwunsch.add(userGroup);
-    }
+    }	
 	
-	
-	/*
-	@ManyToMany(cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.EAGER)
-	//(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})  
-	@JoinTable(name = "Haus_Sonderwunsch",
-		joinColumns=@JoinColumn(name="haus_id"),
-		inverseJoinColumns=@JoinColumn(name="sonderwunsch_id"))
-	private List<Sonderwunsch> sonderwuensche = new ArrayList<Sonderwunsch>();
-	
-	//public void addSonderwuensche(Sonderwunsch sonderwuensch) {
-	//    if (!getSonderwuensche().contains(sonderwuensch)) {
-	//    	getSonderwuensche().add(sonderwuensch);
-	//    }
-	//    if (!sonderwuensch.getHaus().contains(this)) {
-	//    	sonderwuensch.getHaus().add(this);
-	//    }
-	 // }
-	
-	public List<Sonderwunsch> getSonderwuensche() {
-		return sonderwuensche;
-	}
-
-	public void setSonderwuensche(List<Sonderwunsch> sonderwuensche) {
-		this.sonderwuensche = sonderwuensche;
-	}
-	*/
 	public Haustyp getHousetyp() {
 		return housetyp;
 	}
