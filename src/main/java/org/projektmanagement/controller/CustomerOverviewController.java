@@ -370,13 +370,14 @@ public class CustomerOverviewController {
 			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/FensterAussentuerView.fxml"));			
 			FensterUndAussentuerenController fct = loader.<FensterUndAussentuerenController>getController();
 			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
-			fct.init();
-			Scene scene = new Scene(root, 560, 400);
-			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
 			
-			Stage stage = new Stage();
+			Scene scene = new Scene(root, 560, 410);
+			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());			
+			Stage stage = new Stage();		
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setScene(scene);
+			
+			fct.init(2, stage);
 			stage.showAndWait();			
 		}
 			

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.projektmanagement.model.HausSonderwunsch;
 import org.projektmanagement.model.Kunde;
@@ -14,10 +15,20 @@ import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.util.concurrent.Service;
+
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * 
@@ -29,66 +40,25 @@ public class FensterUndAussentuerenController {
 	private static final Logger log = LoggerFactory.getLogger(FensterUndAussentuerenController.class);
 
 	@FXML
-	Label SchiEGzTerLabel;
-	@FXML
-	Label SchiDGzDacLabel;
-	@FXML
-	Label ErhEinadHauLabel;
-	@FXML
-	Label VorfeleAntRolLabel;
-	@FXML
-	Label VorfeleAntRolEGLabel;
-	@FXML
-	Label VorfeleAntRolOGLabel;
-	@FXML
-	Label VorfeleAntRolDGLabel;
-	@FXML
-	Label EleRolEGLabel;
-	@FXML
-	Label EleRolOGLabel;
-	@FXML
-	Label EleRolDGLabel;
-	@FXML
-	CheckBox SchiEGzTerCheckBox;
-	@FXML
-	CheckBox SchiDGzDacCheckBox;
-	@FXML
-	CheckBox ErhEinadHauCheckBox;
-	@FXML
-	CheckBox VorfeleAntRolEGCheckBox;
-	@FXML
-	CheckBox VorfeleAntRolOGCheckBox;
-	@FXML
-	CheckBox VorfeleAntRolDGCheckBox;
-	@FXML
-	CheckBox EleRolEGCheckBox;
-	@FXML
-	CheckBox EleRolOGCheckBox;
-	@FXML
-	CheckBox EleRolDGCheckBox;
-	@FXML
-	Label geskostenLabel;
-
-	private Stage stage;
-
+	GridPane gridPane;
+	private Label geskostenLabel;
+	private List<Sonderwunsch> sonderwunsch;
 	private SonderwunschService sonderwunschService = new SonderwunschService();
 	private Kunde kunde;
-
-	private class Holder {
-		public double value = 0;
-	}
-
-	private Holder schiEGzTerPreis, schiDGzDacPreis, erhEinadHauPreis, vorfeleAntRolEGPreis, vorfeleAntRolOGPreis,
-			vorfeleAntRolDGPreis, eleRolEGPreis, eleRolOGPreis, eleRolDGPreis;
-
+	private long kategorieID;
+	private Stage stage;
 	/**
-	 * Keys: Labels Values: CheckBoxes
+	 * Keys: ID von den Sonderwünschen Values: Labels für die Beschreibung
 	 */
-	private Map<Label, CheckBox> labelMap;
+	private Map<Long, Label> IDlabelMap;
 	/**
 	 * Key: CheckBox Value: Price
 	 */
-	private Map<CheckBox, Holder> checkBoxMap;
+	private Map<CheckBox, Label> CheckPriceMap;
+	/**
+	 * Key: ID von den Sonderwünschen Values: CheckBox
+	 */
+	private Map<Long, CheckBox> IDCheckBoxMap;
 
 	/**
 	 * Erzeugt ein ControlObjekt fuer die Sonderwuensche fuer Fenster und
@@ -97,264 +67,109 @@ public class FensterUndAussentuerenController {
 	 */
 	public FensterUndAussentuerenController() {
 		super();
-
+		log.debug("initialisiere den FensterUndAussentuerenController");
 	}
 
-	@FXML
-	public void initialize() {
-		log.debug("initialize FensterUndAussentuerenController");
+	public void init(long id, Stage stage) {
+		this.stage = stage;
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
-	}
+			public void handle(WindowEvent event) {
+				boolean isChanged = false;
+				for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde))
+					if (!IDCheckBoxMap.containsKey(s.getSonderwunsch().getId()))
+						isChanged = true;
 
-	public void init() {
+				if (isChanged) {
+					Alert alert = new Alert(AlertType.NONE);
+					alert.setTitle("Bestätigung");
+					alert.setHeaderText("Wollen Sie speichern bevor Sie das Fenster schließen?");
+					alert.getButtonTypes().add(ButtonType.YES);
+					alert.getButtonTypes().add(ButtonType.NO);
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.NO)
+						alert.close();
+					else
+						speichern();
+				}
 
-		schiEGzTerPreis = new Holder();
-		schiDGzDacPreis = new Holder();
-		erhEinadHauPreis = new Holder();
-		vorfeleAntRolEGPreis = new Holder();
-		vorfeleAntRolOGPreis = new Holder();
-		vorfeleAntRolDGPreis = new Holder();
-		eleRolEGPreis = new Holder();
-		eleRolOGPreis = new Holder();
-		eleRolDGPreis = new Holder();
-
-		this.labelMap = new HashMap<Label, CheckBox>();
-
-		this.labelMap.put(SchiEGzTerLabel, SchiEGzTerCheckBox);
-		this.labelMap.put(SchiDGzDacLabel, SchiDGzDacCheckBox);
-		this.labelMap.put(ErhEinadHauLabel, ErhEinadHauCheckBox);
-		this.labelMap.put(VorfeleAntRolEGLabel, VorfeleAntRolEGCheckBox);
-		this.labelMap.put(VorfeleAntRolOGLabel, VorfeleAntRolOGCheckBox);
-		this.labelMap.put(VorfeleAntRolDGLabel, VorfeleAntRolDGCheckBox);
-		this.labelMap.put(EleRolEGLabel, EleRolEGCheckBox);
-		this.labelMap.put(EleRolOGLabel, EleRolOGCheckBox);
-		this.labelMap.put(EleRolDGLabel, EleRolDGCheckBox);
-
-		this.checkBoxMap = new HashMap<CheckBox, Holder>();
-
-		this.checkBoxMap.put(SchiEGzTerCheckBox, schiEGzTerPreis);
-		this.checkBoxMap.put(SchiDGzDacCheckBox, schiDGzDacPreis);
-		this.checkBoxMap.put(ErhEinadHauCheckBox, erhEinadHauPreis);
-		this.checkBoxMap.put(VorfeleAntRolEGCheckBox, vorfeleAntRolEGPreis);
-		this.checkBoxMap.put(VorfeleAntRolOGCheckBox, vorfeleAntRolOGPreis);
-		this.checkBoxMap.put(VorfeleAntRolDGCheckBox, vorfeleAntRolDGPreis);
-		this.checkBoxMap.put(EleRolEGCheckBox, eleRolEGPreis);
-		this.checkBoxMap.put(EleRolOGCheckBox, eleRolOGPreis);
-		this.checkBoxMap.put(EleRolDGCheckBox, eleRolDGPreis);
-
-		// hole die Preise aus der Datenbank
-
-		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(2)) {
-			if (s.getName().equals("Schiebetüren im EG zur Terrasse"))
-				schiEGzTerPreis.value = s.getPreis();
-			if (s.getName().equals("Schiebetüren im DG zur Dachterrasse"))
-				schiDGzDacPreis.value = s.getPreis();
-			if (s.getName().equals("Erhöhter Einbruchschutz an der Haustür"))
-				erhEinadHauPreis.value = s.getPreis();
-			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
-				vorfeleAntRolEGPreis.value = s.getPreis();
-			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
-				vorfeleAntRolOGPreis.value = s.getPreis();
-			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
-				vorfeleAntRolDGPreis.value = s.getPreis();
-			if (s.getName().equals("Elektrische Rolläden EG"))
-				eleRolEGPreis.value = s.getPreis();
-			if (s.getName().equals("Elektrische Rolläden OG"))
-				eleRolOGPreis.value = s.getPreis();
-			if (s.getName().equals("Elektrische Rolläden DG"))
-				eleRolDGPreis.value = s.getPreis();
-		}
-		for (Label l : labelMap.keySet()) {
-			l.setText(checkBoxMap.get(labelMap.get(l)).value + "€");
-		}
-
-		/*
-		 * for (HausSonderwunsch hs : this.sonderwunschService.getSonderwunschHandler()
-		 * .getSonderwunscheHouse(this.kunde)) { if
-		 * (hs.getSonderwunsch().getName().equals("Schiebetüren im EG zur Terrasse"))
-		 * SchiEGzTerCheckBox.setSelected(true); if
-		 * (hs.getSonderwunsch().getName().equals("Schiebetüren im DG zur Dachterrasse"
-		 * )) SchiDGzDacCheckBox.setSelected(true); if (hs.getSonderwunsch().getName().
-		 * equals("Erhöhter Einbruchschutz an der Haustür"))
-		 * ErhEinadHauCheckBox.setSelected(true); if (hs.getSonderwunsch().getName().
-		 * equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
-		 * VorfeleAntRolEGCheckBox.setSelected(true); if
-		 * (hs.getSonderwunsch().getName().
-		 * equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
-		 * VorfeleAntRolOGCheckBox.setSelected(true); if
-		 * (hs.getSonderwunsch().getName().
-		 * equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
-		 * VorfeleAntRolDGCheckBox.setSelected(true); if
-		 * (hs.getSonderwunsch().getName().equals("Elektrische Rolläden EG"))
-		 * EleRolEGCheckBox.setSelected(true); if
-		 * (hs.getSonderwunsch().getName().equals("Elektrische Rolläden OG"))
-		 * EleRolOGCheckBox.setSelected(true); if
-		 * (hs.getSonderwunsch().getName().equals("Elektrische Rolläden DG"))
-		 * EleRolDGCheckBox.setSelected(true); }
-		 */
-
-		for (CheckBox cB : checkBoxMap.keySet())
-			cB.setSelected(false);
-
-		for (HausSonderwunsch hs : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) {
-			switch (Integer.valueOf((int) hs.getSonderwunsch().getId())) {
-			case 7:
-				SchiEGzTerCheckBox.setSelected(true);
-				break;
-			case 8:
-				SchiDGzDacCheckBox.setSelected(true);
-				break;
-			case 9:
-				ErhEinadHauCheckBox.setSelected(true);
-				break;
-			case 10:
-				VorfeleAntRolEGCheckBox.setSelected(true);
-				break;
-			case 11:
-				VorfeleAntRolOGCheckBox.setSelected(true);
-				break;
-			case 12:
-				VorfeleAntRolDGCheckBox.setSelected(true);
-				break;
-			case 13:
-				EleRolEGCheckBox.setSelected(true);
-				break;
-			case 14:
-				EleRolOGCheckBox.setSelected(true);
-				break;
-			case 15:
-				EleRolDGCheckBox.setSelected(true);
-				break;
-
-			default:
-				break;
 			}
-		}
-		if (kunde.getHouses().get(0).getHousetyp().getId() == 2) {
-			VorfeleAntRolDGCheckBox.setDisable(true);
-			EleRolDGCheckBox.setDisable(true);
-		}
+		});
+		kategorieID = id;
+		geskostenLabel = new Label();
+		geskostenLabel.setScaleX(1.2);
+		geskostenLabel.setScaleY(1.2);
 
+		IDlabelMap = new HashMap<Long, Label>();
+		CheckPriceMap = new HashMap<CheckBox, Label>();
+		IDCheckBoxMap = new HashMap<Long, CheckBox>();
+		sonderwunsch = sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(kategorieID);
+
+		// hole die Beschreibung und Preise aus der Datenbank
+		for (Sonderwunsch s : sonderwunsch) {
+			IDlabelMap.put(s.getId(), new Label(s.getName()));
+			CheckBox c = new CheckBox();
+			CheckPriceMap.put(c, new Label(s.getPreis() + " €"));
+			IDCheckBoxMap.put(s.getId(), c);
+		}
+		// überprüfe den Haustypen
+		if (kunde.getHouses().get(0).getHousetyp().getId() == kategorieID) {
+			IDCheckBoxMap.get(8L).setDisable(true);
+			IDCheckBoxMap.get(12L).setDisable(true);
+			IDCheckBoxMap.get(15L).setDisable(true);
+		}
+		// aktualisiere die CheckBoxen
+		for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) {
+			if (s.getSonderwunsch().getKategroien().getId() == kategorieID)
+				IDCheckBoxMap.get(s.getSonderwunsch().getId()).setSelected(true);
+		}
+		// Füge alle Grafischen Elemente dem GridPane(GUI) hinzu
+		int rI = 0;
+		for (long j = sonderwunsch.get(0).getId(); j < sonderwunsch.get(0).getId() + sonderwunsch.size(); j++) {
+			gridPane.addRow(rI, IDlabelMap.get(j), CheckPriceMap.get(IDCheckBoxMap.get(j)), IDCheckBoxMap.get(j));
+			rI++;
+		}
+		gridPane.add(geskostenLabel, 1, rI + 1);
 		preisBerechnen();
 	}
 
 	@FXML
 	public void speichern() {
-
-		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getAllSonderwunsch()) {
-
-			if (s.getName().equals("Schiebetüren im EG zur Terrasse"))
-				if (SchiEGzTerCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Schiebetüren im DG zur Dachterrasse"))
-				if (SchiDGzDacCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Erhöhter Einbruchschutz an der Haustür"))
-				if (ErhEinadHauCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden EG"))
-				if (VorfeleAntRolEGCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden OG"))
-				if (VorfeleAntRolOGCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Vorbereitung für elektrische Antriebe Rolläden DG"))
-				if (VorfeleAntRolDGCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Elektrische Rolläden EG"))
-				if (EleRolEGCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Elektrische Rolläden OG"))
-				if (EleRolOGCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-			if (s.getName().equals("Elektrische Rolläden DG"))
-				if (EleRolDGCheckBox.isSelected())
-					this.sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, this.kunde.getHouses().get(0));
-				else
-					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(this.kunde.getHouses().get(0), s);
-		}
+		for (Sonderwunsch s : sonderwunsch)
+			if (IDCheckBoxMap.get(s.getId()).isSelected())
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(s, kunde.getHouses().get(0));
+			else
+				sonderwunschService.getSonderwunschHandler().removeSonderwunsch(kunde.getHouses().get(0), s);
 		preisBerechnen();
-
 	}
 
 	@FXML
 	public void preisBerechnen() {
 		int gesamtKosten = 0;
-		for (CheckBox cBox : checkBoxMap.keySet())
-			if (cBox.isSelected())
-				gesamtKosten += checkBoxMap.get(cBox).value;
-
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(2))
+			if (IDCheckBoxMap.containsKey(s.getId()) & IDCheckBoxMap.get(s.getId()).isSelected())
+				gesamtKosten += s.getPreis();
 		geskostenLabel.setText(gesamtKosten + " € ");
 	}
 
 	@FXML
 	public void csvExport() {
-
 		CSVExporter csvExport = new CSVExporter();
 		try {
-			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
+			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(null));
 			CSVExporter.writeLine(filePfad, getCSVAuswahl());
-
 			filePfad.flush();
 			filePfad.close();
 		} catch (Exception e) {
-
 		}
 	}
 
 	public List<String> getCSVAuswahl() {
 		List<String> listStrAuswahl = new ArrayList<String>();
-		if (this.SchiEGzTerCheckBox.isSelected())
-			listStrAuswahl.add("Schiebetüren im EG zur Dachterasse");
-		if (this.SchiDGzDacCheckBox.isSelected())
-			listStrAuswahl.add("Schiebetüren im DG zur Dachterasse");
-		if (this.ErhEinadHauCheckBox.isSelected())
-			listStrAuswahl.add("Erhöhter Einbruchschutz an der Haustür");
-		if (this.VorfeleAntRolEGCheckBox.isSelected())
-			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden EG");
-		if (this.VorfeleAntRolOGCheckBox.isSelected())
-			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden OG");
-		if (this.VorfeleAntRolDGCheckBox.isSelected())
-			listStrAuswahl.add("Vorbereitung für elektrische Antriebe Rolläden DG");
-		if (this.EleRolEGCheckBox.isSelected())
-			listStrAuswahl.add("Elektrische Rolläden EG");
-		if (this.EleRolOGCheckBox.isSelected())
-			listStrAuswahl.add("Elektrische Rolläden OG");
-		if (this.EleRolDGCheckBox.isSelected())
-			listStrAuswahl.add("Elektrische Rolläden DG");
-
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(2L))
+			if (IDCheckBoxMap.get(s.getId()).isSelected())
+				listStrAuswahl.add(s.getName());
 		return listStrAuswahl;
-	}
-
-	/**
-	 * @return the stage
-	 */
-	public Stage getStage() {
-		return stage;
-	}
-
-	/**
-	 * @param stage
-	 *            the stage to set
-	 */
-	public void setStage(Stage stage) {
-		this.stage = stage;
 	}
 
 	public void setKunde(Kunde selectedItem) {

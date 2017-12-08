@@ -2,8 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,7 +9,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projektmanagement.controller.FensterUndAussentuerenController">
@@ -49,129 +46,18 @@
 			<center>
 				<ScrollPane fitToHeight="true" fitToWidth="true" hmin="1.0" pannable="true" prefViewportHeight="200.0" prefViewportWidth="400.0" BorderPane.alignment="CENTER">
 					<content>
-						<GridPane prefHeight="400.0" prefWidth="790.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+						<GridPane id="mygridPane" fx:id="gridPane" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<columnConstraints>
 								<ColumnConstraints hgrow="ALWAYS" percentWidth="65.0" />
 								<ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" percentWidth="25.0" />
 								<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10.0" />
 							</columnConstraints>
-							<rowConstraints>
-								<RowConstraints vgrow="ALWAYS" />
-								<RowConstraints vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-								<RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-							</rowConstraints>
-							<children>
-								<CheckBox fx:id="SchiDGzDacCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-								<CheckBox fx:id="ErhEinadHauCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-								<CheckBox fx:id="VorfeleAntRolEGCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-								<Label text="Schiebetüren im EG zur Terrasse:">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Schiebetüren im DG zur Dachterrasse:" GridPane.rowIndex="1">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Erhöhter Einbruchschutz an der Haustür:" GridPane.rowIndex="2">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Vorbereitung für elektrische Antriebe Rolläden EG:" GridPane.rowIndex="3">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Vorbereitung für elektrische Antriebe Rolläden OG:" GridPane.rowIndex="4">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Vorbereitung für elektrische Antriebe Rolläden DG:" GridPane.rowIndex="5">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Elektrische Rolläden EG:" GridPane.rowIndex="6">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Elektrische Rolläden OG:" GridPane.rowIndex="7">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<Label text="Elektrische Rolläden DG:" GridPane.rowIndex="8">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-								<CheckBox fx:id="VorfeleAntRolOGCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-								<CheckBox fx:id="VorfeleAntRolDGCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-								<CheckBox fx:id="EleRolEGCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-								<CheckBox fx:id="EleRolOGCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-								<CheckBox fx:id="EleRolDGCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-								<Label fx:id="SchiEGzTerLabel" textAlignment="RIGHT" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="SchiDGzDacLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="ErhEinadHauLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="VorfeleAntRolEGLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="VorfeleAntRolOGLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="VorfeleAntRolDGLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="EleRolEGLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="EleRolOGLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<Label fx:id="EleRolDGLabel" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin></Label>
-								<CheckBox fx:id="SchiEGzTerCheckBox" mnemonicParsing="false" GridPane.columnIndex="2" />
-								<Label text="Gesamtkosten:" GridPane.rowIndex="9">
-									<padding>
-										<Insets left="10.0" />
-									</padding>
-								</Label>
-                        <Label fx:id="geskostenLabel" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Label>
-							</children>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
 						</GridPane>
 					</content>
 				</ScrollPane>
