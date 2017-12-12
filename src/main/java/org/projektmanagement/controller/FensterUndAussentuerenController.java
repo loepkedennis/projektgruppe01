@@ -15,7 +15,6 @@ import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.util.concurrent.Service;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
