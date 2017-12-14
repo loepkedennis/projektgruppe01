@@ -3,6 +3,7 @@ package org.projektmanagement.controller;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,17 +16,14 @@ import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -75,9 +73,23 @@ public class FensterUndAussentuerenController {
 
 			public void handle(WindowEvent event) {
 				boolean isChanged = false;
-				for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde))
-					if (!IDCheckBoxMap.containsKey(s.getSonderwunsch().getId()))
+				List<HausSonderwunsch> hsList = sonderwunschService.getSonderwunschHandler()
+						.getSonderwunscheHouse(kunde);
+
+				for (Iterator<HausSonderwunsch> iterator = hsList.iterator(); iterator.hasNext();) {
+					HausSonderwunsch hs = iterator.next();
+					if (hs.getSonderwunsch().getKategroien().getId() != kategorieID)
+						hsList.remove(hs);
+				}
+				for (HausSonderwunsch hs : hsList)
+					if (!IDCheckBoxMap.get(hs.getSonderwunsch().getId()).isSelected())
 						isChanged = true;
+				int i = 0;
+				for (Long l : IDCheckBoxMap.keySet())
+					if (IDCheckBoxMap.get(l).isSelected())
+						i++;
+				if (i != hsList.size())
+					isChanged = true;
 
 				if (isChanged) {
 					Alert alert = new Alert(AlertType.NONE);
@@ -145,7 +157,7 @@ public class FensterUndAussentuerenController {
 	@FXML
 	public void preisBerechnen() {
 		int gesamtKosten = 0;
-		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(2))
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(kategorieID))
 			if (IDCheckBoxMap.containsKey(s.getId()) & IDCheckBoxMap.get(s.getId()).isSelected())
 				gesamtKosten += s.getPreis();
 		geskostenLabel.setText(gesamtKosten + " € ");
@@ -155,7 +167,7 @@ public class FensterUndAussentuerenController {
 	public void csvExport() {
 		CSVExporter csvExport = new CSVExporter();
 		try {
-			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(null));
+			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(stage));
 			CSVExporter.writeLine(filePfad, getCSVAuswahl());
 			filePfad.flush();
 			filePfad.close();
@@ -165,7 +177,7 @@ public class FensterUndAussentuerenController {
 
 	public List<String> getCSVAuswahl() {
 		List<String> listStrAuswahl = new ArrayList<String>();
-		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(2L))
+		for (Sonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(kategorieID))
 			if (IDCheckBoxMap.get(s.getId()).isSelected())
 				listStrAuswahl.add(s.getName());
 		return listStrAuswahl;
