@@ -347,12 +347,34 @@ public class CustomerOverviewController {
 	
 	@FXML
 	public void innerDoors() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/InnentuerenView.fxml"));
-		Stage stage = new Stage();
-		stage.setTitle("Innentüren");
-		stage.setScene(new Scene(rootNode));
-		stage.show();
+		
+		
+		log.info("Starting Maske für \"Sonderwuensche fuer Innentueren\"");		
+		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information");
+			alert.setHeaderText("Wählen Sie bitte einen Kunden aus!");
+			alert.showAndWait();			
+		}
+		else
+		{					
+			FXMLLoader loader = new FXMLLoader();
+			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/InnentuerenView.fxml"));			
+			InnentuerenControl fct = loader.<InnentuerenControl>getController();
+			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			
+			Scene scene = new Scene(root, 560, 410);
+			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());			
+			Stage stage = new Stage();	
+			stage.setTitle("Innentüren");
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setScene(scene);
+			
+			fct.init(3, stage);
+			stage.showAndWait();			
+		}
+		
+		
 	}
 	
 	@FXML
