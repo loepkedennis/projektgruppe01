@@ -10,6 +10,7 @@ import java.util.List;
 import org.projektmanagement.model.HausSonderwunsch;
 import org.projektmanagement.model.Kunde;
 import org.projektmanagement.model.Sonderwunsch;
+import org.projektmanagement.service.KundenService;
 import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
 
@@ -78,7 +79,7 @@ public class HeizungController {
 	private Kunde kunde;
 	private List<Sonderwunsch> sonderwunsch;
 	private SonderwunschService sonderwunschService = new SonderwunschService();
-	
+	private KundenService kundenService = new KundenService();
 	
 	// Damit zwei Kommastellen angezeigt werden, wird mit f.format(double wert) gecastet
 	DecimalFormat f = new DecimalFormat("#0.00"); 
@@ -123,6 +124,11 @@ public class HeizungController {
 		// Ob das Haus im OG ein grosses Zimmer anstatt zwei kleine hat.	
 		
 		//sonderwunschService.getSonderwunschHandler().getSonderwunsch(1);
+		
+		if (kundenService.getKundenHandler().getHaustyp(kunde.getId()).getId() == 1)
+		{
+			dachgeschoss = true;
+		}
 		for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
 		{
 			// Großes Zimmer im OG
@@ -254,16 +260,16 @@ public class HeizungController {
 					AnzahlZusatzHeizung = s.getMenge();
 					txtZusatzHeizung.setText(AnzahlZusatzHeizung + "");
 				}
-				// ID der Glattenheizung 19
+				// ID der Glattenheizung 20
 				if (s.getSonderwunsch().getId() == 20)
 				{
 					AnzahlGlatteHeizung = s.getMenge();
 					txtGlatteHeizung.setText(AnzahlGlatteHeizung + "");
 				}
-				// ID der Handtuchheizung 20
+				// ID der Handtuchheizung 21
 				if (s.getSonderwunsch().getId() == 21)
 				{
-					AnzahlZusatzHeizung = s.getMenge();
+					AnzahlHandtuchHeizung = s.getMenge();
 					txtZusatzHandtuchHeizung.setText(AnzahlHandtuchHeizung + "");
 				}
 				if (s.getSonderwunsch().getId() == 22 || s.getSonderwunsch().getId() == 23)
@@ -329,7 +335,7 @@ public class HeizungController {
 		{
 			Ausgabe += "Glatteheizungen\t" + AnzahlGlatteHeizung + "\t\t" + f.format((AnzahlGlatteHeizung*preisGlatteHeizung)) + " €" + System.lineSeparator();
 		}
-		if (badimDach && AnzahlHandtuchHeizung != 0)
+		if (AnzahlHandtuchHeizung != 0)
 		{
 			Ausgabe += "Handtuchheizung\t" + AnzahlHandtuchHeizung + "\t\t" + f.format((AnzahlHandtuchHeizung*preisHandtuchHeizung)) + " €" + System.lineSeparator();
 		}
@@ -361,6 +367,7 @@ public class HeizungController {
 					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(kunde.getHouses().get(0), s.getSonderwunsch());
 				}
 			}
+			
 			if (AnzahlZusatzHeizung != 0)
 			{
 				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(19), kunde.getHouses().get(0), AnzahlZusatzHeizung);
@@ -428,6 +435,9 @@ public class HeizungController {
 		int anzahlGlatteHeizungen = 0;
 		int anzahlHandtuchHeizungen = 0;
 		double tmpPreisFussbodenHeizung = 0;
+		AnzahlZusatzHeizung = 0;
+		AnzahlGlatteHeizung = 0;
+		AnzahlHandtuchHeizung = 0;
 		
 		// Überprüfung ob die Anzahl der Eingegebenen Anzahl Zusatzheizung stimmt 1 - 5 und die Anzahl der Glatten Heizung aktualisieren
 		if (txtZusatzHeizung.getText().matches("[1-5]"))
