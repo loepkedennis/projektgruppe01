@@ -285,27 +285,27 @@ public class GrundrissController implements Initializable{
 		
 
 		if(this.rbOpt0.isSelected()) {
-			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(2), haus);			
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(1), haus);			
 			log.info("Special request {} added", rbOpt0.getText().replace(":",""));
 		}
 		if(this.rbOpt1.isSelected()) {
-			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(3), haus);			
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(2), haus);			
 			log.info("Special request {} added", rbOpt1.getText().replace(":",""));
 		}
 		if(this.rbOpt2.isSelected()) {
-			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(4), haus);			
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(3), haus);			
 			log.info("Special request {} added", rbOpt2.getText().replace(":",""));
 		}
 		if(this.rbOpt3.isSelected()) {
-			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(5), haus);			
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(4), haus);			
 			log.info("Special request {} added", rbOpt3.getText().replace(":",""));
 		}
 		if(this.rbOpt4.isSelected()) {
-			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(6), haus);			
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(5), haus);			
 			log.info("Special request {} added", rbOpt4.getText().replace(":",""));
 		}
 		if(this.rbOpt5.isSelected()) {
-			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(7), haus);			
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(6), haus);			
 			log.info("Special request {} added", rbOpt5.getText().replace(":",""));
 		}
 		

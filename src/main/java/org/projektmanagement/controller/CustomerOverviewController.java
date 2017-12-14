@@ -384,28 +384,35 @@ public class CustomerOverviewController {
 	}
 	@FXML
 	public void heizungen() throws IOException {
-		/*log.info("Starte Maske für \"Sonderwuensche fuer Heizungen\"");		
-		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Information");
-			alert.setHeaderText("Wählen Sie bitte einen Kunden aus!");
-			alert.showAndWait();			
-		}
-		else
-		{*/
+		log.info("Starte Maske für \"Sonderwuensche fuer Heizungen\"");
+		Kunde kunde = this.tableView.getSelectionModel().getSelectedItem();
+		if(kunde != null) 
+		{
+			
 			FXMLLoader loader = new FXMLLoader();
-			Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/HeizungView.fxml"));
-			
+			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/HeizungView.fxml"));
 			HeizungController hc = loader.<HeizungController>getController();
-			hc.setKunde(tableView.getSelectionModel().getSelectedItem());
+			hc.setKunde(kunde);
+			hc.init();
 			
-			Scene scene = new Scene(rootNode);
+			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
 			Stage stage = new Stage();
 			stage.setTitle("Heizungen");
 			stage.setScene(scene);
 			stage.show();
-		//}
+		}
+		else 
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Kunde nicht gefunden");
+			Label label = new Label("Es wurde kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
+			label.setWrapText(true);
+			alert.getDialogPane().setContent(label);
+			alert.showAndWait();
+		}
+		
 	}
 	@FXML
 	public void grundriss() throws IOException {

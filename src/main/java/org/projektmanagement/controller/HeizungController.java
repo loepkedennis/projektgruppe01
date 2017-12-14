@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.projektmanagement.model.HausSonderwunsch;
 import org.projektmanagement.model.Kunde;
 import org.projektmanagement.model.Sonderwunsch;
 import org.projektmanagement.service.SonderwunschService;
@@ -54,6 +55,8 @@ public class HeizungController {
 	private Label lblFussbodenheizung;
 	@FXML
 	private Label lblZusatzHeizung;
+	@FXML
+	private Label lblGlatteHeizung;
 	// TextField
 	@FXML
 	private TextField txtZusatzHeizung;
@@ -67,7 +70,9 @@ public class HeizungController {
 	@FXML
 	private Button btnAbbrechen;
 	@FXML
-	private Button btnCSVExport;	
+	private Button btnCSVExport;
+	@FXML
+	private Button btnLoeschen;
 	
 	//Kundenvariable
 	private Kunde kunde;
@@ -100,179 +105,178 @@ public class HeizungController {
 	boolean dachgeschoss = false;
 	boolean badimDach = false;
 	boolean grossesZimmerimOG = false;
-	boolean existiertSonderwunsch = false;
 	
-	@FXML
-	private void initialize()
+	public void init()
 	{
-		// Nur in Entwicklerversion wegen Entwicklercontrolls
-		// Anfang Zusatz Entwicklerblock /////////////////
-		if (dachgeschoss)								//
-		{												//
-			checkBoxBadDachgeschoss.setDisable(false);	//
-		}												//
-		else if (badimDach)								//
-		{												//
-			checkBoxBadDachgeschoss.setDisable(true);	//
-			checkBoxBadDachgeschoss.setSelected(false);	//
-			chkBadDach();								//
-		}												//
-		else											//
-		{												//
-			checkBoxBadDachgeschoss.setDisable(true);	//
-			checkBoxBadDachgeschoss.setSelected(false);	//
-		}												//
-		AnzahlHeizungen = 0;							//
-		AnzahlZusatzHeizung = 0;						//
-		AnzahlGlatteHeizung = 0;						//
-		AnzahlHandtuchHeizung = 0;				    	//
-														//
-														//
-		// Ende Zusatz Entwicklerblock ///////////////////
+		// Konfiguration aus der Datenbank ziehen:
+		//
+		// boolean dachgeschoss auf true setzen wenn ein Dachgeschoss vorhanden ist 
+		// boolean badimDach auf true setzen wenn ein Dachgeschoss und ein Bad im Dachgeschoss vorhanden ist
+		// boolean grossesZimmerimOG auf true setzen wenn ein grosses Zimmer vorhanden ist
+		//
+	
+	
+		// Daten aus der Datenbank holen: // noch zu machen  ES FEHLT DAS DACHGESCHOSS
+		// Es muss aus der Datenbak geholt werden:
+		// Der Haustyp: Ob das Haus ein Dachgeschoss hat oder nicht.
+		// Ob das Haus ein Dachgeschoss hat, wenn ja auch ob im Dachgeschoss ein Bad ausgeführt ist
+		// Ob das Haus im OG ein grosses Zimmer anstatt zwei kleine hat.	
 		
+		//sonderwunschService.getSonderwunschHandler().getSonderwunsch(1);
+		for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
+		{
+			// Großes Zimmer im OG
+			System.out.println(s.getSonderwunsch().getName());
+			if (s.getSonderwunsch().getId() == 3)
+			{
+				grossesZimmerimOG = true;
+			}
+			// Ausführung eines Bades im DG
+			if (s.getSonderwunsch().getId() == 6)
+			{
+				badimDach = true;
+			}
+				
+		}
 
-			// Konfiguration aus der Datenbank ziehen:
-			//
-			// boolean dachgeschoss auf true setzen wenn ein Dachgeschoss vorhanden ist 
-			// boolean badimDach auf true setzen wenn ein Dachgeschoss und ein Bad im Dachgeschoss vorhanden ist
-			// boolean grossesZimmerimOG auf true setzen wenn ein grosses Zimmer vorhanden ist
-			//
-			// Daten aus der Datenbank holen: // noch zu machen
-			// Es muss aus der Datenbak geholt werden:
-			// Der Haustyp: Ob das Haus ein Dachgeschoss hat oder nicht.
-			// Ob das Haus ein Dachgeschoss hat, wenn ja auch ob im Dachgeschoss ein Bad ausgeführt ist
-			// Ob das Haus im OG ein grosses Zimmer anstatt zwei kleine hat.
-			
-			
-			// Anzahl Heizungen anhannd der Konfiguration bestimmen:
-			// Anforderung:
-			//
-			// Keller: 	1, falls DG vorhanden
-			//			2, falls DG nicht vorhanden
-			// 
-			// EG:		2
-			//
-			// OG:		4, falls kein großes Zimmer im OG
-			// 			3, falls ein großes Zimmer im OG
-			//
-			// DG:		3, falls DG vorhanden und Bad im Dach ausgeführt
-			//			2, falls DG vorhanden 
-			//			0, falls DG nicht vorhanden
-			//
-			// Maximale mögliche Konfig:							Anzahl Heizung:
-			//	DG vorhanden	Bad im DG	Großes Zimmer im OG		Keller	EG	OG	DG	Gesamt		Stimmt Ergebnis
-			//	false			false		false					2		2	4	0	8			OK
-			//	false			false		true					2		2	3	0	7			OK
-			//	true			false		false					1		2	4	2	9			OK
-			//	true			false		true					1		2	3	2	8			OK
-			//	true			true		false					1		2	4	3	10			OK
-			//	true			true		true					1		2	3	3	9			OK
-			
-			// EG Heizungen ist immer 2
+		// Anzahl Heizungen anhannd der Konfiguration bestimmen:
+		// Anforderung:
+		//
+		// Keller: 	1, falls DG vorhanden
+		//			2, falls DG nicht vorhanden
+		// 
+		// EG:		2
+		//
+		// OG:		4, falls kein großes Zimmer im OG
+		// 			3, falls ein großes Zimmer im OG
+		//
+		// DG:		3, falls DG vorhanden und Bad im Dach ausgeführt
+		//			2, falls DG vorhanden 
+		//			0, falls DG nicht vorhanden
+		//
+		// Maximale mögliche Konfig:							Anzahl Heizung:
+		//	DG vorhanden	Bad im DG	Großes Zimmer im OG		Keller	EG	OG	DG	Gesamt		Stimmt Ergebnis
+		//	false			false		false					2		2	4	0	8			OK
+		//	false			false		true					2		2	3	0	7			OK
+		//	true			false		false					1		2	4	2	9			OK
+		//	true			false		true					1		2	3	2	8			OK
+		//	true			true		false					1		2	4	3	10			OK
+		//	true			true		true					1		2	3	3	9			OK
+		
+		// EG Heizungen ist immer 2
+		AnzahlHeizungen += 2;
+				
+		if (dachgeschoss)
+		{
+			// Wenn Dachgeschoss vorhanden, da Keller 1 und DG mindestens 2 hat wird mit 3 addiert 
+			AnzahlHeizungen += 3;
+		}
+		else
+		{
 			AnzahlHeizungen += 2;
-					
-			if (dachgeschoss)
+		}
+		if (grossesZimmerimOG)
+		{
+			AnzahlHeizungen += 3;
+		}
+		else
+		{
+			AnzahlHeizungen += 4;
+		}
+		if (dachgeschoss && badimDach)
+		{
+			// Wenn im Dach ein Bad ausgeführt ist ist im DG ein Zusätzlicher Heizkörper
+			AnzahlHeizungen += 1;
+			
+			// Wenn DG vorhanden und Bad im Dach vorhanden Handtuchheizung sichtbar machen
+			lblZusatzHandtuchHeizung.setVisible(true);
+			lblPreisZusatzHandtuchHeizung.setVisible(true);
+			txtZusatzHandtuchHeizung.setVisible(true);
+		}
+		else 
+		{
+			// Handtuchheizung unsichtbar machen
+			lblZusatzHandtuchHeizung.setVisible(false);
+			lblPreisZusatzHandtuchHeizung.setVisible(false);
+			txtZusatzHandtuchHeizung.setVisible(false);
+		}
+		
+		// Preise aus der Datenbank holen
+		// Es müssen die Preise von der Zusätzlichen Heizung, sowie
+	    // der Preis von den Glatten Heizungen, sowie
+		// der Preis von den Handtuchheizungen, sowie
+		// der Preis von der Fussbodenheizung ohne DG, sowie
+		// der Preis von der Fussbodenheizung mit DG geholt werden
+		sonderwunsch = sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(4);
+		preisZusatzHeizung = sonderwunsch.get(0).getPreis(); //660
+		preisGlatteHeizung = sonderwunsch.get(1).getPreis(); //160
+		preisHandtuchHeizung = sonderwunsch.get(2).getPreis(); //660
+		preisFussbodenHeizungohneDG = sonderwunsch.get(3).getPreis(); //8990
+		preisFussbodenHeizungmitDG = sonderwunsch.get(4).getPreis(); //9990
+		
+		/*sonderwunsch = sonderwunschService.getSonderwunschHandler().getAllSonderwunsch();
+		for (Sonderwunsch s : sonderwunsch) {
+				System.out.println(s.getName());
+				System.out.println(s.getPreis());
+				System.out.println(s.getId());
+				System.out.println(s.getKategroien().getId());
+		}
+		*/
+		
+		// Richtiger Preis für Fussbodenheizung setzen
+		if (dachgeschoss)
+		{
+			// Wenn Dachgeschoss vorhanden
+			preisFussbodenHeizung = preisFussbodenHeizungmitDG;
+		}
+		else
+		{
+			preisFussbodenHeizung = preisFussbodenHeizungohneDG;
+		}
+		
+		// Preislabels setzen
+		lblPreisZusatzHeizung.setText(lblPreisZusatzHeizung.getText().replaceAll("%", ""+f.format(preisZusatzHeizung)));
+		lblPreisGlatteHeizung.setText(lblPreisGlatteHeizung.getText().replaceAll("%", ""+f.format(preisGlatteHeizung)));
+		lblPreisZusatzHandtuchHeizung.setText(lblPreisZusatzHandtuchHeizung.getText().replaceAll("%", ""+f.format(preisHandtuchHeizung)));
+		checkBoxFussbodenheizung.setText(checkBoxFussbodenheizung.getText().replaceAll("%", ""+f.format(preisFussbodenHeizung)));
+		
+		// Wenn Sonderwünsche für Kunden existieren, Controls aktualisieren
+		btnLoeschen.setVisible(false);
+		for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
+		{
+			// Großes Zimmer im OG
+			if (s.getSonderwunsch().getKategroien().getId() == 4)
 			{
-				// Wenn Dachgeschoss vorhanden, da Keller 1 und DG mindestens 2 hat wird mit 3 addiert 
-				AnzahlHeizungen += 3;
+				sonderwunschService.getSonderwunschHandler().getSonderwunsch(1);
+				// ID der Zusatzheizung 19
+				if (s.getSonderwunsch().getId() == 19)
+				{
+					AnzahlZusatzHeizung = s.getMenge();
+					txtZusatzHeizung.setText(AnzahlZusatzHeizung + "");
+				}
+				// ID der Glattenheizung 19
+				if (s.getSonderwunsch().getId() == 20)
+				{
+					AnzahlGlatteHeizung = s.getMenge();
+					txtGlatteHeizung.setText(AnzahlGlatteHeizung + "");
+				}
+				// ID der Handtuchheizung 20
+				if (s.getSonderwunsch().getId() == 21)
+				{
+					AnzahlZusatzHeizung = s.getMenge();
+					txtZusatzHandtuchHeizung.setText(AnzahlHandtuchHeizung + "");
+				}
+				if (s.getSonderwunsch().getId() == 22 || s.getSonderwunsch().getId() == 23)
+				{
+					checkBoxFussbodenheizung.setSelected(true);
+				}
+				btnLoeschen.setVisible(true);
 			}
-			else
-			{
-				AnzahlHeizungen += 2;
-			}
-			if (grossesZimmerimOG)
-			{
-				AnzahlHeizungen += 3;
-			}
-			else
-			{
-				AnzahlHeizungen += 4;
-			}
-			if (dachgeschoss && badimDach)
-			{
-				// Wenn im Dach ein Bad ausgeführt ist ist im DG ein Zusätzlicher Heizkörper
-				AnzahlHeizungen += 1;
 				
-				// Wenn DG vorhanden und Bad im Dach vorhanden Handtuchheizung sichtbar machen
-				lblZusatzHandtuchHeizung.setVisible(true);
-				lblPreisZusatzHandtuchHeizung.setVisible(true);
-				txtZusatzHandtuchHeizung.setVisible(true);
-			}
-			else 
-			{
-				// Handtuchheizung unsichtbar machen
-				lblZusatzHandtuchHeizung.setVisible(false);
-				lblPreisZusatzHandtuchHeizung.setVisible(false);
-				txtZusatzHandtuchHeizung.setVisible(false);
-			}
-			
-			// Preise aus der Datenbank holen // noch zu machen
-				// Es müssen die Preise von der Zusätzlichen Heizung, sowie
-			    // der Preis von den Glatten Heizungen, sowie
-				// der Preis von den Handtuchheizungen, sowie
-				// der Preis von der Fussbodenheizung ohne DG, sowie
-				// der Preis von der Fussbodenheizung mit DG geholt werden
-			
-			// Statische Preise zwecks Entwicklung
-			preisZusatzHeizung = 660;	//Glatte Heizung Preis setzen 160 € je Stück
-			preisGlatteHeizung = 160;	//Zusatzheizung Preis setzen: 660 € je Stück	
-			preisHandtuchHeizung = 660;	//Handtuchheizung Preis setzen 660 € je Stück
-			preisFussbodenHeizungohneDG = 8990; // Fussbodenheizung ohne DG Preis setzen 8990 €
-			preisFussbodenHeizungmitDG = 9990; // Fussbodenheizung mit DG Preis setzen 9990 €
-			
-			// Richtiger Preis für Fussbodenheizung setzen
-			if (dachgeschoss)
-			{
-				// Wenn Dachgeschoss vorhanden
-				preisFussbodenHeizung = preisFussbodenHeizungmitDG;
-			}
-			else
-			{
-				preisFussbodenHeizung = preisFussbodenHeizungohneDG;
-			}
-			
-			// Preislabels setzen
-			lblPreisZusatzHeizung.setText(lblPreisZusatzHeizung.getText().replaceAll("%", ""+f.format(preisZusatzHeizung)));
-			lblPreisGlatteHeizung.setText(lblPreisGlatteHeizung.getText().replaceAll("%", ""+f.format(preisGlatteHeizung)));
-			lblPreisZusatzHandtuchHeizung.setText(lblPreisZusatzHandtuchHeizung.getText().replaceAll("%", ""+f.format(preisHandtuchHeizung)));
-			checkBoxFussbodenheizung.setText(checkBoxFussbodenheizung.getText().replaceAll("%", ""+f.format(preisFussbodenHeizung)));
-			
-			// Nur in Entwicklerversion wegen Entwicklercontrolls
-			// Anfang Zusatz Entwicklerblock ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			checkBoxFussbodenheizung.setText(checkBoxFussbodenheizung.getText().replaceAll("[0-9][0-9][0-9][0-9].[0-9][0-9]", ""+f.format(preisFussbodenHeizung)));   //
-			// Ende Zusatz Entwicklerblock //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-						
-			// Es muss aus der Datenbank mittels der KundeId gelesen werden ob der Sonderwunsch schon existiert, 
-			// wenn existiert existiertSonderwunsch auf true setzen und werte der Heizungen setzen:
-			
-			if (existiertSonderwunsch)
-			{
-				// Einzelne Anzahl der Zusätlichen Heizungen über DB setzen:
-				
-				// Statisch zwecks Entwicklung:
-					AnzahlZusatzHeizung = 5;
-					AnzahlGlatteHeizung = 12;
-					AnzahlHandtuchHeizung = 0;
-					FussbodenHeizung = true;
-					
-				// Setzen der einzelnen Textfields und Checkboxen auf den vorgesehenden Wert:
-					if (AnzahlZusatzHeizung != 0)
-					{
-						txtZusatzHeizung.setText(AnzahlZusatzHeizung + "");
-					}
-					if (AnzahlGlatteHeizung != 0)
-					{
-						txtGlatteHeizung.setText(AnzahlGlatteHeizung + "");
-					}
-					if (AnzahlHandtuchHeizung != 0)
-					{
-						txtZusatzHandtuchHeizung.setText(AnzahlHandtuchHeizung + "");
-					}
-					checkBoxFussbodenheizung.setSelected(FussbodenHeizung);
-			}
-			
-			// Update Labels etc. zu initialiseren				
-			Update();			
+		}	
+		
+		// Update Labels etc. zu initialiseren				
+		Update();			
 }
 	@FXML
 	private void CSVExport()
@@ -284,9 +288,9 @@ public class HeizungController {
 		ueberschrift.add("Fussbodenheizung");
 		ueberschrift.add("Gesamtpreis");
 		List <String> werte = new ArrayList<String>();
-		werte.add(txtZusatzHeizung.getText());
-		werte.add(txtGlatteHeizung.getText());
-		werte.add(txtZusatzHandtuchHeizung.getText());
+		werte.add(AnzahlZusatzHeizung + "");
+		werte.add(AnzahlGlatteHeizung + "");
+		werte.add(AnzahlHandtuchHeizung + "");
 		if (checkBoxFussbodenheizung.isSelected())
 		{
 			werte.add("ja");
@@ -349,13 +353,64 @@ public class HeizungController {
 			
 			// Push in die Datenbank (noch nicht realisiert)
 			
-			
-			
-			
+			// Vorher alle Einträge löschen
+			for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
+			{
+				if (s.getSonderwunsch().getKategroien().getId() == 4)
+				{
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(kunde.getHouses().get(0), s.getSonderwunsch());
+				}
+			}
+			if (AnzahlZusatzHeizung != 0)
+			{
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(19), kunde.getHouses().get(0), AnzahlZusatzHeizung);
+			}
+			if (AnzahlGlatteHeizung != 0)
+			{
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(20), kunde.getHouses().get(0), AnzahlGlatteHeizung);
+			}
+			if (badimDach && AnzahlHandtuchHeizung != 0)
+			{
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(21), kunde.getHouses().get(0), AnzahlHandtuchHeizung);
+			}
+			if (FussbodenHeizung && !dachgeschoss)
+			{
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(22), kunde.getHouses().get(0));
+			}
+			if (FussbodenHeizung && dachgeschoss)
+			{
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(23), kunde.getHouses().get(0));
+			}
 			// Form schliessen
 			Stage stage = (Stage) btnAbbrechen.getScene().getWindow();
 		    stage.close();
 		} 
+	}
+	@FXML
+	private void Loeschen()
+	{
+		Alert alert = new Alert(AlertType.NONE);
+		alert.setTitle("Löschen?");
+		alert.setHeaderText("Heizungssonderwünsche löschen");
+		Label label = new Label("Möchten Sie wirklich die Sonderwünsche löschen?");
+		label.setWrapText(true);
+		alert.getDialogPane().setContent(label);
+		alert.getButtonTypes().add(ButtonType.YES);
+		alert.getButtonTypes().add(ButtonType.NO);
+		// Wenn Ok gedrückt wird gespeichert
+		if (alert.showAndWait().get() == ButtonType.YES)
+		{
+			for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
+			{
+				if (s.getSonderwunsch().getKategroien().getId() == 4)
+				{
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(kunde.getHouses().get(0), s.getSonderwunsch());
+				}
+			}
+			// Form schliessen
+			Stage stage = (Stage) btnAbbrechen.getScene().getWindow();
+			stage.close();
+		}
 	}
 	@FXML
 	private void Update()
@@ -463,48 +518,8 @@ public class HeizungController {
 		Stage stage = (Stage) btnAbbrechen.getScene().getWindow();
 	    stage.close();
 	}
-	
-	@FXML
-	private void chkGrossesZimmer()
-	{
-		if (checkBoxGrossesZimmer.isSelected())
-		{
-			grossesZimmerimOG = true; 
-		}
-		else
-		{
-			grossesZimmerimOG = false;
-		}
-		initialize();
-	}
-	@FXML
-	private void chkDachgeschoss()
-	{
-		if (checkBoxDachgeschoss.isSelected())
-		{
-			dachgeschoss = true;
-		}
-		else
-		{
-			dachgeschoss = false;
-		}
-		initialize();
-	}
-	@FXML
-	private void chkBadDach()
-	{
-		if (checkBoxBadDachgeschoss.isSelected())
-		{
-			badimDach = true;
-		}
-		else
-		{
-			badimDach = false;
-		}
-		initialize();
-	}
 	public void setKunde(Kunde ikunde)
 	{
-		this.kunde = ikunde;
+		kunde = ikunde;
 	}
 }
