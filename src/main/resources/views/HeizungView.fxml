@@ -48,16 +48,16 @@
                   <Font name="System Bold" size="12.0" />
                </font></Label>
             <Label fx:id="lblFussbodenheizung" text="Fußbodenheizung" GridPane.rowIndex="8" />
-            <CheckBox fx:id="checkBoxFussbodenheizung" mnemonicParsing="false" onAction="#preisUpdate" text="\% €" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <CheckBox fx:id="checkBoxFussbodenheizung" mnemonicParsing="false" onAction="#Update" text="\% €" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Button fx:id="btnSpeichern" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Speichern" prefHeight="25.0" prefWidth="106.0" text="Speichern" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="10">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Button>
-            <TextField fx:id="txtZusatzHeizung" onKeyReleased="#preisUpdate" promptText="1 - 5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtZusatzHandtuchHeizung" onKeyReleased="#preisUpdate" promptText="1 - 2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="txtGlatteHeizung" onKeyReleased="#preisUpdate" promptText="1 - 8" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="lblZusatzHeiung" text="Zusätzliche Heizungen:" GridPane.rowIndex="2" />
+            <TextField fx:id="txtZusatzHeizung" onKeyReleased="#Update" promptText="1 - 5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtZusatzHandtuchHeizung" onKeyReleased="#Update" promptText="1 - 2" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="txtGlatteHeizung" onKeyReleased="#Update" promptText="1 - 8" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="lblZusatzHeizung" text="Zusätzliche Heizungen:" GridPane.rowIndex="2" />
             <Button fx:id="btnAbbrechen" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="106.0" text="Abbrechen" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <Label fx:id="lblERRZusatzHeizung" text="Fehler %" textFill="RED" GridPane.rowIndex="3" />
             <Label fx:id="lblERRZusatzHandtuchHeizung" text="Fehler %" textFill="RED" GridPane.rowIndex="7" />

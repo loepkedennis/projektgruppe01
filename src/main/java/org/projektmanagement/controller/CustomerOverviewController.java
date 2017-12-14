@@ -384,12 +384,28 @@ public class CustomerOverviewController {
 	}
 	@FXML
 	public void heizungen() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/HeizungView.fxml"));
-		Stage stage = new Stage();
-		stage.setTitle("Heizungen");
-		stage.setScene(new Scene(rootNode));
-		stage.show();
+		/*log.info("Starte Maske für \"Sonderwuensche fuer Heizungen\"");		
+		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information");
+			alert.setHeaderText("Wählen Sie bitte einen Kunden aus!");
+			alert.showAndWait();			
+		}
+		else
+		{*/
+			FXMLLoader loader = new FXMLLoader();
+			Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/HeizungView.fxml"));
+			
+			HeizungController hc = loader.<HeizungController>getController();
+			hc.setKunde(tableView.getSelectionModel().getSelectedItem());
+			
+			Scene scene = new Scene(rootNode);
+			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setTitle("Heizungen");
+			stage.setScene(scene);
+			stage.show();
+		//}
 	}
 	@FXML
 	public void grundriss() throws IOException {
