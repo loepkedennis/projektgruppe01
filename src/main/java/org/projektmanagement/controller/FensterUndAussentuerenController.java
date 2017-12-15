@@ -73,13 +73,12 @@ public class FensterUndAussentuerenController {
 
 			public void handle(WindowEvent event) {
 				boolean isChanged = false;
-				List<HausSonderwunsch> hsList = sonderwunschService.getSonderwunschHandler()
+				List<HausSonderwunsch> hsListTemp = sonderwunschService.getSonderwunschHandler()
 						.getSonderwunscheHouse(kunde);
-
-				for (Iterator<HausSonderwunsch> iterator = hsList.iterator(); iterator.hasNext();) {
-					HausSonderwunsch hs = iterator.next();
-					if (hs.getSonderwunsch().getKategroien().getId() != kategorieID)
-						hsList.remove(hs);
+				List<HausSonderwunsch> hsList = new ArrayList<HausSonderwunsch>();
+				for (HausSonderwunsch hs : hsListTemp) {				
+					if (hs.getSonderwunsch().getKategroien().getId() == kategorieID)
+						hsList.add(hs);
 				}
 				for (HausSonderwunsch hs : hsList)
 					if (!IDCheckBoxMap.get(hs.getSonderwunsch().getId()).isSelected())
