@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.projektmanagement.model.Kunde;
+import org.projektmanagement.model.Sonderwunsch;
+import org.projektmanagement.service.KundenService;
+import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,32 +52,66 @@ public class FliesenController implements Initializable {
 	@FXML
 	private CheckBox checkBoxMpBadDG;
 	private double gesamtPreis;
+
+	public Kunde Kunde;
+	private List<Sonderwunsch> sonderwunsch;
+    private SonderwunschService sonderwunschService = new SonderwunschService();
+    private KundenService kundenService = new KundenService();
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		dOpt0 = 2890;
-		dOpt1 = 2090;
-		dOpt2 = 2090;
-		dOpt3 = 1790;
-		dOpt4 = 2490;
-		dOpt5 = 1690;
-		
-		txtFieldNoKEG.setText(dOpt0 + " €"); //Wenn ausgewählt ausgabe 
-		txtFieldNoBOG.setText(dOpt1 + " €"); // wenn ausgewählt ausgabe
-		txtFieldMpKEG.setText(dOpt2 + " €");
-		txtFieldMpBOG.setText(dOpt3 + " €");
-		txtFieldBOG.setText(dOpt4 + " €");
-		txtFieldMpBDG.setText(dOpt5 + " €");
-		checkBoxMpBadDG.setDisable(true);
-		
-		// Angaben Prüfung
-	
+//		dOpt0 = 2890;
+//		dOpt1 = 2090;
+//		dOpt2 = 2090;
+//		dOpt3 = 1790;
+//		dOpt4 = 2490;
+//		dOpt5 = 1690;
+//		
+//		txtFieldNoKEG.setText(dOpt0 + " €"); //Wenn ausgewählt ausgabe 
+//		txtFieldNoBOG.setText(dOpt1 + " €"); // wenn ausgewählt ausgabe
+//		txtFieldMpKEG.setText(dOpt2 + " €");
+//		txtFieldMpBOG.setText(dOpt3 + " €");
+//		txtFieldBOG.setText(dOpt4 + " €");
+//		txtFieldMpBDG.setText(dOpt5 + " €");
+//		checkBoxMpBadDG.setDisable(true);
+//		
+//		// Angaben Prüfung
+//	
 	}
+	
+	public void init() {
+		//Preise aus der DB holen
+        sonderwunsch = sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(6);
+        dOpt0 = sonderwunsch.get(0).getPreis(); //660
+        dOpt1 = sonderwunsch.get(1).getPreis(); //160
+        dOpt2 = sonderwunsch.get(2).getPreis(); //660
+        dOpt3 = sonderwunsch.get(3).getPreis(); //8990
+        dOpt4 = sonderwunsch.get(4).getPreis(); //9990
+        dOpt5 = sonderwunsch.get(5).getPreis(); //9990
+        
+        
+        
+        // Die häkchen setzen anhand daten aus datenbank ???
+       // if (sonderwunschService.getSonderwunschHandler().getSonderwunsch(28) != null)
+         //       checkBoxNoKuecheEG.setSelected(true);
+
+        //sonderwunschService.getSonderwunschHandler().getSonderwunsch(28)
+        //checkBoxNoKuecheEG.isSelected()
+
+        txtFieldNoKEG.setText(dOpt0 + " €"); //Wenn ausgewählt ausgabe 
+        txtFieldNoBOG.setText(dOpt1 + " €"); // wenn ausgewählt ausgabe
+        txtFieldMpKEG.setText(dOpt2 + " €");
+        txtFieldMpBOG.setText(dOpt3 + " €");
+        txtFieldBOG.setText(dOpt4 + " €");
+        txtFieldMpBDG.setText(dOpt5 + " €");
+        checkBoxMpBadDG.setDisable(true);
+
+    }
 	
 	
 	
 	@FXML
 	void onClickCsvExport() {
-		// TODO: DB Speichern...
+		// 
 		List<String> ueberschrift = new ArrayList<String>();
 		ueberschrift.add("Keine Fliesen im Küchenbereich EG");
 		ueberschrift.add("Keine Fliesen im Bad des OG");
@@ -136,9 +174,30 @@ public class FliesenController implements Initializable {
 	}
 	
 	@FXML
-	void onClickDbSave() {
-		// TODO: DB Speichern...
-
+	//Ein fall fehlt
+    void onClickDbSave() {
+        if(checkBoxNoKuecheEG.isSelected())
+            sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(28), Kunde.getHouses().get(0));
+        else
+            sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(28));
+        
+        if(checkBoxNoBadOG.isSelected())
+            sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(29), Kunde.getHouses().get(0));
+        else
+            sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(29));
+        if(checkBoxMpKuecheEG.isSelected())
+            sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(30), Kunde.getHouses().get(0));
+        else
+            sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(30));
+        
+        if(checkBoxMpBadOG.isSelected())
+            sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(31), Kunde.getHouses().get(0));
+        else
+            sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(31));
+        if(checkBoxMpBadDG.isSelected())
+            sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(32), Kunde.getHouses().get(0));
+        else
+            sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(32));
 	}
 	
 	@FXML
@@ -194,6 +253,10 @@ public class FliesenController implements Initializable {
 		
 		txtFieldGesamtPreis.setText(gesamtPreis+ "€");
 	}
+
+
+
+	
 	
 
 }

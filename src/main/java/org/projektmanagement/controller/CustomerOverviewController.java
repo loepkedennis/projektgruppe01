@@ -472,11 +472,32 @@ public class CustomerOverviewController {
 	}
 	@FXML
 	public void fliesen() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/FliesenView.fxml"));
-		Stage stage = new Stage();
-		stage.setTitle("Fliesen");
-		stage.setScene(new Scene(rootNode));
-		stage.show();
+		log.info("Starte Maske für \"Sonderwuensche fuer Fliesen\"");
+		Kunde kunde = this.tableView.getSelectionModel().getSelectedItem();
+		if(kunde != null) 
+		{
+			FXMLLoader loader = new FXMLLoader();
+			Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream("/views/FliesenView.fxml"));
+			FliesenController fc = loader.<FliesenController>getController();
+			fc.Kunde = kunde;
+			fc.init();
+			
+			Scene scene = new Scene(rootNode);
+			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setTitle("Fliesen");
+			stage.setScene(scene);
+			stage.show();
+		}
+		else 
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Kunde nicht gefunden");
+			Label label = new Label("Es wurde kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
+			label.setWrapText(true);
+			alert.getDialogPane().setContent(label);
+			alert.showAndWait();
+		}
 	}
 }
