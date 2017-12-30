@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +21,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import org.projektmanagement.model.HausSonderwunsch;
+import org.projektmanagement.model.Kunde;
+import org.projektmanagement.model.Sonderwunsch;
 import org.projektmanagement.service.KundenService;
+import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -32,7 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Sanitaerinstallation_swController implements Initializable {
 
-    private static final Logger log = (Logger) LoggerFactory.getLogger(FensterUndAussentuerenController.class);
+    private static final Logger log = (Logger) LoggerFactory.getLogger(Sanitaerinstallation_swController.class);
     @FXML
     Label label;
     @FXML
@@ -56,6 +61,10 @@ public class Sanitaerinstallation_swController implements Initializable {
 
     private Stage stage;
     private KundenService kundenService;
+    private Kunde kunde;
+    private List<Sonderwunsch> sonderwunsch;
+	private SonderwunschService sonderwunschService = new SonderwunschService();
+	private long kategorieID;
 
     public Sanitaerinstallation_swController() {
         super();
@@ -65,11 +74,11 @@ public class Sanitaerinstallation_swController implements Initializable {
      * Erzeugt ein ControlObjekt inklusive View-Objekt(FXML) zur Maske fuer die
      * Sonderwuensche fuer Fenster und Aussentueren.
      *
-     * @param kundeService KundenService für die Datenbank.
+     * @param kundeService KundenService fï¿½r die Datenbank.
      */
     public Sanitaerinstallation_swController(KundenService kundenService) {
         super();
-        log.info("Starting Maske für \"Sonderwuensche zur Sanitaerinstallation\"");
+        log.info("Starting Maske fï¿½r \"Sonderwuensche zur Sanitaerinstallation\"");
         stage = new Stage();
         this.kundenService = kundenService;
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -83,13 +92,59 @@ public class Sanitaerinstallation_swController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    
+    @SuppressWarnings("restriction")
+	public void init(long id, Stage stage) {
+		this.stage = stage;
+		kategorieID = id;
+		sonderwunsch = sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(kategorieID);
+
+		// hole die Beschreibung und Preise aus der Datenbank		
+		this.MehrpreisWBOGLabel.setText(sonderwunsch.get(0).getPreis() + " â‚¬ "); 	//160
+        this.MehrpreisWBDGLabel.setText(sonderwunsch.get(1).getPreis() + " â‚¬ ");	//160
+        this.MehrpreisDSOGLabel.setText(sonderwunsch.get(2).getPreis() + " â‚¬");		//560
+        this.MehrpreisDSDGLabel.setText(sonderwunsch.get(3).getPreis() + " â‚¬");		//560
+
+        this.MehrpreisWBOGCheckBox.setSelected(false);
+        this.MehrpreisWBDGCheckBox.setSelected(false);
+        this.MehrpreisDSOGCheckBox.setSelected(false);
+        this.MehrpreisDSDGCheckBox.setSelected(false);
+		
+		// Werte setzen aus Tabelle
+        //List<Sonderwunsch> ss;
+        //ss=sonderwunschService.getSonderwunschHandler().getAllSonderwunsch();
+        //for (Sonderwunsch sss : ss) {
+        //		log.debug("Sonderwunsch: "+sss.getName()+";"+sss.getKategroien().getId());
+        //}
+        
+		List<HausSonderwunsch> sw;
+		sw = sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde);
+		for (HausSonderwunsch s : sw) {
+			log.info("Sonderwunsche: "+s.getSonderwunsch().getName());
+			if(s.getSonderwunsch().getName().equals("Mehrpreis fÃ¼r ein grÃ¶ÃŸeres Waschbecken im OG")) {
+				this.MehrpreisWBOGCheckBox.setSelected(true);
+			}
+			if(s.getSonderwunsch().getName().equals("Mehrpreis fÃ¼r ein grÃ¶ÃŸeres Waschbecken im DG")) {
+				this.MehrpreisWBDGCheckBox.setSelected(true);
+			}
+			if(s.getSonderwunsch().getName().equals("Mehrpreis fÃ¼r eine bodentiefe Dusche im OG")) {
+				this.MehrpreisDSOGCheckBox.setSelected(true);
+			}
+			if(s.getSonderwunsch().getName().equals("Mehrpreis fÃ¼r eine bodentiefe Dusche im DG")) {
+				this.MehrpreisDSDGCheckBox.setSelected(true);
+			}
+			
+		}
+
+	}
 
     public void initialize(URL arg0, ResourceBundle arg1) {
         // get the prices from the DB 
-        this.MehrpreisWBOGLabel.setText("160" + " € ");
-        this.MehrpreisWBDGLabel.setText("160" + " € ");
-        this.MehrpreisDSOGLabel.setText("560" + " € ");
-        this.MehrpreisDSDGLabel.setText("560" + " € ");
+        /*this.MehrpreisWBOGLabel.setText("160" + " â‚¬ ");
+        this.MehrpreisWBDGLabel.setText("160" + " â‚¬ ");
+        this.MehrpreisDSOGLabel.setText("560" + " â‚¬");
+        this.MehrpreisDSDGLabel.setText("560" + " â‚¬ ");
 
         this.MehrpreisWBOGCheckBox.setSelected(false);
         this.MehrpreisWBDGCheckBox.setSelected(false);
@@ -97,6 +152,7 @@ public class Sanitaerinstallation_swController implements Initializable {
         this.MehrpreisDSDGCheckBox.setSelected(false);
 
         preisBerechnen();
+        */
     }
 
     @FXML
@@ -120,7 +176,7 @@ public class Sanitaerinstallation_swController implements Initializable {
         if (this.MehrpreisDSDGCheckBox.isSelected()) {
             gesamtkosten = gesamtkosten + 560;
         }
-        geskostenLabel.setText(gesamtkosten + " € ");
+        geskostenLabel.setText(gesamtkosten + " â‚¬");
     }
 
     @FXML
@@ -143,10 +199,10 @@ public class Sanitaerinstallation_swController implements Initializable {
     public List<String> getCSVAuswahl() {
         List<String> listStrAuswahl = new ArrayList<String>();
         if (this.MehrpreisWBOGCheckBox.isSelected()) {
-            listStrAuswahl.add(" Größeres Waschbecken im OG ");
+            listStrAuswahl.add(" Grï¿½ï¿½eres Waschbecken im OG ");
         }
         if (this.MehrpreisWBDGCheckBox.isSelected()) {
-            listStrAuswahl.add(" Größeres Waschbecken im DG");
+            listStrAuswahl.add(" Grï¿½ï¿½eres Waschbecken im DG");
         }
         if (this.MehrpreisDSOGCheckBox.isSelected()) {
             listStrAuswahl.add(" bodentiefe Dusche im OG ");
@@ -157,6 +213,12 @@ public class Sanitaerinstallation_swController implements Initializable {
 
         return listStrAuswahl;
     }
+    
+    //TODO Werte prÃ¼fen
+    private boolean checkSani() {
+    	return false;
+    }
+    
 
     /**
      * @return the stage
@@ -171,5 +233,9 @@ public class Sanitaerinstallation_swController implements Initializable {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    
+    public void setKunde(Kunde selectedItem) {
+		this.kunde = selectedItem;
+	}
 
 }

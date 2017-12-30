@@ -113,6 +113,8 @@ public class InnentuerenControl{
 	@FXML protected void onClickPreisBerechnen(ActionEvent event)
 	{
 		//Logik zur Preisberechnung...
+		
+		
 		double preis = 0;
 		preis = spinnerAnzahlKlarglas.getValue() * sonderwunsch.get(0).getPreis() ;
 		preis = preis + spinnerAnzahlMilchglas.getValue() * sonderwunsch.get(1).getPreis();
@@ -120,6 +122,10 @@ public class InnentuerenControl{
 			preis = preis + sonderwunsch.get(2).getPreis();
 		}
 		gesPreis.setText(preis+" €");
+		
+		if(!checkDoors(spinnerAnzahlKlarglas.getValue()+spinnerAnzahlMilchglas.getValue(),checkBoxHolztuer.isSelected())) {
+			gesPreis.setText("Auswahl passt nicht zum Grundriss!");
+		}
 		
 	}
 	
@@ -130,6 +136,11 @@ public class InnentuerenControl{
 	@SuppressWarnings("restriction")
 	@FXML protected void onClickSonderwuenscheSpeichern(ActionEvent event)
 	{
+		
+		if(!checkDoors(spinnerAnzahlKlarglas.getValue()+spinnerAnzahlMilchglas.getValue(),checkBoxHolztuer.isSelected())) {
+			gesPreis.setText("Auswahl passt nicht zum Grundriss!");
+		}else {
+		
 		// Vorher alle Einträge löschen
 					for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
 					{
@@ -150,7 +161,7 @@ public class InnentuerenControl{
 		if(checkBoxHolztuer.isSelected())
 			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunsch.get(2), kunde.getHouses().get(0));
 		
-
+		}
 	}
 	
 	
@@ -194,6 +205,66 @@ public class InnentuerenControl{
 		}
 
 		return listStrAuswahl;
+	}
+	
+	
+	//Prüfen ob Eingabe der Sonderwünsche korrekt ist
+    //TODO Es fehlt: Dachgeschoss, Keller
+	private boolean checkDoors(int anzSonder, boolean holz) {
+		int anz = 0;
+		List<HausSonderwunsch> sw;
+		boolean dg = true;
+		boolean keller = true;		//TODO
+		boolean zweizwei = false;	//Tür in der Wand zwischen Küche und Essbereich
+		boolean zweidrei = false;	//Großes Zimmer im OG statt zwei kleinen Zimmern
+		boolean zweivier = false;	//Abgetrennter Treppenraum im DG
+		boolean zweisechs = false;	//Ausführung eines Bades im DG
+		long id = kunde.getHouses().get(0).getId();
+		
+		
+		//DG Vorhanden?
+		if(id == 1 || id == 6 ||id == 7 ||id == 14 ||id == 15||id == 24) {
+			dg = false;
+		}
+		
+		//log.debug("Haus ID: "+id);
+		
+		sw = sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde);
+		
+		for (HausSonderwunsch s : sw) {
+			if(s.getSonderwunsch().getName().equals("Tür in der Wand zwischen Küche und Essbereich")) {
+				zweizwei = true;
+			}
+			else if(s.getSonderwunsch().getName().equals("Großes Zimmer im OG statt zwei kleinen Zimmern")) {
+				zweidrei = true;
+			}
+			else if(s.getSonderwunsch().getName().equals("Abgetrennter Treppenraum im DG")) {
+				zweivier = true;
+			}
+			else if(s.getSonderwunsch().getName().equals("Ausführung eines Bades im DG")) {
+				zweisechs = true;
+			}
+			
+			log.debug("Gimme Grundriss: "+s.getSonderwunsch().getName());
+		}
+		
+		//Keller
+		if(dg)anz=anz+1;
+		else if(!dg && keller)anz=anz+2;
+		//EG
+		if(zweizwei)anz=anz+1;
+		//OG
+		if(!zweidrei)anz=anz+4;
+		if(zweidrei)anz=anz+3;
+		//DG
+		if(dg && zweivier && zweisechs)anz=anz+2;
+		else if(dg && (zweivier||zweisechs))anz=anz+1;
+		//Holztür
+		if(holz && !dg)return false;
+		
+		if(anzSonder<=anz)return true;
+		else return false;
+		
 	}
 	
 	

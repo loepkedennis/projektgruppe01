@@ -500,4 +500,34 @@ public class CustomerOverviewController {
 			alert.showAndWait();
 		}
 	}
+	
+	@FXML
+	public void sani() throws IOException {
+		log.info("Starting Maske für \"Sonderwuensche fuer Sanitärinstallationen\"");		
+		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information");
+			alert.setHeaderText("Wählen Sie bitte einen Kunden aus!");
+			alert.showAndWait();			
+		}
+		else
+		{					
+			FXMLLoader loader = new FXMLLoader();
+			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/SanitaerinstallationView.fxml"));			
+			Sanitaerinstallation_swController fct = loader.<Sanitaerinstallation_swController>getController();
+			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			
+			Scene scene = new Scene(root, 600, 410);
+			scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());			
+			Stage stage = new Stage();	
+			stage.setTitle("Sanitärinstallationen");
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setScene(scene);
+			
+			fct.init(5, stage);
+			stage.showAndWait();			
+		}
+		
+		
+	}
 }
