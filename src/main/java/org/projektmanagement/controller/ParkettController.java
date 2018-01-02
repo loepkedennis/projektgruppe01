@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.projektmanagement.model.Kunde;
+import org.projektmanagement.model.Sonderwunsch;
+import org.projektmanagement.service.KundenService;
+import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +30,10 @@ import javafx.stage.Stage;
 public class ParkettController implements Initializable {
 	private Stage stage;
 	private static final Logger log = LoggerFactory.getLogger(GrundrissController.class);
+	public Kunde Kunde;
+	private List<Sonderwunsch> sonderwunsch;
+    private SonderwunschService sonderwunschService = new SonderwunschService();
+    private KundenService kundenService = new KundenService();
 
 	private double dOpt0, dOpt1, dOpt2, dOpt3, dOpt4, dOpt5, dOpt6, dOpt7, dOpt8, dOpt9, dErg;
 	@FXML
@@ -204,6 +212,58 @@ public class ParkettController implements Initializable {
 	protected void OnClickSave(ActionEvent event) {
 		// TODO: DB Speichern...
 
+		if(rbOpt0.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(34), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(34));
+		
+		if(rbOpt1.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(35), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(35));
+		
+		if(rbOpt2.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(36), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(36));
+		
+		if(rbOpt3.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(37), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(37));
+		
+		if(rbOpt4.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(38), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(38));
+		
+		if(rbOpt5.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(39), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(39));
+		
+		if(rbOpt6.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(40), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(40));
+		
+		if(rbOpt7.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(41), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(41));
+		
+		if(rbOpt8.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(42), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(42));
+		
+		if(rbOpt9.isSelected()) 
+			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(43), Kunde.getHouses().get(0));
+		else 
+			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(43));
+		
+		
+		
 	}
 	
 	@FXML
