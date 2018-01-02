@@ -262,8 +262,6 @@ public class ParkettController implements Initializable {
 		else 
 			sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(43));
 		
-		
-		
 	}
 	
 	@FXML
