@@ -40,6 +40,7 @@
                   <MenuItem fx:id="parkettMenuItem" mnemonicParsing="false" onAction="#parkett" text="Parkett" />
                   <MenuItem fx:id="FliesenMenuItem" mnemonicParsing="false" onAction="#fliesen" text="Fliesen" />
                   <MenuItem fx:id="SaniMenuItem" mnemonicParsing="false" onAction="#sani" text="Sanitärinstallationen" />
+                  <MenuItem fx:id="aussenanlagenMenuItem" mnemonicParsing="false" onAction="#aussenanlagen" text="Außenanlagen" />
             </items>
           </Menu>
         </menus>

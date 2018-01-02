@@ -530,4 +530,31 @@ public class CustomerOverviewController {
 		
 		
 	}
+	
+	@FXML
+	public void aussenanlagen() throws IOException
+	{
+		if(this.tableView == null | this.tableView.getSelectionModel().getSelectedItem() == null) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information");
+			alert.setHeaderText("Wählen Sie bitte einen Kunden aus!");
+			alert.showAndWait();			
+		}
+		else
+		{					
+			FXMLLoader loader = new FXMLLoader();
+			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/AussenanlagenView.fxml"));			
+			AussenanlagenController fct = loader.<AussenanlagenController>getController();
+			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			
+			Scene scene = new Scene(root, 600, 410);
+			Stage stage = new Stage();	
+			stage.setTitle("Außenanlagen");
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setScene(scene);
+			
+			fct.init(stage);
+			stage.showAndWait();			
+		}
+	}
 }
