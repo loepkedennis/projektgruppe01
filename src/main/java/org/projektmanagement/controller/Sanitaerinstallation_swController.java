@@ -112,12 +112,6 @@ public class Sanitaerinstallation_swController implements Initializable {
         this.MehrpreisDSDGCheckBox.setSelected(false);
 		
 		// Werte setzen aus Tabelle
-        //List<Sonderwunsch> ss;
-        //ss=sonderwunschService.getSonderwunschHandler().getAllSonderwunsch();
-        //for (Sonderwunsch sss : ss) {
-        //		log.debug("Sonderwunsch: "+sss.getName()+";"+sss.getKategroien().getId());
-        //}
-        
 		List<HausSonderwunsch> sw;
 		sw = sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde);
 		for (HausSonderwunsch s : sw) {
@@ -139,6 +133,8 @@ public class Sanitaerinstallation_swController implements Initializable {
 
 	}
 
+    
+    //TODO kann weg?
     public void initialize(URL arg0, ResourceBundle arg1) {
         // get the prices from the DB 
         /*this.MehrpreisWBOGLabel.setText("160" + " € ");
@@ -155,45 +151,94 @@ public class Sanitaerinstallation_swController implements Initializable {
         */
     }
 
+    
+    //In die DB speichern
     @FXML
     public void speichern() {
-        // TODO save the informations in the DB
+    	if(checkSani()) {
+    		// Vorher alle Einträge löschen
+			for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) 
+			{
+				//log.debug("KID: "+s.getSonderwunsch().getKategroien().getId());
+				if (s.getSonderwunsch().getKategroien().getId() == 5)
+				{
+					sonderwunschService.getSonderwunschHandler().removeSonderwunsch(kunde.getHouses().get(0), s.getSonderwunsch());
+				}
+			}
+
+			// Speichern 
+			if(this.MehrpreisWBOGCheckBox.isSelected())
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunsch.get(0), kunde.getHouses().get(0));
+			
+			if(this.MehrpreisWBDGCheckBox.isSelected())
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunsch.get(1), kunde.getHouses().get(0));
+			
+			if(this.MehrpreisDSOGCheckBox.isSelected())
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunsch.get(2), kunde.getHouses().get(0));
+			
+			if(this.MehrpreisDSDGCheckBox.isSelected())
+				sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunsch.get(3), kunde.getHouses().get(0));
+
+    		
+    	}
+    	else {
+    		geskostenLabel.setText("Fehler in der Auswahl!");
+    	}
+    	
     }
 
+    
+    //Preis berechnen
     @FXML
     public void preisBerechnen() {
-        int gesamtkosten = 0;
-
-        if (this.MehrpreisWBOGCheckBox.isSelected()) {
-            gesamtkosten = gesamtkosten + 160;
-        }
-        if (this.MehrpreisWBDGCheckBox.isSelected()) {
-            gesamtkosten = gesamtkosten + 160;
-        }
-        if (this.MehrpreisDSOGCheckBox.isSelected()) {
-            gesamtkosten = gesamtkosten + 560;
-        }
-        if (this.MehrpreisDSDGCheckBox.isSelected()) {
-            gesamtkosten = gesamtkosten + 560;
-        }
-        geskostenLabel.setText(gesamtkosten + " €");
+    	if(checkSani()) {
+    	
+	        int gesamtkosten = 0;
+	
+	        if (this.MehrpreisWBOGCheckBox.isSelected()) {
+	            gesamtkosten = gesamtkosten + 160;
+	        }
+	        if (this.MehrpreisWBDGCheckBox.isSelected()) {
+	            gesamtkosten = gesamtkosten + 160;
+	        }
+	        if (this.MehrpreisDSOGCheckBox.isSelected()) {
+	            gesamtkosten = gesamtkosten + 560;
+	        }
+	        if (this.MehrpreisDSDGCheckBox.isSelected()) {
+	            gesamtkosten = gesamtkosten + 560;
+	        }
+	        geskostenLabel.setText(gesamtkosten + " €");
+    	}
+    	else {
+    		geskostenLabel.setText("Fehler in der Auswahl!");
+    	}
+    	
     }
 
+    
+    //CSV Export
     @FXML
     public void csvExport() {
+    	
+    	if(checkSani()) {
 		
-		CSVExporter csvExport = new CSVExporter();
-		try
-		{
-			FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
-			CSVExporter.writeLine(filePfad, getCSVAuswahl());
-			
-			filePfad.flush();
-			filePfad.close();	
-		}catch(Exception e)
-		{
-			
-		}
+			CSVExporter csvExport = new CSVExporter();
+			try
+			{
+				FileWriter filePfad = new FileWriter(csvExport.setStrPfad(getStage()));
+				CSVExporter.writeLine(filePfad, getCSVAuswahl());
+				
+				filePfad.flush();
+				filePfad.close();	
+			}catch(Exception e)
+			{
+				
+			}
+    	}
+    	else {
+    		geskostenLabel.setText("Fehler in der Auswahl!");
+    	}
+    	
 	}
 
     public List<String> getCSVAuswahl() {
@@ -214,9 +259,30 @@ public class Sanitaerinstallation_swController implements Initializable {
         return listStrAuswahl;
     }
     
-    //TODO Werte prüfen
+    
+    
+    
+    //Eingabe prüfen
     private boolean checkSani() {
-    	return false;
+    	boolean dg = true;
+    	long id = kunde.getHouses().get(0).getId();
+    	
+    	if(id == 1 || id == 6 ||id == 7 ||id == 14 ||id == 15||id == 24) {
+			dg = false;
+		}
+    	
+    	if(this.MehrpreisWBDGCheckBox.isSelected()&&!dg) {	//für WBDG muss DG vorhanden sein
+    		return false;
+    	}
+    	else if(this.MehrpreisWBOGCheckBox.isSelected()&&this.MehrpreisDSOGCheckBox.isSelected()) {	//für WBOG darf DSOG nicht ausgewählt sein
+    		return false;
+    	}
+    	else if(this.MehrpreisDSDGCheckBox.isSelected()&&(!dg||this.MehrpreisWBDGCheckBox.isSelected())) {	//DSDG geht nicht wenn kein DG vorhanden ist oder WBDG schon ausgewählt wurde
+    			return false;
+    	}
+    	else {    	
+    		return true;
+    	}
     }
     
 

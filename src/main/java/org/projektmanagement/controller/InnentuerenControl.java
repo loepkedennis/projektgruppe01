@@ -52,26 +52,7 @@ public class InnentuerenControl{
 	@FXML private Label labelPreisHolztuer;
 	@FXML private TextField gesPreis;
 	
-	/**
-	 * Initialisiert Layout aus FXML-Datei und öffnet entsprechendes Fenster.
-	 */
-	/*@SuppressWarnings("restriction")
-	public void oeffneInnentuerenView() {
-		stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
-		try {
-			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("InnentuerenView.fxml"));
-			Scene scene = new Scene(root,560,400);
-			stage.setScene(scene);
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		stage.showAndWait();
-	}*/
-	
-	
 	@SuppressWarnings("restriction")
 	public void init(long id, Stage stage) {
 		this.stage = stage;
@@ -151,7 +132,7 @@ public class InnentuerenControl{
 						}
 					}
 		
-		// Speichern /PUSH?
+		// Speichern 
 		if(spinnerAnzahlKlarglas.getValue()!=0)
 			sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunsch.get(0), kunde.getHouses().get(0),spinnerAnzahlKlarglas.getValue());
 		
@@ -227,8 +208,6 @@ public class InnentuerenControl{
 			dg = false;
 		}
 		
-		//log.debug("Haus ID: "+id);
-		
 		sw = sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde);
 		
 		for (HausSonderwunsch s : sw) {
@@ -245,7 +224,7 @@ public class InnentuerenControl{
 				zweisechs = true;
 			}
 			
-			log.debug("Gimme Grundriss: "+s.getSonderwunsch().getName());
+			//log.debug("Gimme Grundriss: "+s.getSonderwunsch().getName());
 		}
 		
 		//Keller
