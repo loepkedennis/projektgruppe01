@@ -446,6 +446,7 @@ public class CustomerOverviewController {
 					
 			GrundrissController grundrissController = loader.<GrundrissController>getController();
 			grundrissController.setKunde(kunde);
+			grundrissController.checkIfExist();
 			
 			Stage stage = new Stage();
 			stage.setTitle("Grundriss");
