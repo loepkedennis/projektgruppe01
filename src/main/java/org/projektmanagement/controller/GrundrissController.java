@@ -228,6 +228,7 @@ public class GrundrissController implements Initializable {
 		});
 	}
 
+	// Zeige Sonderwünsche an, die bereits in der Datenbank vorhanden sind
 	public void checkIfExist() {
 		for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) {
 			if (s.getSonderwunsch().getId() == 1) {
@@ -336,6 +337,7 @@ public class GrundrissController implements Initializable {
 	protected void OnClickSave(ActionEvent event) {
 		Haus haus = kunde.getHouses().get(0);
 
+		// Lösche Sonderwünsche, die bereits in der Datenbank vorhanden sind und abgewählt wurden
 		for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(kunde)) {
 			if (!this.rbOpt0.isSelected() && s.getSonderwunsch().getId() == 1) {
 				sonderwunschService.getSonderwunschHandler().removeSonderwunsch(haus,
@@ -369,6 +371,7 @@ public class GrundrissController implements Initializable {
 			}
 		}
 
+		// Füge ausgewählte Sonderwünsche hinzu
 		if (this.rbOpt0.isSelected()) {
 			sonderwunschService.getSonderwunschHandler()
 					.addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(1), haus);

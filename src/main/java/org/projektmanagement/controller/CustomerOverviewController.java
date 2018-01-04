@@ -547,6 +547,7 @@ public class CustomerOverviewController {
 			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/AussenanlagenView.fxml"));			
 			AussenanlagenController fct = loader.<AussenanlagenController>getController();
 			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			fct.checkIfExist();
 			
 			Scene scene = new Scene(root, 600, 410);
 			Stage stage = new Stage();	
