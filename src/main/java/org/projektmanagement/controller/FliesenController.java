@@ -6,25 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.projektmanagement.model.HausSonderwunsch;
 import org.projektmanagement.model.Kunde;
 import org.projektmanagement.model.Sonderwunsch;
-import org.projektmanagement.service.KundenService;
 import org.projektmanagement.service.SonderwunschService;
 import org.projektmanagement.utils.CSVExporter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class FliesenController implements Initializable {
 	private Stage stage;
 	//private static final Logger log = LoggerFactory.getLogger(FliesenController.class);
 	
-	private double dOpt0, dOpt1, dOpt2, dOpt3, dOpt4, dOpt5, dErg;
+	private double dOpt0, dOpt1, dOpt2, dOpt3, dOpt4, dOpt5;
 	@FXML
 	private Label txtFieldNoKEG;
 	@FXML
@@ -56,26 +57,9 @@ public class FliesenController implements Initializable {
 	public Kunde Kunde;
 	private List<Sonderwunsch> sonderwunsch;
     private SonderwunschService sonderwunschService = new SonderwunschService();
-    private KundenService kundenService = new KundenService();
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-//		dOpt0 = 2890;
-//		dOpt1 = 2090;
-//		dOpt2 = 2090;
-//		dOpt3 = 1790;
-//		dOpt4 = 2490;
-//		dOpt5 = 1690;
-//		
-//		txtFieldNoKEG.setText(dOpt0 + " €"); //Wenn ausgewählt ausgabe 
-//		txtFieldNoBOG.setText(dOpt1 + " €"); // wenn ausgewählt ausgabe
-//		txtFieldMpKEG.setText(dOpt2 + " €");
-//		txtFieldMpBOG.setText(dOpt3 + " €");
-//		txtFieldBOG.setText(dOpt4 + " €");
-//		txtFieldMpBDG.setText(dOpt5 + " €");
-//		checkBoxMpBadDG.setDisable(true);
-//		
-//		// Angaben Prüfung
-//	
+		
 	}
 	
 	public void init() {
@@ -85,26 +69,62 @@ public class FliesenController implements Initializable {
         dOpt1 = sonderwunsch.get(1).getPreis(); //160
         dOpt2 = sonderwunsch.get(2).getPreis(); //660
         dOpt3 = sonderwunsch.get(3).getPreis(); //8990
-        dOpt4 = sonderwunsch.get(4).getPreis(); //9990
+        dOpt4 = sonderwunsch.get(4).getPreis(); //9990dOpt0 = dOpt0.
         dOpt5 = sonderwunsch.get(5).getPreis(); //9990
         
         
         
-        // Die häkchen setzen anhand daten aus datenbank ???
-       // if (sonderwunschService.getSonderwunschHandler().getSonderwunsch(28) != null)
-         //       checkBoxNoKuecheEG.setSelected(true);
-
-        //sonderwunschService.getSonderwunschHandler().getSonderwunsch(28)
-        //checkBoxNoKuecheEG.isSelected()
-
-        txtFieldNoKEG.setText(dOpt0 + " €"); //Wenn ausgewählt ausgabe 
-        txtFieldNoBOG.setText(dOpt1 + " €"); // wenn ausgewählt ausgabe
+        //Text beschreibungen müssen aus der Datenbank noch geholt werden
+        sonderwunsch = sonderwunschService.getSonderwunschHandler().getSonderwunschByKategorieID(6);
+        
+     
+        
+        txtFieldNoKEG.setText(dOpt0 + " €");  
+        txtFieldNoBOG.setText(dOpt1 + " €");
         txtFieldMpKEG.setText(dOpt2 + " €");
         txtFieldMpBOG.setText(dOpt3 + " €");
         txtFieldBOG.setText(dOpt4 + " €");
         txtFieldMpBDG.setText(dOpt5 + " €");
+        
         checkBoxMpBadDG.setDisable(true);
-
+        
+        //Schaue in er Datenbank ob die Checkboxen schon selektiert worden sind, wenn ja die Boxen setzen
+        for (HausSonderwunsch s : sonderwunschService.getSonderwunschHandler().getSonderwunscheHouse(Kunde)) 
+		{
+			
+			if (s.getSonderwunsch().getKategroien().getId() == 6)
+			{
+				sonderwunschService.getSonderwunschHandler().getSonderwunsch(1);
+				if (s.getSonderwunsch().getId() == 28)
+				{
+					checkBoxNoKuecheEG.setSelected(true);
+				}
+				if (s.getSonderwunsch().getId() == 29)
+				{
+					checkBoxNoBadOG.setSelected(true);
+				}
+				if (s.getSonderwunsch().getId() == 30)
+				{
+					checkBoxMpKuecheEG.setSelected(true);
+				}
+				if (s.getSonderwunsch().getId() == 31)
+				{
+					checkBoxMpBadOG.setSelected(true);
+				}
+				if (s.getSonderwunsch().getId() == 32)
+				{
+					checkBoxBadOG.setSelected(true);
+				}
+				if (s.getSonderwunsch().getId() == 33)
+				{
+					checkBoxMpBadDG.setSelected(true);
+				}
+				
+			}
+				
+				
+		}
+        
     }
 	
 	
@@ -174,15 +194,25 @@ public class FliesenController implements Initializable {
 	}
 	
 	@FXML
-	//Ein fall fehlt
     void onClickDbSave() {
-        if(checkBoxNoKuecheEG.isSelected())
+		Alert alert = new Alert(AlertType.INFORMATION);
+        if(checkBoxNoKuecheEG.isSelected()) {
             sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(28), Kunde.getHouses().get(0));
+            alert.setTitle("Information");
+			alert.setHeaderText("Zur Information für Sie");
+			alert.setContentText("Standartmäßig wird das Bad im OG gefliest");
+			alert.showAndWait();
+        }
         else
             sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(28));
         
-        if(checkBoxNoBadOG.isSelected())
+        if(checkBoxNoBadOG.isSelected()) {
             sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(29), Kunde.getHouses().get(0));
+            alert.setTitle("Information");
+			alert.setHeaderText("Zur Information für Sie");
+			alert.setContentText("Standartmäßig wird der Küchenbereich gefliest");
+			alert.showAndWait();
+        }
         else
             sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(29));
         if(checkBoxMpKuecheEG.isSelected())
@@ -194,10 +224,15 @@ public class FliesenController implements Initializable {
             sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(31), Kunde.getHouses().get(0));
         else
             sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(31));
-        if(checkBoxMpBadDG.isSelected())
+        if(checkBoxBadOG.isSelected())
             sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(32), Kunde.getHouses().get(0));
         else
             sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(32));
+        if(checkBoxMpBadDG.isSelected())
+            sonderwunschService.getSonderwunschHandler().addSonderwunsch(sonderwunschService.getSonderwunschHandler().getSonderwunsch(32), Kunde.getHouses().get(0));
+        else
+            sonderwunschService.getSonderwunschHandler().removeSonderwunsch(Kunde.getHouses().get(0), sonderwunschService.getSonderwunschHandler().getSonderwunsch(33));
+	
 	}
 	
 	@FXML
@@ -206,9 +241,11 @@ public class FliesenController implements Initializable {
 		checkBoxMpBadDG.setDisable(true);
 		
 		if(checkBoxNoKuecheEG.isSelected()){//1
-			gesamtPreis+=dOpt0;
+			gesamtPreis-=dOpt0;
+			
 			//Info ausgabe: Standartmäßig wird er Küchenbereich gefliest
 			checkBoxMpKuecheEG.setDisable(true);
+			
 		}
 		else
 			checkBoxMpKuecheEG.setDisable(false);
@@ -217,8 +254,9 @@ public class FliesenController implements Initializable {
 		
 		
 		if(checkBoxNoBadOG.isSelected()){//2
-			gesamtPreis+=dOpt1;
+			gesamtPreis-=dOpt1;
 			//Info Ausgabe; Standartmäßig wird das Bad im OG gefliest
+			
 			checkBoxMpBadOG.setDisable(true);
 		}
 		else
@@ -235,18 +273,15 @@ public class FliesenController implements Initializable {
 		
 		if(checkBoxMpBadOG.isSelected()){ // nur wenn 2 nicht ausgewählt ist 4
 			gesamtPreis+=dOpt3;
-			
 		}
-	
 		
-		
-		
-		if(checkBoxBadOG.isSelected()){ //wenn DG vorhanden und 2.6 vorhanden 5
+		if(checkBoxBadOG.isSelected()){ // Id ist 6 // grundrissvarianten
 			gesamtPreis+=dOpt4;
 			checkBoxMpBadDG.setDisable(false);
 		}
 		else
 			checkBoxMpBadDG.setSelected(false);
+		
 		if(checkBoxMpBadDG.isSelected()){ // nur wenn 7.5 ausgewählt ist 6
 			gesamtPreis+=dOpt5;
 		}
