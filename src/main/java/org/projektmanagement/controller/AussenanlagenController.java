@@ -1,6 +1,11 @@
 package org.projektmanagement.controller;
 
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.projektmanagement.model.Kunde;
+import org.projektmanagement.model.Sonderwunsch;
 import org.projektmanagement.service.KundenService;
 import org.projektmanagement.service.SonderwunschService;
 

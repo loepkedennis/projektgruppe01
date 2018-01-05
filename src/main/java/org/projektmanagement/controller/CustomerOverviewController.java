@@ -546,8 +546,8 @@ public class CustomerOverviewController {
 			FXMLLoader loader = new FXMLLoader();
 			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/AussenanlagenView.fxml"));			
 			AussenanlagenController fct = loader.<AussenanlagenController>getController();
-			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
-			fct.checkIfExist();
+			//fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			//fct.checkIfExist();
 			
 			Scene scene = new Scene(root, 600, 410);
 			Stage stage = new Stage();	
@@ -555,7 +555,7 @@ public class CustomerOverviewController {
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setScene(scene);
 			
-			fct.init(stage);
+			//fct.init(stage);
 			stage.showAndWait();			
 		}
 	}
