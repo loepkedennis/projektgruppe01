@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.AnchorPane?>   
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="289.0" prefWidth="379.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projektmanagement.controller.AussenanlagenController">
-  
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.projektmanagement.controller.AussenanlagenController">
+   <children>
+      <Label layoutX="170.0" layoutY="14.0" text="Sonderwünsche Aussenanlagen ">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="9.0" layoutY="63.0" prefHeight="137.0" prefWidth="581.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="63.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="309.0" minWidth="10.0" prefWidth="229.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.0" minWidth="10.0" prefWidth="108.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="16.0" prefWidth="274.0" text="Abstellraum auf der Terrasse des EG" />
+            <Label prefHeight="16.0" prefWidth="274.0" text="Vorbereitung für elektrische Antriebe Markise EG" GridPane.rowIndex="1" />
+            <Label prefHeight="16.0" prefWidth="274.0" text="Vorbereitung für elektrische Antriebe Markise DG" GridPane.rowIndex="2" />
+            <Label prefHeight="16.0" prefWidth="274.0" text="Elektrische Markise EG" GridPane.rowIndex="3" />
+            <Label prefHeight="16.0" prefWidth="274.0" text="Elektrische Markise DG" GridPane.rowIndex="4" />
+            <Label prefHeight="16.0" prefWidth="274.0" text="Elektrischen Antrieb für das Garagentor" GridPane.rowIndex="5" />            
+            <Label prefHeight="16.0" prefWidth="274.0" text="Sektionaltor anstatt Schwingtor für die Garage" GridPane.rowIndex="6" />
+            <CheckBox fx:id="checkBoxAbsEG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <CheckBox fx:id="checkBoxVorEG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkBoxVorDG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <CheckBox fx:id="checkBoxElkEG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkBoxElkDG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkBoxElkAG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <CheckBox fx:id="checkBoxSekSG" onAction="#OnSelect"  mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <Label fx:id="txtFieldAbsEG" GridPane.columnIndex="1" />
+            <Label fx:id="txtFieldVorEG" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="txtFieldVorDG" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="txtFieldElkEG" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="txtFieldElkDG" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="txtFieldElkAG" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="txtFieldSekSG" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+         </children>
+      </GridPane>
+      
+      <Button layoutX="100.0" layoutY="338.0" mnemonicParsing="false" onAction="#onClickCsvExport" text="CSV Export" />
+      <Button layoutX="300.0" layoutY="338.0" mnemonicParsing="false" onAction="#onClickDbSave" text="In Datenbank speichern" />
+      <Label fx:id="txtFieldGesamtPreis" layoutX="352.0" layoutY="239.0" />
+      <Text <!-- fx:id="lblGesamtPreis" --> layoutX="254.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gesamtpreis:" />
+   </children>
 </AnchorPane>
