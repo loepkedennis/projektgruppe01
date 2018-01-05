@@ -446,6 +446,7 @@ public class CustomerOverviewController {
 					
 			GrundrissController grundrissController = loader.<GrundrissController>getController();
 			grundrissController.setKunde(kunde);
+			grundrissController.checkIfExist();
 			
 			Stage stage = new Stage();
 			stage.setTitle("Grundriss");
@@ -546,6 +547,7 @@ public class CustomerOverviewController {
 			Parent root = (Parent) loader.load(getClass().getResourceAsStream("/views/AussenanlagenView.fxml"));			
 			AussenanlagenController fct = loader.<AussenanlagenController>getController();
 			fct.setKunde(this.tableView.getSelectionModel().getSelectedItem());
+			fct.checkIfExist();
 			
 			Scene scene = new Scene(root, 600, 410);
 			Stage stage = new Stage();	
